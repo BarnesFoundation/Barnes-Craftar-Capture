@@ -3,10 +3,6 @@ import { Link } from 'react-router-dom'
 
 class Home extends React.Component {
 
-	launchCamera = () => {
-		console.log('Launching the camera')
-	}
-
 	public render() {
 		return (
 			<div className="home">

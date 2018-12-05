@@ -2,14 +2,14 @@ import * as React from 'react'
 import { BrowserRouter, Route } from 'react-router-dom'
 
 import { Home } from './components/home/Home'
-import { Camera } from './components/camera/Camera'
+import { CameraContainer } from './components/cameraContainer/CameraContainer'
 
 
 const Routes = (
 	<BrowserRouter>
 		<div>
 			<Route exact path="/" component={Home} />
-			<Route path="/camera" component={Camera} />
+			<Route path="/camera" component={CameraContainer} />
 		</div>
 	</BrowserRouter>
 )
