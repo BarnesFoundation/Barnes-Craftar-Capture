@@ -16,7 +16,6 @@ class CameraCapture extends React.Component<Props, object> {
                 <Camera 
                 idealFacingMode={FACING_MODES.USER} 
                 idealResolution={{height: 1080, width: 1920}}
-                /* isMaxResolution={true} */
                 sizeFactor={1} 
                 onTakePhoto={(dataUri: string) => { this.props.onTakePhoto(dataUri) }}></Camera>
             </div>
