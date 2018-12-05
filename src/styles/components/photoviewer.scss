@@ -1,0 +1,14 @@
+.captured-photo {
+    height: 90%;
+    width: 90%;
+}
+
+.photo-display {
+    height: 100%;
+    width: 100%;
+
+    // Center the contents
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
