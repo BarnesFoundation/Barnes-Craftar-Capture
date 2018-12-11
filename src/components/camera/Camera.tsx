@@ -4,7 +4,7 @@ import 'react-html5-camera-photo/build/css/index.css'
 import { Redirect } from 'react-router-dom'
 
 export interface Props {
-   onTakePhoto: any
+    onTakePhoto: any
 }
 
 class CameraCapture extends React.Component<Props, object> {
@@ -12,15 +12,12 @@ class CameraCapture extends React.Component<Props, object> {
     public render() {
 
         return (
-            <div className="camera">
-                <Camera 
-                idealFacingMode={FACING_MODES.USER} 
-                idealResolution={{height: 1080, width: 1920}}
-                sizeFactor={1} 
-                onTakePhoto={(dataUri: string) => { this.props.onTakePhoto(dataUri) }}></Camera>
+            <div>
+               <input onChange={this.props.onTakePhoto} type="file" name="image" accept="image/*" capture="camcorder"></input>
             </div>
         )
-    }
-}
 
+    }
+
+}
 export { CameraCapture }
