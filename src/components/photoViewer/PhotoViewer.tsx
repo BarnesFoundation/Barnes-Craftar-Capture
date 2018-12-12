@@ -1,5 +1,4 @@
 import * as React from 'react'
-import { imageFile1 } from '../../constants'
 
 export interface Props {
 
@@ -33,7 +32,7 @@ class PhotoViewer extends React.Component<Props, object> {
         return (
             <div>
                 <div className="photoviewer photo-display">
-                    <img id="captured-photo" className="photoviewer captured-photo" ref={this.photo} src={imageFile1}></img>
+                    <img id="captured-photo" className="photoviewer captured-photo" ref={this.photo} src={this.props.photoUri}></img>
                 </div>
                 <div>
                     <button onClick={this.onEvent}>Crop</button>
