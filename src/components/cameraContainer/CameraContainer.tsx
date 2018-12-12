@@ -4,7 +4,7 @@ import { CameraCapture } from '../camera/Camera'
 import { PhotoViewer } from '../photoViewer/PhotoViewer'
 import { CroppedPhotoViewer } from '../croppedPhotoViewer/croppedPhotoViewer'
 
-import { SearchService } from '../../services/searchService'
+import { SearchService, MatchResponse } from '../../services/searchService'
 
 import Cropper from 'cropperjs'
 import 'cropperjs/dist/cropper.css'
@@ -13,8 +13,12 @@ class CameraContainer extends React.Component {
 
     cropper: Cropper
     searchService: SearchService
-    matchResponse
-    matchRequestError
+
+    imageMatchSuccess: boolean = null
+    imageMatchResponse: MatchResponse = null
+
+    requestError: boolean = null
+    requestErrorMessage: any = null
 
     constructor(props) {
         super(props)
@@ -30,7 +34,7 @@ class CameraContainer extends React.Component {
         photoUri: null,
         croppedPhotoUri: null,
         croppedPhotoBlob: null,
-        matchRequestComplete: false
+        requestComplete: false
     }
 
     onTakePhoto = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -56,12 +60,18 @@ class CameraContainer extends React.Component {
     }
 
     async findImageMatch() {
-        try { this.matchResponse = await this.searchService.findImageMatch(this.state.croppedPhotoBlob) 
-        console.log( this.matchResponse)}
+        try {
+            this.imageMatchResponse = await this.searchService.findImageMatch(this.state.croppedPhotoBlob)
+            this.imageMatchSuccess = this.imageMatchResponse.success
+        }
 
-        catch (error) { return error }
+        catch (error) {
+            this.requestErrorMessage = error
+            this.requestError = true
+            this.imageMatchSuccess = false
+        }
 
-        this.setState({ matchRequestComplete: true })
+        this.setState({ requestComplete: true })
     }
 
     public render() {
@@ -77,7 +87,15 @@ class CameraContainer extends React.Component {
         }
 
         if (show === '/croppedphotoviewer/') {
-            return <CroppedPhotoViewer photoUri={this.state.croppedPhotoUri} findImageMatch={this.findImageMatch} matchResponse={this.matchResponse} matchRequestError={this.matchRequestError} matchRequestComplete={this.state.matchRequestComplete}></CroppedPhotoViewer>
+            return <CroppedPhotoViewer
+                photoUri={this.state.croppedPhotoUri}
+                findImageMatch={this.findImageMatch}
+                imageMatchSuccess={this.imageMatchSuccess}
+                imageMatchResponse={this.imageMatchResponse}
+                requestError={this.requestError}
+                requestErrorMessage={this.requestErrorMessage}
+                requestComplete={this.state.requestComplete}>
+            </CroppedPhotoViewer>
         }
 
         else { return ('') }
