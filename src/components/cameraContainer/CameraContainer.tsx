@@ -13,6 +13,8 @@ class CameraContainer extends React.Component {
 
     cropper: Cropper
     searchService: SearchService
+    matchResponse
+    matchRequestError
 
     constructor(props) {
         super(props)
@@ -28,6 +30,7 @@ class CameraContainer extends React.Component {
         photoUri: null,
         croppedPhotoUri: null,
         croppedPhotoBlob: null,
+        matchRequestComplete: false
     }
 
     onTakePhoto = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -53,14 +56,12 @@ class CameraContainer extends React.Component {
     }
 
     async findImageMatch() {
-        try {
-            let match = await this.searchService.findImageMatch(this.state.croppedPhotoBlob)
-            console.log(match)
-        }
+        try { this.matchResponse = await this.searchService.findImageMatch(this.state.croppedPhotoBlob) 
+        console.log( this.matchResponse)}
 
-        catch (error) {
-            console.log(error)
-        }   
+        catch (error) { return error }
+
+        this.setState({ matchRequestComplete: true })
     }
 
     public render() {
@@ -76,7 +77,7 @@ class CameraContainer extends React.Component {
         }
 
         if (show === '/croppedphotoviewer/') {
-            return <CroppedPhotoViewer photoUri={this.state.croppedPhotoUri} findImageMatch={this.findImageMatch}></CroppedPhotoViewer>
+            return <CroppedPhotoViewer photoUri={this.state.croppedPhotoUri} findImageMatch={this.findImageMatch} matchResponse={this.matchResponse} matchRequestError={this.matchRequestError} matchRequestComplete={this.state.matchRequestComplete}></CroppedPhotoViewer>
         }
 
         else { return ('') }
