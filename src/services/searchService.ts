@@ -8,7 +8,6 @@ class MatchResponse {
     message: string
     id?: string
     uuid?: string
-    url?: string
 
     errorOccurred?: boolean
     errorMessage?: string
@@ -55,7 +54,6 @@ class SearchService {
             matchResponse.success = false
             matchResponse.message = 'No matching reference image was found'
         }
-
         return matchResponse
     }
 
@@ -84,4 +82,4 @@ class SearchService {
 
 }
 
-export { SearchService }
+export { SearchService, MatchResponse }
