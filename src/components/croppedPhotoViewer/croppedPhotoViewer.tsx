@@ -4,9 +4,14 @@ import { MatchResponse } from '../../services/searchService'
 export interface Props {
     photoUri: string,
     findImageMatch: Function
-    matchRequestComplete: boolean
-    matchResponse: MatchResponse
-    matchRequestError: any
+
+    requestComplete: boolean
+
+    imageMatchSuccess: boolean
+    imageMatchResponse: MatchResponse
+
+    requestError: boolean
+    requestErrorMessage: any
 
 }
 
@@ -23,19 +28,39 @@ class CroppedPhotoViewer extends React.Component<Props, object> {
 
     public render() {
 
-        let matchResponseSection = (!this.props.matchResponse) ? null : (
+        let cameraButton = (!this.props.requestComplete) ? null : (
+            <button>Return to Camera</button>
+        )
+
+        
+        let successSection = (
             <div>
                 <p>A match was found in Catchoom for that image</p>
-                <p>Image Id: {this.props.matchResponse.id}</p>
+                <p>Image Id: {this.props.imageMatchResponse ? this.props.imageMatchResponse.id : '' }</p>
+                <p>Use 'Add to Item' to add the above image as an additional reference image to the existing item</p>
+                <div>
+                    <button>Add to Item</button>
+                    {cameraButton}
+                </div>
             </div>
         )
 
-        let searchButton = (this.props.matchRequestComplete) ? null : (
+        let failSection =  (
+            <div>
+                <p>No matching image was found in Catchoom for that image</p>
+                {cameraButton}
+            </div>
+        )
+
+        let searchButton = (
             <button onClick={this.onEvent}>Search</button>
         )
 
-        let matchRequestError = (!this.props.matchRequestError) ? null : (
-            <p>An error occurred when searching with that image: {this.props.matchRequestError}</p>
+        let errorSection = (
+            <div>
+                <p>An error occurred when searching with that image: {this.props.requestErrorMessage}</p>
+                {cameraButton}
+            </div>
         )
 
         let photoView = (
@@ -47,9 +72,10 @@ class CroppedPhotoViewer extends React.Component<Props, object> {
         return (
             <div>
                 {photoView}
-                {searchButton}
-                {matchResponseSection}
-                {matchRequestError}
+                {(this.props.requestComplete) ? null : searchButton }
+                {(this.props.requestComplete && this.props.imageMatchSuccess) ? successSection : null }
+                {(this.props.requestComplete && !this.props.imageMatchSuccess) ? failSection : null }
+                {(this.props.requestError) ? errorSection : null }
             </div>
         )
     }
