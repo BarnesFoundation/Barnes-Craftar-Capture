@@ -1,25 +1,21 @@
 import * as React from 'react'
-import { SearchService } from '../../services/searchService'
+
 
 export interface Props {
     photoUri: string,
-    photoBlob: Blob
+    findImageMatch: Function
 }
 
 class CroppedPhotoViewer extends React.Component<Props, object> {
 
-    searchService: SearchService
 
     constructor(props) {
         super(props)
-
         this.onEvent = this.onEvent.bind(this)
-        this.searchService = new SearchService()
     }
 
-    async onEvent(event) {
-        console.log('Catchooming')
-        let match = await this.searchService.findImageMatch(this.props.photoBlob)
+    onEvent(event) {
+        this.props.findImageMatch()
     }
 
     public render() {
@@ -29,7 +25,7 @@ class CroppedPhotoViewer extends React.Component<Props, object> {
                     <img id="captured-photo" className="photoviewer captured-photo" src={this.props.photoUri}></img>
                 </div>
                 <div>
-                    <button onClick={this.onEvent}>Crop</button>
+                    <button onClick={this.onEvent}>Identify</button>
                 </div>
             </div>
         )

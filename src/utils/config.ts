@@ -1,21 +1,16 @@
-import * as dotenv from 'dotenv'
-
-dotenv.config({ debug: true })
 
 const Config = {
-    managementApiUrl: process.env.MANAGEMENT_API_URL,
-    managementApiKey: process.env.MANAGEMENT_API_KEY,
+    managementApiUrl: process.env.REACT_APP_MANAGEMENT_API_URL,
+    managementApiKey: process.env.REACT_APP_MANAGEMENT_API_KEY,
 
-    collectionId: process.env.COLLECTION_UUID,
-    collectionToken: process.env.COLLECTION_TOKEN,
+    collectionId: process.env.REACT_APP_COLLECTION_UUID,
+    collectionToken: process.env.REACT_APP_COLLECTION_TOKEN,
 
-    searchApiUrl: process.env.SEARCH_API_URL,
+    searchApiUrl: process.env.REACT_APP_SEARCH_API_URL,
 
-    collectionRoute: process.env.COLLECTION_EP,
-    itemRoute: process.env.ITEM_EP,
-    imageRoute: process.env.IMAGE_EP
+    collectionRoute: process.env.REACT_APP_COLLECTION_EP,
+    itemRoute: process.env.REACT_APP_ITEM_EP,
+    imageRoute: process.env.REACT_APP_IMAGE_EP
 }
-console.log('Within config', __dirname)
-console.log(Config)
 
 export { Config }
