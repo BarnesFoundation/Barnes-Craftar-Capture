@@ -1,4 +1,6 @@
-interface CatchoomResponse {
+/** Catchoom Image Recognition API Responses */
+
+interface SearchResponse {
     results: Result[],
     search_time: number
 }
@@ -21,4 +23,4 @@ interface Result {
     score?: number,
 }
 
-export { CatchoomResponse }
+export { SearchResponse }

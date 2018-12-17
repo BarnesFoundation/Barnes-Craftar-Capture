@@ -1,6 +1,6 @@
 
 import { Config } from '../utils/config'
-import { CatchoomResponse } from '../interfaces/catchoomResponse'
+import { SearchResponse } from '../interfaces/imageRecognitionResponses'
 import axios from 'axios'
 
 class MatchResponse {
@@ -19,14 +19,14 @@ class SearchService {
 
     constructor() {
         this.httpConfig = {
-            headers: { 'Content-Type': 'multipart/form-data' }, 'crossDomain': true,
+            headers: { 'Content-Type': 'multipart/form-data' },
             method: 'post',
             url: Config.searchApiUrl,
             data: null
         }
     }
 
-    private prepareSearchRequest(image: Blob) {
+    private prepareRequest(image: Blob) {
         let fd = new FormData()
 
         fd.append('token', Config.collectionToken)
@@ -37,7 +37,7 @@ class SearchService {
         return this.httpConfig
     }
 
-    private parseImageMatchResponse(response: CatchoomResponse): MatchResponse {
+    private parseImageMatchResponse(response: SearchResponse): MatchResponse {
         let matchResponse = new MatchResponse()
 
         if (response.results.length > 0) {
@@ -66,7 +66,7 @@ class SearchService {
     }
 
     async findImageMatch(image: Blob): Promise<MatchResponse> {
-        let request = this.prepareSearchRequest(image)
+        let request = this.prepareRequest(image)
 
         try {
             let response = await axios(request)
