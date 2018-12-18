@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 export interface Props {
     photoUri: string,
     findImageMatch: Function
+    setCollectionItem: Function
 
     requestComplete: boolean
 
@@ -21,10 +22,15 @@ class ImageSearchView extends React.Component<Props, object> {
     constructor(props) {
         super(props)
         this.findImageMatch = this.findImageMatch.bind(this)
+        this.setItem = this.setItem.bind(this)
     }
 
     findImageMatch(event) {
         this.props.findImageMatch()
+    }
+
+    setItem(event) {
+        this.props.setCollectionItem()
     }
 
     public render() {
@@ -40,10 +46,7 @@ class ImageSearchView extends React.Component<Props, object> {
             let uuid = this.props.imageMatchResponse.uuid
 
             setItem = (
-                <Link to={{
-                    pathname: '/camera-capture',
-                    state: { id: id, uuid: uuid }
-                }}>Set Item</Link>
+                <button onClick={this.setItem}>Set Item</button>
             )
 
             successSection = (

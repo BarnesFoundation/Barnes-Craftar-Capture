@@ -2,40 +2,50 @@ import * as React from 'react'
 import { CameraCapture } from './cameraCapture/cameraCapture'
 import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { AddCapturedPhoto } from '../../actions/actions'
+import { AddCapturedPhoto, ClearPhotoData } from '../../actions/actions'
 
-class CameraContainer extends React.Component<{ dispatch: Function, photoUri: string }> {
+export interface Props {
+    dispatch: Function,
+    photoUri: string,
+
+    itemId: string,
+    itemSet: boolean,
+}
+
+class CameraContainer extends React.Component<Props> {
 
     constructor(props) {
         super(props)
-        this.onTakePhoto = this.onTakePhoto.bind(this)
-    }
-
-    getSetItem = (photoUri) => {
-        console.log('The photoUri' , photoUri)
     }
 
     onTakePhoto = (event: React.ChangeEvent<HTMLInputElement>) => {
         let photoUri = URL.createObjectURL(event.target.files[0]);
         this.props.dispatch(AddCapturedPhoto({ photoUri }))
-        
     }
 
     public render() {
+
+        let itemSection
+
+        if (this.props.itemSet) {
+            itemSection = (
+                <p>Capturing photos for Item: {this.props.itemId}</p>
+            )
+        }
+
         if (this.props.photoUri) {
             return (
-                <Redirect
-                    to={{
-                        pathname: '/crop-image',
-                    }}
-                ></Redirect>
+                <Redirect to={{ pathname: '/crop-image' }}></Redirect>
             )
         }
 
         return (
-            <CameraCapture
-                onTakePhoto={this.onTakePhoto}>
-            </CameraCapture>
+            <div>
+                {itemSection}
+                <CameraCapture
+                    onTakePhoto={this.onTakePhoto}>
+                </CameraCapture>
+            </div>
         )
     }
 }
@@ -43,6 +53,6 @@ class CameraContainer extends React.Component<{ dispatch: Function, photoUri: st
 
 const mapStateToProps = state => ({
     ...state
-});
+})
 
 export const ConnectedCameraContainer = connect(mapStateToProps)(CameraContainer)
