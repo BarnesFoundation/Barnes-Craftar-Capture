@@ -5,7 +5,7 @@ import { ApplicationContainer } from './App'
 import { ConnectedCameraContainer } from './components/cameraContainer/cameraContainer'
 import { ConnectedCropContainer } from './components/cropContainer/CropContainer'
 import { ConnectedImageSearchContainer } from './components/imageSearchContainer/imageSearchContainer'
-import { AddImageView } from './components/addImageContainer/addImageView/addImageView';
+import { ConnectedAddImageContainer } from './components/addImageContainer/addImageContainer';
 
 const Routes = (
 	<BrowserRouter>
@@ -15,7 +15,7 @@ const Routes = (
 			<Route path="/camera-capture" component={ConnectedCameraContainer} />
 			<Route path="/crop-image" component={ConnectedCropContainer} />
 			<Route path="/search-image" component={ConnectedImageSearchContainer} />
-			<Route path="/add-image" component={AddImageView} />
+			<Route path="/add-image" component={ConnectedAddImageContainer} />
 		</div>
 	</BrowserRouter>
 )

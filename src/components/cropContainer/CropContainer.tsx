@@ -9,12 +9,15 @@ import { CropPhoto } from '../../actions/actions'
 
 export interface Props {
     photoUri: string
+    itemSet: boolean
+    croppedPhotoUri: string
+    croppedPhotoBlob: undefined
+    dispatch: Function
 }
 
-class CropContainer extends React.Component<{ photoUri: string, croppedPhotoUri: string, croppedPhotoBlob: undefined, dispatch: Function }> {
+class CropContainer extends React.Component<Props> {
 
     cropper: Cropper
-    photoUri: string
 
     constructor(props) {
         super(props)
@@ -34,7 +37,7 @@ class CropContainer extends React.Component<{ photoUri: string, croppedPhotoUri:
             }, 'image/jpeg')
         })
 
-        this.props.dispatch(CropPhoto({croppedPhotoUri, croppedPhotoBlob}))
+        this.props.dispatch(CropPhoto({ croppedPhotoUri, croppedPhotoBlob }))
     }
 
     initializeCropper(photoElement: HTMLImageElement) {
@@ -43,12 +46,20 @@ class CropContainer extends React.Component<{ photoUri: string, croppedPhotoUri:
 
     public render() {
 
-        if (this.props.croppedPhotoUri && this.props.croppedPhotoBlob) {
+        if (this.props.croppedPhotoUri && this.props.croppedPhotoBlob && !this.props.itemSet) {
             return (
                 <Redirect to={{
                     pathname: '/search-image',
-                }}
-                >
+                }}>
+                </Redirect>
+            )
+        }
+
+        if (this.props.croppedPhotoUri && this.props.croppedPhotoBlob && this.props.itemSet) {
+            return (
+                <Redirect to={{
+                    pathname: '/add-image',
+                }}>
                 </Redirect>
             )
         }

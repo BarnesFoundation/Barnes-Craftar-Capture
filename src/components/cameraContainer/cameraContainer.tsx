@@ -2,7 +2,7 @@ import * as React from 'react'
 import { CameraCapture } from './cameraCapture/cameraCapture'
 import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { AddCapturedPhoto, ClearPhotoData } from '../../actions/actions'
+import { AddCapturedPhoto } from '../../actions/actions'
 
 export interface Props {
     dispatch: Function,
