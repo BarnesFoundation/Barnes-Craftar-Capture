@@ -1,0 +1,4 @@
+export const ADD_CAPTURED_PHOTO = 'ADD_CAPTURED_PHOTO'
+export const CROP_PHOTO = 'CROP_PHOTO'
+export const SEARCH_FOR_IMAGE = 'SEARCH_FOR_IMAGE'
+export const SET_ITEM = 'SET_ITEM'

@@ -4,13 +4,14 @@ import { CropperView } from './cropperView/cropperView'
 
 import Cropper from 'cropperjs'
 import 'cropperjs/dist/cropper.css'
-import { RouteProps } from 'react-router-dom';
+import { connect } from 'react-redux'
+import { CropPhoto } from '../../actions/actions'
 
 export interface Props {
     photoUri: string
 }
 
-class CropContainer extends React.Component<Props & RouteProps, object> {
+class CropContainer extends React.Component<{ photoUri: string, croppedPhotoUri: string, croppedPhotoBlob: undefined, dispatch: Function }> {
 
     cropper: Cropper
     photoUri: string
@@ -19,13 +20,6 @@ class CropContainer extends React.Component<Props & RouteProps, object> {
         super(props)
         this.cropPhoto = this.cropPhoto.bind(this)
         this.initializeCropper = this.initializeCropper.bind(this)
-
-        this.photoUri = this.props.location.state.photoUri
-    }
-
-    state = {
-        croppedPhotoUri: null,
-        croppedPhotoBlob: null,
     }
 
     async cropPhoto() {
@@ -39,7 +33,8 @@ class CropContainer extends React.Component<Props & RouteProps, object> {
                 resolve(blob)
             }, 'image/jpeg')
         })
-        this.setState({ croppedPhotoUri: croppedPhotoUri, croppedPhotoBlob: croppedPhotoBlob })
+
+        this.props.dispatch(CropPhoto({croppedPhotoUri, croppedPhotoBlob}))
     }
 
     initializeCropper(photoElement: HTMLImageElement) {
@@ -48,11 +43,10 @@ class CropContainer extends React.Component<Props & RouteProps, object> {
 
     public render() {
 
-        if (this.state.croppedPhotoUri && this.state.croppedPhotoBlob) {
+        if (this.props.croppedPhotoUri && this.props.croppedPhotoBlob) {
             return (
                 <Redirect to={{
                     pathname: '/search-image',
-                    state: { photoUri: this.state.croppedPhotoUri, photoBlob: this.state.croppedPhotoBlob }
                 }}
                 >
                 </Redirect>
@@ -61,7 +55,7 @@ class CropContainer extends React.Component<Props & RouteProps, object> {
 
         return (
             <CropperView
-                photoUri={this.photoUri}
+                photoUri={this.props.photoUri}
                 initializeCropper={this.initializeCropper}
                 cropper={this.cropper}
                 cropPhoto={this.cropPhoto}>
@@ -71,4 +65,8 @@ class CropContainer extends React.Component<Props & RouteProps, object> {
     }
 }
 
-export { CropContainer }
+const mapStateToProps = state => ({
+    ...state
+})
+
+export const ConnectedCropContainer = connect(mapStateToProps)(CropContainer)
