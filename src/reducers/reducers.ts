@@ -1,4 +1,4 @@
-import { ADD_CAPTURED_PHOTO, CROP_PHOTO, SEARCH_FOR_IMAGE, SEARCH_FOR_IMAGE_ERROR, SEARCH_FOR_IMAGE_REQUEST_COMPLETE, SET_COLLECTION_ITEM, CLEAR_PHOTO_DATA, CLEAR_SEARCH_DATA } from '../constants/actions-types'
+import { ADD_CAPTURED_PHOTO, CROP_PHOTO, SEARCH_FOR_IMAGE, SEARCH_FOR_IMAGE_ERROR, SEARCH_FOR_IMAGE_REQUEST_COMPLETE, SET_COLLECTION_ITEM, CLEAR_PHOTO_DATA, CLEAR_SEARCH_DATA, ADD_IMAGE_TO_ITEM, ADD_IMAGE_REQUEST_ERROR, ADD_IMAGE_REQUEST_COMPLETE } from '../constants/actions-types'
 
 interface action {
     type: string,
@@ -17,11 +17,20 @@ const initialState = {
     croppedPhotoUri: '',
     croppedPhotoBlob: undefined,
 
+    // Image Search stateness
     imageMatchResponse: undefined,
     imageMatchSuccess: '',
     requestComplete: '',
     requestError: '',
-    requestErrorMessage: ''
+    requestErrorMessage: '',
+
+    // Add Image stateness
+    addImageResponse: undefined,
+    addImageSuccess: '',
+    addImageRequestComplete: '',
+    addImageRequestError: '',
+    addImageRequestErrorMessage: ''
+
 }
 
 function rootReducer(state = initialState, action) {
@@ -51,6 +60,15 @@ function rootReducer(state = initialState, action) {
 
         case CLEAR_SEARCH_DATA:
             return { ...state, imageMatchResponse: undefined, imageMatchSuccess: '', requestComplete: '', requestError: '', requestErrorMessage: '' }
+
+        case ADD_IMAGE_TO_ITEM:
+            return { ...state, addImageResponse: action.payload.addImageResponse, addImageSuccess: action.payload.addImageSuccess }
+
+        case ADD_IMAGE_REQUEST_ERROR:
+            return { ...state, addImageRequestError: action.payload.addImageRequestError, addImageRequestErrorMessage: action.payload.addImageRequestErrorMessage }   
+            
+        case ADD_IMAGE_REQUEST_COMPLETE: 
+            return { ...state, addImageRequestComplete: action.payload.addImageRequestComplete}
 
         default:
             return state
