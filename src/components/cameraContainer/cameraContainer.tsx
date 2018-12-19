@@ -2,7 +2,7 @@ import * as React from 'react'
 import { CameraCapture } from './cameraCapture/cameraCapture'
 import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { AddCapturedPhoto } from '../../actions/actions'
+import { AddCapturedPhoto, ClearSetItem } from '../../actions/actions'
 
 export interface Props {
     dispatch: Function,
@@ -23,16 +23,16 @@ class CameraContainer extends React.Component<Props> {
         this.props.dispatch(AddCapturedPhoto({ photoUri }))
     }
 
+    onClearCurrentItem = (event) => {
+        this.props.dispatch(ClearSetItem(null))
+    }
+
     public render() {
 
-        let itemSection
+        const itemSection = ( <p>Capturing photos for Item: {this.props.itemId}</p> )
+        const clearItemButton = ( <button onClick={this.onClearCurrentItem}>Clear current item</button> )
 
-        if (this.props.itemSet) {
-            itemSection = (
-                <p>Capturing photos for Item: {this.props.itemId}</p>
-            )
-        }
-
+        
         if (this.props.photoUri) {
             return (
                 <Redirect to={{ pathname: '/crop-image' }}></Redirect>
@@ -41,7 +41,8 @@ class CameraContainer extends React.Component<Props> {
 
         return (
             <div>
-                {itemSection}
+                { (this.props.itemSet) ? itemSection : null }
+                { (this.props.itemSet) ? clearItemButton : null }
                 <CameraCapture
                     onTakePhoto={this.onTakePhoto}>
                 </CameraCapture>

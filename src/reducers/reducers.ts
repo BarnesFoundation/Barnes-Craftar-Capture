@@ -1,12 +1,13 @@
-import { ADD_CAPTURED_PHOTO, CROP_PHOTO, SEARCH_FOR_IMAGE, SEARCH_FOR_IMAGE_ERROR, SEARCH_FOR_IMAGE_REQUEST_COMPLETE, SET_COLLECTION_ITEM, CLEAR_PHOTO_DATA, CLEAR_SEARCH_DATA, ADD_IMAGE_TO_ITEM, ADD_IMAGE_REQUEST_ERROR, ADD_IMAGE_REQUEST_COMPLETE } from '../constants/actions-types'
+import { ADD_CAPTURED_PHOTO, CROP_PHOTO, SEARCH_FOR_IMAGE, SEARCH_FOR_IMAGE_ERROR, SEARCH_FOR_IMAGE_REQUEST_COMPLETE, SET_COLLECTION_ITEM, CLEAR_PHOTO_DATA, CLEAR_SEARCH_DATA, ADD_IMAGE_TO_ITEM, ADD_IMAGE_REQUEST_ERROR, ADD_IMAGE_REQUEST_COMPLETE, CLEAR_SET_ITEM } from '../constants/actions-types'
 
-interface action {
+interface Action {
     type: string,
     payload: any
 }
 
 const initialState = {
 
+    // Item state
     itemId: '',
     itemUuid: '',
     itemSet: '',
@@ -33,7 +34,7 @@ const initialState = {
 
 }
 
-function rootReducer(state = initialState, action) {
+function rootReducer(state = initialState, action: Action) {
 
     switch (action.type) {
 
@@ -56,7 +57,7 @@ function rootReducer(state = initialState, action) {
             return { ...state, itemSet: action.payload.itemSet, itemId: action.payload.itemId, itemUuid: action.payload.itemUuid }
 
         case CLEAR_PHOTO_DATA:
-            return { ...state, photoUri: '', photoBlob: undefined, croppedPhotoUri: '', croppedPhotoBlob: ''}
+            return { ...state, photoUri: '', photoBlob: undefined, croppedPhotoUri: '', croppedPhotoBlob: '' }
 
         case CLEAR_SEARCH_DATA:
             return { ...state, imageMatchResponse: undefined, imageMatchSuccess: '', requestComplete: '', requestError: '', requestErrorMessage: '' }
@@ -65,10 +66,13 @@ function rootReducer(state = initialState, action) {
             return { ...state, addImageResponse: action.payload.addImageResponse, addImageSuccess: action.payload.addImageSuccess }
 
         case ADD_IMAGE_REQUEST_ERROR:
-            return { ...state, addImageRequestError: action.payload.addImageRequestError, addImageRequestErrorMessage: action.payload.addImageRequestErrorMessage }   
-            
-        case ADD_IMAGE_REQUEST_COMPLETE: 
-            return { ...state, addImageRequestComplete: action.payload.addImageRequestComplete}
+            return { ...state, addImageRequestError: action.payload.addImageRequestError, addImageRequestErrorMessage: action.payload.addImageRequestErrorMessage }
+
+        case ADD_IMAGE_REQUEST_COMPLETE:
+            return { ...state, addImageRequestComplete: action.payload.addImageRequestComplete }
+
+        case CLEAR_SET_ITEM:
+            return { ...state, itemId: '', itemUuid: '', itemSet: '' }
 
         default:
             return state

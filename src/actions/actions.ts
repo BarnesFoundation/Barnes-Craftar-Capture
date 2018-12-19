@@ -1,4 +1,4 @@
-import { ADD_CAPTURED_PHOTO, CROP_PHOTO, SEARCH_FOR_IMAGE, SEARCH_FOR_IMAGE_REQUEST_COMPLETE, SET_COLLECTION_ITEM, SEARCH_FOR_IMAGE_ERROR, CLEAR_PHOTO_DATA, CLEAR_SEARCH_DATA, ADD_IMAGE_TO_ITEM, ADD_IMAGE_REQUEST_ERROR, ADD_IMAGE_REQUEST_COMPLETE } from '../constants/actions-types'
+import { ADD_CAPTURED_PHOTO, CROP_PHOTO, SEARCH_FOR_IMAGE, SEARCH_FOR_IMAGE_REQUEST_COMPLETE, SET_COLLECTION_ITEM, SEARCH_FOR_IMAGE_ERROR, CLEAR_PHOTO_DATA, CLEAR_SEARCH_DATA, ADD_IMAGE_TO_ITEM, ADD_IMAGE_REQUEST_ERROR, ADD_IMAGE_REQUEST_COMPLETE, CLEAR_SET_ITEM } from '../constants/actions-types'
 
 export const AddCapturedPhoto = payload => ({
     type: ADD_CAPTURED_PHOTO,
@@ -52,5 +52,10 @@ export const AddImageRequestError = payload => ({
 
 export const AddImageRequestComplete = payload => ({
     type: ADD_IMAGE_REQUEST_COMPLETE,
+    payload
+})
+
+export const ClearSetItem = payload => ({
+    type: CLEAR_SET_ITEM,
     payload
 })
