@@ -5,13 +5,14 @@ import { CropperView } from './cropperView/cropperView'
 import Cropper from 'cropperjs'
 import 'cropperjs/dist/cropper.css'
 import { connect } from 'react-redux'
-import { CropPhoto } from '../../actions/actions'
+import { CropPhoto, ClearCroppedPhotoSet } from '../../actions/actions'
 
 export interface Props {
     photoUri: string
     itemSet: boolean
     croppedPhotoUri: string
-    croppedPhotoBlob: undefined
+    croppedPhotoBlob: Blob
+    croppedPhotoSet: boolean
     dispatch: Function
 }
 
@@ -23,6 +24,10 @@ class CropContainer extends React.Component<Props> {
         super(props)
         this.cropPhoto = this.cropPhoto.bind(this)
         this.initializeCropper = this.initializeCropper.bind(this)
+    }
+
+    componentWillUnmount = () => {
+        this.props.dispatch(ClearCroppedPhotoSet(null))
     }
 
     async cropPhoto() {
@@ -37,7 +42,8 @@ class CropContainer extends React.Component<Props> {
             }, 'image/jpeg')
         })
 
-        this.props.dispatch(CropPhoto({ croppedPhotoUri, croppedPhotoBlob }))
+        let croppedPhotoSet = true
+        this.props.dispatch(CropPhoto({ croppedPhotoUri, croppedPhotoBlob, croppedPhotoSet }))
     }
 
     initializeCropper(photoElement: HTMLImageElement) {
@@ -46,7 +52,7 @@ class CropContainer extends React.Component<Props> {
 
     public render() {
 
-        if (this.props.croppedPhotoUri && this.props.croppedPhotoBlob && !this.props.itemSet) {
+        if (this.props.croppedPhotoSet && !this.props.itemSet) {
             return (
                 <Redirect to={{
                     pathname: '/search-image',
@@ -55,7 +61,7 @@ class CropContainer extends React.Component<Props> {
             )
         }
 
-        if (this.props.croppedPhotoUri && this.props.croppedPhotoBlob && this.props.itemSet) {
+        if (this.props.croppedPhotoSet && this.props.itemSet) {
             return (
                 <Redirect to={{
                     pathname: '/add-image',

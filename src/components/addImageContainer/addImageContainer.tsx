@@ -1,8 +1,9 @@
 import * as React from 'react'
 import { AddImageView } from './addImageView/addImageView'
 import { ImageService, CreateResponse } from '../../services/imageService'
-import { AddImageToItem, AddImageRequestError, AddImageRequestComplete } from '../../actions/actions'
+import { AddImageToItem, AddImageRequestError, AddImageRequestComplete, ClearAddImageData } from '../../actions/actions'
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 
 export interface Props {
     dispatch: Function
@@ -12,7 +13,7 @@ export interface Props {
     itemId: string,
     itemUuid: string,
 
-    addImageResponse: CreateResponse,    
+    addImageResponse: CreateResponse,
     addImageSuccess: boolean,
     addImageRequestComplete: boolean,
     addImageRequestError: boolean,
@@ -27,6 +28,10 @@ class AddImageContainer extends React.Component<Props> {
         super(props)
         this.addImageToItem = this.addImageToItem.bind(this)
         this.ImageService = new ImageService()
+    }
+
+    componentWillUnmount = () => {
+        this.props.dispatch(ClearAddImageData(null))
     }
 
     async addImageToItem() {
@@ -51,18 +56,22 @@ class AddImageContainer extends React.Component<Props> {
 
     public render() {
 
-        console.log('The props' , this.props)
+        const cameraButton = (<Link to="/camera-capture">Return to Camera</Link>)
+
         return (
-            <AddImageView
-                photoUri={this.props.croppedPhotoUri}
-                itemId={this.props.itemId}
-                addImageToItem={this.addImageToItem}
-                addImageSuccess={this.props.addImageSuccess}
-                addImageResponse={this.props.addImageResponse}
-                addImageRequestError={this.props.addImageRequestError}
-                addImageRequestErrorMessage={this.props.addImageRequestErrorMessage}
-                addImageRequestComplete={this.props.addImageRequestComplete}
-            ></AddImageView>
+            <div>
+                <AddImageView
+                    photoUri={this.props.croppedPhotoUri}
+                    itemId={this.props.itemId}
+                    addImageToItem={this.addImageToItem}
+                    addImageSuccess={this.props.addImageSuccess}
+                    addImageResponse={this.props.addImageResponse}
+                    addImageRequestError={this.props.addImageRequestError}
+                    addImageRequestErrorMessage={this.props.addImageRequestErrorMessage}
+                    addImageRequestComplete={this.props.addImageRequestComplete}
+                ></AddImageView>
+                { (this.props.addImageRequestComplete) ? cameraButton : null }
+            </div>
         )
     }
 }
