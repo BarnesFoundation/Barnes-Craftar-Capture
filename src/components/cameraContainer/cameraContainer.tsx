@@ -2,11 +2,12 @@ import * as React from 'react'
 import { CameraCapture } from './cameraCapture/cameraCapture'
 import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { AddCapturedPhoto, ClearSetItem } from '../../actions/actions'
+import { AddCapturedPhoto, ClearSetItem, ClearCapturedPhoto } from '../../actions/actions'
 
 export interface Props {
     dispatch: Function,
     photoUri: string,
+    photoCaptured: boolean,
 
     itemId: string,
     itemSet: boolean,
@@ -17,15 +18,22 @@ class CameraContainer extends React.Component<Props> {
     constructor(props) {
         super(props)
     }
+    
+    componentWillUnmount = () => {
+        this.props.dispatch(ClearCapturedPhoto(null))
+    }
 
     onTakePhoto = (event: React.ChangeEvent<HTMLInputElement>) => {
-        let photoUri = URL.createObjectURL(event.target.files[0]);
-        this.props.dispatch(AddCapturedPhoto({ photoUri }))
+        let photoUri = URL.createObjectURL(event.target.files[0])
+        let photoCaptured = true
+        this.props.dispatch(AddCapturedPhoto({ photoUri, photoCaptured }))
     }
 
     onClearCurrentItem = (event) => {
         this.props.dispatch(ClearSetItem(null))
     }
+
+    
 
     public render() {
 
@@ -33,7 +41,7 @@ class CameraContainer extends React.Component<Props> {
         const clearItemButton = ( <button onClick={this.onClearCurrentItem}>Clear current item</button> )
 
         
-        if (this.props.photoUri) {
+        if (this.props.photoUri && this.props.photoCaptured) {
             return (
                 <Redirect to={{ pathname: '/crop-image' }}></Redirect>
             )
