@@ -22,4 +22,15 @@ interface ItemCreateResponse {
     uuid: string
 }
 
-export { ImageCreateResponse, ItemCreateResponse }
+interface ItemSearchResponse {
+    collection: string,
+    content: any,
+    custom: any,
+    name: string,
+    resource_uri: string,
+    tags: any[],
+    url: string,
+    uuid: string
+}
+
+export { ImageCreateResponse, ItemCreateResponse, ItemSearchResponse }
