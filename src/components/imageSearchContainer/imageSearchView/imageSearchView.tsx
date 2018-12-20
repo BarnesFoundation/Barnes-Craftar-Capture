@@ -45,9 +45,7 @@ class ImageSearchView extends React.Component<Props, object> {
             let id = this.props.imageMatchResponse.id
             let uuid = this.props.imageMatchResponse.uuid
 
-            setItem = (
-                <button onClick={this.setItem}>Set Item</button>
-            )
+            setItem = ( <button onClick={this.setItem}>Set Item</button> )
 
             successSection = (
                 <div>
@@ -65,21 +63,13 @@ class ImageSearchView extends React.Component<Props, object> {
                 </div>
             )
 
-            errorSection = (
-                <div>
-                    <p>An error occurred when searching with that image: {this.props.requestErrorMessage}</p>
-                </div>
-            )
+            errorSection = ( <p>An error occurred when searching with that image: {this.props.requestErrorMessage}</p> )
 
         }
 
-        let searchButton = (
-            <button onClick={this.findImageMatch}>Search</button>
-        )
-
-        let photoView = (
-            <PhotoView photoUri={this.props.photoUri}></PhotoView>
-        )
+        let searchButton = ( <button onClick={this.findImageMatch}>Search</button>  )
+        let photoView = ( <PhotoView photoUri={this.props.photoUri}></PhotoView> )
+        let cameraBtn = ( <Link to="/camera-capture">Return to Camera</Link>)
 
         return (
             <div>
@@ -88,6 +78,7 @@ class ImageSearchView extends React.Component<Props, object> {
                 {(this.props.requestComplete && this.props.imageMatchSuccess) ? successSection : null}
                 {(this.props.requestComplete && !this.props.imageMatchSuccess) ? failSection : null}
                 {(this.props.requestError) ? errorSection : null}
+                {cameraBtn}
             </div>
         )
     }

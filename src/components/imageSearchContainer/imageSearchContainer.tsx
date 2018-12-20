@@ -32,8 +32,6 @@ class ImageSearchContainer extends React.Component<Props> {
 
         this.imageSearch = this.imageSearch.bind(this)
         this.setCollectionItem = this.setCollectionItem.bind(this)
-
-        this.props.dispatch(ClearSearchData(null))
     }
 
     async imageSearch() {
@@ -52,7 +50,6 @@ class ImageSearchContainer extends React.Component<Props> {
             this.props.dispatch(SearchForImageError({ requestErrorMessage, requestError }))
         }
         let requestComplete = true
-
         this.props.dispatch(SearchForImageRequestComplete({ requestComplete }))
         }
 
