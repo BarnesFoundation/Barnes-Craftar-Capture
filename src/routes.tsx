@@ -4,6 +4,7 @@ import { BrowserRouter, Route } from 'react-router-dom'
 import { ApplicationContainer } from './App'
 import { ConnectedCameraContainer } from './components/cameraContainer/cameraContainer'
 import { ConnectedCropContainer } from './components/cropContainer/CropContainer'
+import { ConnectedItemSearchContainer } from './components/itemSearchContainer/itemSearchContainer'
 import { ConnectedImageSearchContainer } from './components/imageSearchContainer/imageSearchContainer'
 import { ConnectedAddImageContainer } from './components/addImageContainer/addImageContainer';
 
@@ -11,7 +12,7 @@ const Routes = (
 	<BrowserRouter>
 		<div>
 			<Route exact path="/" component={ApplicationContainer} />
-			<Route path="/create-item" component={null} />
+			<Route path="/item-search" component={ConnectedItemSearchContainer} />
 			<Route path="/camera-capture" component={ConnectedCameraContainer} />
 			<Route path="/crop-image" component={ConnectedCropContainer} />
 			<Route path="/search-image" component={ConnectedImageSearchContainer} />

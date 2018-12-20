@@ -8,7 +8,7 @@ class ApplicationContainer extends React.Component {
 
     return (
       <div>
-        <Link to="create-item">Search by Item Id</Link>
+        <Link to="item-search">Search by Item Id</Link>
         <Link to="camera-capture">Capture Existing Item</Link>
       </div>
     )

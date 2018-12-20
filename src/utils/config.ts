@@ -3,7 +3,7 @@ const Config = {
     managementApiUrl: process.env.REACT_APP_MANAGEMENT_API_URL,
     managementApiKey: process.env.REACT_APP_MANAGEMENT_API_KEY,
 
-    collectionId: process.env.REACT_APP_COLLECTION_UUID,
+    collectionUuid: process.env.REACT_APP_COLLECTION_UUID,
     collectionToken: process.env.REACT_APP_COLLECTION_TOKEN,
 
     searchApiUrl: process.env.REACT_APP_SEARCH_API_URL,
