@@ -1,7 +1,7 @@
 import * as React from 'react'
 
 interface Props {
-    searchByItemId: Function
+    itemSearch: Function
 }
 
 class ItemSearchView extends React.Component<Props> {
@@ -13,7 +13,7 @@ class ItemSearchView extends React.Component<Props> {
     }
 
     handleSubmit(event) {
-        this.props.searchByItemId()
+        this.props.itemSearch()
         /* console.log('Form submitted', event.target.value)
         event.preventDefault() */
     }

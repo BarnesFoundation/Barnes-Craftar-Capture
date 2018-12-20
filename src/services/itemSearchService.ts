@@ -59,4 +59,4 @@ class ItemSearchService {
 
 }
 
-export { ItemSearchService }
+export { ItemSearchService, SearchResponse }
