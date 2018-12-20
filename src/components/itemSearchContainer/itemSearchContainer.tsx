@@ -1,27 +1,39 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
 
-import { ItemSearchService } from '../../services/itemSearchService'
+import { ItemSearchService, SearchResponse } from '../../services/itemSearchService'
 import { ItemSearchView } from './itemSearchView/itemSearchView'
+import { SearchForItem } from '../../actions/actions'
 
-class ItemSearchContainer extends React.Component<{}> {
+interface Props {
+    dispatch: Function,
+    itemSearchResponse: SearchResponse,
+    itemSearchSuccess: boolean,
+    itemSearchRequestComplete: boolean,
+}
+
+class ItemSearchContainer extends React.Component<Props> {
 
     itemSearchService: ItemSearchService
 
     constructor(props) {
         super(props)
 
-        this.searchByItemId = this.searchByItemId.bind(this)
+        this.itemSearch = this.itemSearch.bind(this)
         this.itemSearchService = new ItemSearchService()
     }
 
-    searchByItemId = () => {
-        this.itemSearchService.searchByItem('7311')
+    itemSearch = async () => {
+        let itemSearchResponse = await this.itemSearchService.searchByItem('7311')
+        let itemSearchSuccess = itemSearchResponse.success
+        let itemSearchRequestComplete = true
+
+        this.props.dispatch(SearchForItem({ itemSearchResponse, itemSearchSuccess, itemSearchRequestComplete}))
     }
 
     public render () {
         return (
-            <ItemSearchView searchByItemId={this.searchByItemId}></ItemSearchView>
+            <ItemSearchView itemSearch={this.itemSearch}></ItemSearchView>
         )
     }
 }
