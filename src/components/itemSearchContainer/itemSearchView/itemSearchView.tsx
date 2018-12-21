@@ -1,7 +1,12 @@
 import * as React from 'react'
+import { SearchResponse } from '../../../services/itemSearchService'
+
 
 interface Props {
-    itemSearch: Function
+    itemSearchResponse: SearchResponse,
+    itemSearchSuccess: boolean,
+    itemSearchRequestComplete: boolean,
+    searchedItemId: string,
 }
 
 class ItemSearchView extends React.Component<Props> {
@@ -9,34 +14,21 @@ class ItemSearchView extends React.Component<Props> {
     constructor(props) {
         super(props)
 
-        this.handleSubmit = this.handleSubmit.bind(this)
     }
 
-    handleSubmit(event) {
-        this.props.itemSearch()
-        /* console.log('Form submitted', event.target.value)
-        event.preventDefault() */
-    }
 
     public render() {
 
-        const itemForm = (
-            <form onSubmit={this.handleSubmit}>
-                <label>Item Id:
-                    <input type="text" name="itemId" />
-                </label>
-                <input type="submit" value="Submit" />
-            </form>
-        )
-
-        const button = ( <button onClick={this.handleSubmit}>Submit Id</button>)
+        const successSection = (<p>We found a match for item id {this.props.searchedItemId}. It's UUID: {this.props.itemSearchResponse.uuid}</p>)
+        const failureSection = (<p>We could not find a match for item id {this.props.searchedItemId}</p>)
 
         return (
             <div>
-                {itemForm}
-                {button}
+                {(this.props.itemSearchRequestComplete && this.props.itemSearchSuccess) ? successSection : null}
+                {(this.props.itemSearchRequestComplete && !this.props.itemSearchSuccess) ? failureSection : null}
             </div>
         )
+        
     }
 }
 
