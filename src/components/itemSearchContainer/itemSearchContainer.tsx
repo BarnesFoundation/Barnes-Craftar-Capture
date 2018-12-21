@@ -38,6 +38,10 @@ class ItemSearchContainer extends React.Component<Props> {
         this.props.dispatch(SearchForItem({ itemSearchResponse, itemSearchSuccess, itemSearchRequestComplete, searchedItemId }))
     }
 
+    setSearchedItem = () => {
+        console.log('Setting item')
+    }
+
     public render() {
 
         const itemSearchForm = (<ItemSearchForm handleSubmit={this.handleSubmit}></ItemSearchForm>)
@@ -48,7 +52,8 @@ class ItemSearchContainer extends React.Component<Props> {
                     searchedItemId={this.props.searchedItemId}
                     itemSearchResponse={this.props.itemSearchResponse}
                     itemSearchSuccess={this.props.itemSearchSuccess}
-                    itemSearchRequestComplete={this.props.itemSearchRequestComplete}>
+                    itemSearchRequestComplete={this.props.itemSearchRequestComplete}
+                    setSearchedItem={this.setSearchedItem}>
                 </ItemSearchView>
                 {itemSearchForm}
             </div>

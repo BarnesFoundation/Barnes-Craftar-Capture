@@ -7,6 +7,7 @@ interface Props {
     itemSearchSuccess: boolean,
     itemSearchRequestComplete: boolean,
     searchedItemId: string,
+    setSearchedItem: Function
 }
 
 class ItemSearchView extends React.Component<Props> {
@@ -16,10 +17,19 @@ class ItemSearchView extends React.Component<Props> {
 
     }
 
+    setSearchedItem = (event) => {
+        this.props.setSearchedItem()
+    }
 
     public render() {
 
-        const successSection = (<p>We found a match for item id {this.props.searchedItemId}. It's UUID: {this.props.itemSearchResponse.uuid}</p>)
+        const successSection = (
+            <div>
+                <p>We found a match for item id {this.props.searchedItemId}.</p>
+                <p>It's UUID: {this.props.itemSearchResponse.uuid}</p>
+                <button onClick={this.setSearchedItem}>Set item</button>
+            </div>
+        )
         const failureSection = (<p>We could not find a match for item id {this.props.searchedItemId}</p>)
 
         return (
@@ -28,7 +38,7 @@ class ItemSearchView extends React.Component<Props> {
                 {(this.props.itemSearchRequestComplete && !this.props.itemSearchSuccess) ? failureSection : null}
             </div>
         )
-        
+
     }
 }
 

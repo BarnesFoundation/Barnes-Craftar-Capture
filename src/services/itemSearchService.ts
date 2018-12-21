@@ -60,8 +60,6 @@ class ItemSearchService {
 
         return searchResponse
     }
-
-
 }
 
 export { ItemSearchService, SearchResponse }
