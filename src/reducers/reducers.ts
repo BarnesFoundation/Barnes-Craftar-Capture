@@ -1,4 +1,4 @@
-import { ADD_CAPTURED_PHOTO, CROP_PHOTO, SEARCH_FOR_IMAGE, SEARCH_FOR_IMAGE_ERROR, SEARCH_FOR_IMAGE_REQUEST_COMPLETE, SET_COLLECTION_ITEM, CLEAR_PHOTO_DATA, CLEAR_SEARCH_DATA, ADD_IMAGE_TO_ITEM, ADD_IMAGE_REQUEST_ERROR, ADD_IMAGE_REQUEST_COMPLETE, CLEAR_SET_ITEM, CLEAR_CAPTURED_PHOTO, CLEAR_CROPPED_PHOTO_SET, CLEAR_ADD_IMAGE_DATA, SEARCH_FOR_ITEM } from '../constants/actions-types'
+import { ADD_CAPTURED_PHOTO, CROP_PHOTO, SEARCH_FOR_IMAGE, SEARCH_FOR_IMAGE_ERROR, SEARCH_FOR_IMAGE_REQUEST_COMPLETE, SET_COLLECTION_ITEM, CLEAR_PHOTO_DATA, CLEAR_SEARCH_DATA, ADD_IMAGE_TO_ITEM, ADD_IMAGE_REQUEST_ERROR, ADD_IMAGE_REQUEST_COMPLETE, CLEAR_SET_ITEM, CLEAR_CAPTURED_PHOTO, CLEAR_CROPPED_PHOTO_SET, CLEAR_ADD_IMAGE_DATA, SEARCH_FOR_ITEM, SUBMIT_SEARCH_FOR_ITEM_FORM, CLEAR_SUBMITTED_SEARCH_FOR_ITEM } from '../constants/actions-types'
 
 interface Action {
     type: string,
@@ -35,9 +35,12 @@ const initialState = {
     addImageRequestErrorMessage: '',
 
     // Item Search stateness
-    itemSearchResponse: undefined,
-    itemSearchSuccess: '',
+    itemSearchResponse: {},
+    itemSearchSuccess: null,
     itemSearchRequestComplete: '',
+
+    // Item Search Form stateness
+    searchedItemId: ''
 
 }
 
@@ -91,7 +94,13 @@ function rootReducer(state = initialState, action: Action) {
             return { ...state, addImageResponse: undefined, addImageSuccess: '', addImageRequestError: '', addImageRequestErrorMessage: '', addImageRequestComplete: '' }
 
         case SEARCH_FOR_ITEM: 
-            return { ...state, itemSearchResponse: action.payload.itemSearchResponse, itemSearchSuccess: action.payload.itemSearchSuccess, itemSearchRequestComplete: action.payload.itemSearchRequestComplete }
+            return { ...state, itemSearchResponse: action.payload.itemSearchResponse, itemSearchSuccess: action.payload.itemSearchSuccess, itemSearchRequestComplete: action.payload.itemSearchRequestComplete, searchedItemId: action.payload.searchedItemId }
+
+        case SUBMIT_SEARCH_FOR_ITEM_FORM:
+            return { ...state, itemSearchFormValue: action.payload.itemSearchFormValue }
+
+        case CLEAR_SUBMITTED_SEARCH_FOR_ITEM:
+            return { ...state, itemSearchResponse: {}, itemSearchSuccess: null, itemSearchRequestComplete: ''}
 
         default:
             return state

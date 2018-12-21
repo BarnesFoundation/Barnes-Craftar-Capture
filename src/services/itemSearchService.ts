@@ -14,13 +14,18 @@ class ItemSearchService {
 
     constructor() {
         this.httpConfig = {
-            url: Config.managementApiUrl + Config.itemRoute + '/?api_key=' + Config.managementApiKey + '&collection_uuid=' + Config.collectionUuid + '&name=',
+            url: Config.managementApiUrl + Config.itemRoute + '/',
             method: 'get',
+            params: {
+                api_key: Config.managementApiKey,
+                collection_uuid: Config.collectionUuid,
+                name: null
+            }
         }
     }
 
     private prepareRequest = (itemId: string) => {
-        this.httpConfig.url = this.httpConfig.url + itemId
+        this.httpConfig.params.name = itemId
         return this.httpConfig
     }
 
