@@ -63,6 +63,7 @@ class ItemSearchContainer extends React.Component<Props> {
         else {
             return (
                 <div>
+                    {itemSearchForm}
                     <ItemSearchView
                         searchedItemId={this.props.searchedItemId}
                         itemSearchResponse={this.props.itemSearchResponse}
@@ -70,7 +71,6 @@ class ItemSearchContainer extends React.Component<Props> {
                         itemSearchRequestComplete={this.props.itemSearchRequestComplete}
                         setSearchedItem={this.setSearchedItem}>
                     </ItemSearchView>
-                    {itemSearchForm}
                 </div>
             )
         }

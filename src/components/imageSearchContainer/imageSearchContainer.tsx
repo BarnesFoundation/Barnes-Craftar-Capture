@@ -54,7 +54,7 @@ class ImageSearchContainer extends React.Component<Props> {
         }
 
     setCollectionItem() {
-        let itemSet = true;
+        let itemSet = true
         let itemId = this.props.imageMatchResponse.id
         let itemUuid = this.props.imageMatchResponse.uuid
 
