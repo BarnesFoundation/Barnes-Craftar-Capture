@@ -23,7 +23,7 @@ class CameraContainer extends React.Component<Props> {
         super(props)
         this.resizeService = new ResizeService()
     }
-    
+
     componentWillUnmount = () => {
         this.props.dispatch(ClearCapturedPhoto(null))
     }
@@ -39,13 +39,13 @@ class CameraContainer extends React.Component<Props> {
         this.props.dispatch(ClearSetItem(null))
     }
 
-    
+
 
     public render() {
 
-        const itemSection = ( <p>Capturing photos for Item: {this.props.itemId}</p> )
-        const clearItemButton = ( <Button variant="contained" onClick={this.onClearCurrentItem}>Clear current item</Button> )
-        
+        const itemSection = (<p>Capturing photos for Item: {this.props.itemId}</p>)
+        const clearItemButton = (<Button variant="contained" onClick={this.onClearCurrentItem}>Clear current item</Button>)
+
         if (this.props.photoCaptured) {
             return (
                 <Redirect to={{ pathname: '/crop-image' }}></Redirect>
@@ -53,13 +53,13 @@ class CameraContainer extends React.Component<Props> {
         }
 
         return (
-            <div>
-                { (this.props.itemSet) ? itemSection : null }
-                { (this.props.itemSet) ? clearItemButton : null }
+            <>
+                {(this.props.itemSet) ? itemSection : null}
+                {(this.props.itemSet) ? clearItemButton : null}
                 <CameraCapture
                     onTakePhoto={this.onTakePhoto}>
                 </CameraCapture>
-            </div>
+            </>
         )
     }
 }

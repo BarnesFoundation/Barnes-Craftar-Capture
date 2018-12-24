@@ -1,7 +1,9 @@
 import * as React from 'react'
 import { PhotoView } from '../../photoView/photoView'
 import { MatchResponse } from '../../../services/searchService'
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom'
+import Button from '@material-ui/core/Button'
+
 
 export interface Props {
     photoUri: string,
@@ -45,7 +47,7 @@ class ImageSearchView extends React.Component<Props, object> {
             let id = this.props.imageMatchResponse.id
             let uuid = this.props.imageMatchResponse.uuid
 
-            setItem = ( <button onClick={this.setItem}>Set Item</button> )
+            setItem = ( <Button variant="contained" onClick={this.setItem}>Set Item</Button> )
 
             successSection = (
                 <div>
@@ -67,9 +69,9 @@ class ImageSearchView extends React.Component<Props, object> {
 
         }
 
-        let searchButton = ( <button onClick={this.findImageMatch}>Search</button>  )
+        let searchButton = ( <Button variant="contained" onClick={this.findImageMatch}>Search</Button>  )
         let photoView = ( <PhotoView photoUri={this.props.photoUri}></PhotoView> )
-        let cameraBtn = ( <Link to="/camera-capture">Return to Camera</Link>)
+        let cameraBtn = ( <Button variant="contained" component={({ innerRef, ...props }) => <Link {...props} to="/camera-capture" />}>Return to Camera</Button>)
 
         return (
             <div>

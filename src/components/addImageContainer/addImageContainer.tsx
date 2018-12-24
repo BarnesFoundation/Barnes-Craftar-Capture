@@ -4,6 +4,7 @@ import { ImageService, CreateResponse } from '../../services/imageService'
 import { AddImageToItem, AddImageRequestError, AddImageRequestComplete, ClearAddImageData } from '../../actions/actions'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
+import Button from '@material-ui/core/Button'
 
 export interface Props {
     dispatch: Function
@@ -56,7 +57,7 @@ class AddImageContainer extends React.Component<Props> {
 
     public render() {
 
-        const cameraButton = (<Link to="/camera-capture">Return to Camera</Link>)
+        const cameraButton = (<Button variant="contained" component={({ innerRef, ...props }) => <Link {...props} to="/camera-capture" />}>Return to Camera</Button>)
 
         return (
             <div>
@@ -69,8 +70,8 @@ class AddImageContainer extends React.Component<Props> {
                     addImageRequestError={this.props.addImageRequestError}
                     addImageRequestErrorMessage={this.props.addImageRequestErrorMessage}
                     addImageRequestComplete={this.props.addImageRequestComplete}
-                ></AddImageView>
-                { (this.props.addImageRequestComplete) ? cameraButton : null }
+                />
+                {(this.props.addImageRequestComplete) ? cameraButton : null}
             </div>
         )
     }
