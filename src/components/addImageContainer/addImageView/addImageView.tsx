@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { PhotoView } from '../../photoView/photoView'
 import { CreateResponse } from '../../../services/imageService'
+import Button from '@material-ui/core/Button'
 
 interface Props {
     photoUri: string
@@ -34,7 +35,7 @@ class AddImageView extends React.Component<Props, object> {
         )
 
         let addImageButton = (
-            <button onClick={this.addImageToItem}>Add Image to Item</button>
+            <Button variant="contained" onClick={this.addImageToItem}>Add Image to Item</Button>
         )
 
         let successSection = (

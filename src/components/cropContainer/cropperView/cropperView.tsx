@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { PhotoView } from '../../photoView/photoView'
+import Button from '@material-ui/core/Button'
 
 export interface Props {
 
@@ -30,10 +31,10 @@ class CropperView extends React.Component<Props, object> {
 
     public render() {
         return (
-            <div>
+            <>
                 <PhotoView photoUri={this.props.photoUri} photoRef={this.photoRef}></PhotoView>
-                <button onClick={this.onEvent}>Crop</button>
-            </div>
+                <Button variant="contained" onClick={this.onEvent}>Crop</Button>
+            </>
         )
     }
 }
