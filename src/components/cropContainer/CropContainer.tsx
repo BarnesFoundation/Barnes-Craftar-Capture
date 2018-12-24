@@ -52,8 +52,6 @@ class CropContainer extends React.Component<Props> {
 
     public render() {
 
-        console.log(this.props)
-
         if (this.props.croppedPhotoSet && !this.props.itemSet) {
             return (
                 <Redirect to={{
