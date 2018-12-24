@@ -1,0 +1,8 @@
+.app {
+    height: inherit;
+    width: inherit;
+    .container {
+        display: flex;
+        flex-direction: column;
+    }
+}

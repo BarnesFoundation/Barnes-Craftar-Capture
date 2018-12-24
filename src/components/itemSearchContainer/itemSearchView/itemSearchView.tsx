@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { SearchResponse } from '../../../services/itemSearchService'
+import Button from '@material-ui/core/Button'
 
 
 interface Props {
@@ -27,7 +28,7 @@ class ItemSearchView extends React.Component<Props> {
             <div>
                 <p>We found a match for item id {this.props.searchedItemId}.</p>
                 <p>It's UUID: {this.props.itemSearchResponse.uuid}</p>
-                <button onClick={this.setSearchedItem}>Set item</button>
+                <Button variant="contained" onClick={this.setSearchedItem}>Set item</Button>
             </div>
         )
         const failureSection = (<p>We could not find a match for item id {this.props.searchedItemId}</p>)

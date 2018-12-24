@@ -7,7 +7,7 @@ import registerServiceWorker from './registerServiceWorker'
 import { Provider } from 'react-redux'
 import { createStore } from 'redux'
 import { rootReducer } from './reducers/reducers'
-import { ApplicationContainer } from './App'
+import 'typeface-roboto'
 
 const store = createStore(rootReducer)
 

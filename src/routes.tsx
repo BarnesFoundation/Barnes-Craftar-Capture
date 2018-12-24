@@ -10,14 +10,14 @@ import { ConnectedAddImageContainer } from './components/addImageContainer/addIm
 
 const Routes = (
 	<BrowserRouter>
-		<div>
+		<>
 			<Route exact path="/" component={ApplicationContainer} />
 			<Route path="/item-search" component={ConnectedItemSearchContainer} />
 			<Route path="/camera-capture" component={ConnectedCameraContainer} />
 			<Route path="/crop-image" component={ConnectedCropContainer} />
 			<Route path="/search-image" component={ConnectedImageSearchContainer} />
 			<Route path="/add-image" component={ConnectedAddImageContainer} />
-		</div>
+		</>
 	</BrowserRouter>
 )
 

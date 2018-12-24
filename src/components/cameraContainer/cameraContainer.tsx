@@ -4,6 +4,7 @@ import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { AddCapturedPhoto, ClearSetItem, ClearCapturedPhoto } from '../../actions/actions'
 import { ResizeService } from '../../services/resizeService'
+import Button from '@material-ui/core/Button'
 
 export interface Props {
     dispatch: Function,
@@ -43,7 +44,7 @@ class CameraContainer extends React.Component<Props> {
     public render() {
 
         const itemSection = ( <p>Capturing photos for Item: {this.props.itemId}</p> )
-        const clearItemButton = ( <button onClick={this.onClearCurrentItem}>Clear current item</button> )
+        const clearItemButton = ( <Button variant="contained" onClick={this.onClearCurrentItem}>Clear current item</Button> )
         
         if (this.props.photoCaptured) {
             return (

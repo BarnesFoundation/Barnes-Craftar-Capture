@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@material-ui/core": "^3.7.1",
     "axios": "^0.18.0",
     "cropperjs": "^1.4.3",
     "dotenv": "^6.2.0",
@@ -12,7 +13,8 @@
     "react-redux": "^6.0.0",
     "react-router-dom": "^4.3.1",
     "react-scripts-ts": "^4.0.8",
-    "redux": "^4.0.1"
+    "redux": "^4.0.1",
+    "typeface-roboto": "0.0.54"
   },
   "scripts": {
     "start": "react-scripts-ts start",
@@ -25,6 +27,7 @@
     "@types/cropperjs": "^1.1.3",
     "@types/dotenv": "^6.1.0",
     "@types/jest": "^23.3.9",
+    "@types/material-ui": "^0.21.5",
     "@types/node": "^10.12.10",
     "@types/react": "^16.7.7",
     "@types/react-dom": "^16.0.10",
