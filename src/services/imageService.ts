@@ -44,11 +44,11 @@ class ImageService {
         return createResponse
     }
 
-    private parseErrorResponse(error): string {
+    private parseErrorResponse(error): {} {
         let errorCode = error.response.data.error.code
         let errorMessage = error.response.data.error.message
 
-        return 'ErrorCode: ' + errorCode + ' ErrorMessage: ' + errorMessage
+        return { errorCode : errorCode , errorMessage: errorMessage }
     }
 
     async addImage(image: Blob, itemUuid: string): Promise<CreateResponse> {

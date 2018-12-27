@@ -42,7 +42,7 @@ class ImageSearchView extends React.Component<Props, object> {
         let failSection = null
         let errorSection = null
 
-        if (this.props.requestComplete) {
+        if (this.props.requestComplete && !this.props.requestError) {
 
             let id = this.props.imageMatchResponse.id
             let uuid = this.props.imageMatchResponse.uuid
@@ -64,9 +64,10 @@ class ImageSearchView extends React.Component<Props, object> {
                     <p>Use 'Add New Item' to add this image as a new item</p>
                 </div>
             )
-
+        }
+        
+        if (this.props.requestComplete && this.props.requestError) {
             errorSection = ( <p>An error occurred when searching with that image: {this.props.requestErrorMessage}</p> )
-
         }
 
         let searchButton = ( <Button variant="contained" onClick={this.findImageMatch}>Search</Button>  )

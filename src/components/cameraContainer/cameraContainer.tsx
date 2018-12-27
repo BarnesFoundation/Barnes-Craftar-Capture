@@ -32,6 +32,7 @@ class CameraContainer extends React.Component<Props> {
         let fileUri = URL.createObjectURL(event.target.files[0])
         let photoUri = await this.resizeService.resizeImage(fileUri)
         let photoCaptured = true
+
         this.props.dispatch(AddCapturedPhoto({ photoUri, photoCaptured }))
     }
 
