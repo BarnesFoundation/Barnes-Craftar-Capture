@@ -18,6 +18,7 @@ class CameraContainer extends React.Component<Props> {
 
     resizeService: ResizeService
     photoInput
+    itemCleared: boolean = false
 
     constructor(props) {
         super(props)
@@ -40,10 +41,9 @@ class CameraContainer extends React.Component<Props> {
     }
 
     onClearCurrentItem = (event) => {
+        this.itemCleared = true
         this.props.dispatch(ClearSetItem(null))
     }
-
-
 
     public render() {
 
@@ -59,6 +59,10 @@ class CameraContainer extends React.Component<Props> {
 
         if (this.props.photoCaptured) {
             return (<Redirect to={{ pathname: '/crop-image' }}></Redirect>)
+        }
+
+        if (this.itemCleared) {
+            return (<Redirect to={{pathname: '/'}}></Redirect>)
         }
 
         return (
