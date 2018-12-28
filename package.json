@@ -5,6 +5,7 @@
   "dependencies": {
     "@material-ui/core": "^3.7.1",
     "axios": "^0.18.0",
+    "blueimp-load-image": "^2.20.1",
     "cropperjs": "^1.4.3",
     "dotenv": "^6.2.0",
     "react": "^16.6.3",
