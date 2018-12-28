@@ -1,3 +1,4 @@
+import * as loadImage from 'blueimp-load-image'
 
 const LANDSCAPE = 'LANDSCAPE'
 const PORTRAIT = 'PORTRAIT'
@@ -43,6 +44,14 @@ class ResizeService {
                 })
                 resolve(imageUri)
             }
+        })
+    }
+
+    async correctImageOrientation(image: string): Promise<string> {
+        return new Promise<string>((resolve) => {
+            loadImage(image, (canvas) => {
+                resolve(canvas.toDataURL('image/jpeg'))
+            }, { canvas: true, orientation: orientation })
         })
     }
 

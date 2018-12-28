@@ -29,7 +29,9 @@ class CameraContainer extends React.Component<Props> {
     }
 
     onTakePhoto = async (event: React.ChangeEvent<HTMLInputElement>) => {
-        let fileUri = URL.createObjectURL(event.target.files[0])
+        let file = event.target.files[0]
+        let fileUri = await this.resizeService.correctImageOrientation(URL.createObjectURL(file))
+
         let photoUri = await this.resizeService.resizeImage(fileUri)
         let photoCaptured = true
 
