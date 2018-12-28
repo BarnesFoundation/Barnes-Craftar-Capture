@@ -2,10 +2,11 @@ import * as React from 'react'
 import { Redirect } from 'react-router-dom'
 import { CropperView } from './cropperView/cropperView'
 
-import Cropper from 'cropperjs'
-import 'cropperjs/dist/cropper.css'
 import { connect } from 'react-redux'
 import { CropPhoto, ClearCroppedPhotoSet } from '../../actions/actions'
+
+import Cropper from 'cropperjs'
+import 'cropperjs/dist/cropper.css'
 
 export interface Props {
     photoUri: string
@@ -47,7 +48,7 @@ class CropContainer extends React.Component<Props> {
     }
 
     initializeCropper(photoElement: HTMLImageElement) {
-        this.cropper = new Cropper(photoElement)
+        this.cropper = new Cropper(photoElement, { background: false })
     }
 
     public render() {
