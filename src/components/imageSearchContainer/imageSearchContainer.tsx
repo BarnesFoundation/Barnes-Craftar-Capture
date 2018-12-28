@@ -34,6 +34,10 @@ class ImageSearchContainer extends React.Component<Props> {
         this.setCollectionItem = this.setCollectionItem.bind(this)
     }
 
+    componentWillUnmount() {
+        this.props.dispatch(ClearSearchData(null))
+    }
+
     async imageSearch() {
         try {
             let imageMatchResponse = await this.searchService.findImageMatch(this.props.croppedPhotoBlob)
@@ -51,7 +55,7 @@ class ImageSearchContainer extends React.Component<Props> {
         }
         let requestComplete = true
         this.props.dispatch(SearchForImageRequestComplete({ requestComplete }))
-        }
+    }
 
     setCollectionItem() {
         let itemSet = true
@@ -60,7 +64,6 @@ class ImageSearchContainer extends React.Component<Props> {
 
         this.props.dispatch(SetCollectionItem({ itemSet, itemId, itemUuid }))
         this.props.dispatch(ClearPhotoData(null))
-        this.props.dispatch(ClearSearchData(null))
     }
 
     public render() {

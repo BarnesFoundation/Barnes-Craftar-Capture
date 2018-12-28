@@ -1,8 +1,10 @@
-.app {
+.app-container {
     height: inherit;
     width: inherit;
-    .container {
+    .button-container {
+        height: inherit;
         display: flex;
         flex-direction: column;
+        justify-content: center;
     }
 }
