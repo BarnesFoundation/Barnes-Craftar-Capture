@@ -51,7 +51,7 @@ class ResizeService {
         return new Promise<string>((resolve) => {
             loadImage(image, (canvas) => {
                 resolve(canvas.toDataURL('image/jpeg'))
-            }, { canvas: true, orientation: orientation })
+            }, { canvas: true, orientation: true })
         })
     }
 
