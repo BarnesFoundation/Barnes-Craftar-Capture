@@ -100,7 +100,7 @@ function rootReducer(state = initialState, action: Action) {
             return { ...state, itemSearchFormValue: action.payload.itemSearchFormValue }
 
         case CLEAR_SUBMITTED_SEARCH_FOR_ITEM:
-            return { ...state, itemSearchResponse: {}, itemSearchSuccess: null, itemSearchRequestComplete: ''}
+            return { ...state, itemSearchResponse: {}, itemSearchSuccess: null, itemSearchRequestComplete: null }
 
         default:
             return state

@@ -1,5 +1,4 @@
 import * as React from 'react'
-import { CameraCapture } from './cameraCapture/cameraCapture'
 import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { AddCapturedPhoto, ClearSetItem, ClearCapturedPhoto } from '../../actions/actions'
@@ -18,10 +17,12 @@ export interface Props {
 class CameraContainer extends React.Component<Props> {
 
     resizeService: ResizeService
+    photoInput
 
     constructor(props) {
         super(props)
         this.resizeService = new ResizeService()
+        this.photoInput = React.createRef()
     }
 
     componentWillUnmount = () => {
@@ -46,23 +47,26 @@ class CameraContainer extends React.Component<Props> {
 
     public render() {
 
-        const itemSection = (<p>Capturing photos for Item: {this.props.itemId}</p>)
+        const setItemText = (<p>Currently capturing photos for Item ID: {this.props.itemId}</p>)
+        const noSetItemText = (<p>Capture a photo of an existing image</p>)
+
         const clearItemButton = (<Button variant="contained" onClick={this.onClearCurrentItem}>Clear current item</Button>)
 
+        const cameraButton = (<Button variant="contained" className="fileContainer">
+            Capture Photo
+        <input onChange={this.onTakePhoto} type="file" name="photoInput" accept="image/*" capture="camcorder" />
+        </Button>)
+
         if (this.props.photoCaptured) {
-            return (
-                <Redirect to={{ pathname: '/crop-image' }}></Redirect>
-            )
+            return (<Redirect to={{ pathname: '/crop-image' }}></Redirect>)
         }
 
         return (
-            <>
-                {(this.props.itemSet) ? itemSection : null}
+            <div className="camera-container">
+                {(this.props.itemSet) ? setItemText : noSetItemText}
                 {(this.props.itemSet) ? clearItemButton : null}
-                <CameraCapture
-                    onTakePhoto={this.onTakePhoto}>
-                </CameraCapture>
-            </>
+                {cameraButton}
+            </div>
         )
     }
 }

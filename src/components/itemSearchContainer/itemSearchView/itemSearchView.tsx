@@ -26,8 +26,9 @@ class ItemSearchView extends React.Component<Props> {
 
         const successSection = (
             <div>
-                <p>We found a match for item id {this.props.searchedItemId}.</p>
-                <p>It's UUID: {this.props.itemSearchResponse.uuid}</p>
+                <p>Match found for Item Id: {this.props.searchedItemId}.</p>
+                <p>ID: {this.props.itemSearchResponse.name}</p>
+                <p>UUID: {this.props.itemSearchResponse.uuid}</p>
                 <Button variant="contained" onClick={this.setSearchedItem}>Set item</Button>
             </div>
         )

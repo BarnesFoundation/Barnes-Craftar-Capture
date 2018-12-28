@@ -29,6 +29,10 @@ class ItemSearchContainer extends React.Component<Props> {
         this.itemSearchService = new ItemSearchService()
     }
 
+    componentWillUnmount() {
+        this.props.dispatch(ClearSubmittedSearchForItem(null))
+    }
+
     handleSubmit = async (event) => {
         this.props.dispatch(ClearSubmittedSearchForItem(null))
         event.preventDefault()
