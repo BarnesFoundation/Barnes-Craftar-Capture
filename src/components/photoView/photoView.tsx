@@ -9,9 +9,8 @@ class PhotoView extends React.Component<Props, object> {
 
     public render() {
         return (
-            <div className="photoviewer photo-display">
-                <img id="captured-photo" className="photoviewer captured-photo" ref={this.props.photoRef} src={this.props.photoUri}></img>
-            </div>
+            <div className="photoviewer">
+                <img id="captured-photo" className="captured-photo" ref={this.props.photoRef} src={this.props.photoUri}></img>            </div>
         )
     }
 }
