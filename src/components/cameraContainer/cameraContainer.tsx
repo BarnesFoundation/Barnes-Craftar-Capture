@@ -65,8 +65,8 @@ class CameraContainer extends React.Component<Props> {
 
         return (
             <div className="camera-container">
-                {(this.props.itemSet) ? clearItemButton : null}
                 {(this.props.itemSet) ? setItemText : noSetItemText}
+                {(this.props.itemSet) ? clearItemButton : null}
                 {cameraButton}
             </div>
         )
