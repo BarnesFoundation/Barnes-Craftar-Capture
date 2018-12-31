@@ -1,6 +1,6 @@
 .camera-container {
-    /*     height: inherit;
-    width: inherit; */
+    display: flex;
+    flex-direction: column;
 }
 
 .fileContainer {
@@ -21,4 +21,3 @@
     text-align: right;
     top: 0;
 }
-

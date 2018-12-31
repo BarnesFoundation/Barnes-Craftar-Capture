@@ -69,7 +69,7 @@ class ImageSearchView extends React.Component<Props, object> {
         let cameraBtn = (<Button variant="contained" component={({ innerRef, ...props }) => <Link {...props} to="/camera-capture" />}>Return to Camera</Button>)
 
         return (
-            <div>
+            <div className="image-search-container">
                 {photoView}
                 {(this.props.requestComplete) ? null : searchButton}
                 {(this.props.requestComplete && this.props.imageMatchSuccess) ? setItem : null}
