@@ -1,13 +1,12 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
+import { Redirect } from 'react-router-dom'
+import Button from '@material-ui/core/Button'
 
 import { ItemSearchService, SearchResponse } from '../../services/itemSearchService'
 import { ItemSearchView } from './itemSearchView/itemSearchView'
 import { ItemSearchForm } from './itemSearchView/itemSearchForm'
 import { SearchForItem, ClearSubmittedSearchForItem, SetCollectionItem } from '../../actions/actions'
-
-import { Redirect } from 'react-router-dom'
-
 
 interface Props {
     dispatch: Function,
@@ -57,6 +56,7 @@ class ItemSearchContainer extends React.Component<Props> {
     public render() {
 
         const itemSearchForm = (<ItemSearchForm handleSubmit={this.handleSubmit}></ItemSearchForm>)
+        const setItemButton = (<Button variant="contained" onClick={this.setSearchedItem}>Set item</Button>)
 
         if (this.props.itemSet) {
             return (
@@ -66,8 +66,7 @@ class ItemSearchContainer extends React.Component<Props> {
 
         else {
             return (
-                <div>
-                    {itemSearchForm}
+                <div className="item-search-container">
                     <ItemSearchView
                         searchedItemId={this.props.searchedItemId}
                         itemSearchResponse={this.props.itemSearchResponse}
@@ -75,6 +74,10 @@ class ItemSearchContainer extends React.Component<Props> {
                         itemSearchRequestComplete={this.props.itemSearchRequestComplete}
                         setSearchedItem={this.setSearchedItem}>
                     </ItemSearchView>
+                    {itemSearchForm}
+                    <div className="button-container">
+                        {(this.props.itemSearchRequestComplete && this.props.itemSearchSuccess) ? setItemButton : null}
+                    </div>
                 </div>
             )
         }
