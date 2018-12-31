@@ -45,7 +45,7 @@ class AddImageContainer extends React.Component<Props> {
 
         catch (error) {
             let addImageRequestError = true
-            let addImageRequestErrorMessage = error
+            let addImageRequestErrorMessage = JSON.stringify(error)
             let addImageSuccess = false
 
             this.props.dispatch(AddImageRequestError({ addImageRequestError, addImageRequestErrorMessage, addImageSuccess }))
