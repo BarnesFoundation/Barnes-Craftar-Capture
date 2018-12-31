@@ -1,4 +1,11 @@
 .image-search-container {
     display: flex;
     flex-direction: column;
+    height: 100%;
+    justify-content: flex-start;
+}
+
+.photoviewer {
+    flex-basis: 50%;
+    flex-grow: 1;
 }

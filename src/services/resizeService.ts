@@ -7,6 +7,9 @@ const SQUARE = 'SQUARE'
 const BLOB = 'BLOB'
 const URI = 'URI'
 
+const QUERY_IMAGE = 'QUERY_IMAGE'
+const REFERENCE_IMAGE = 'REFERENCE_IMAGE'
+
 class Dimensions {
     height: number
     width: number
@@ -19,7 +22,7 @@ class Dimensions {
 
 class ResizeService {
 
-    async resizeImage(sourceImage: string, resultType: string): Promise<Blob | string> {
+    async resizeImage(sourceImage: string, resultType: string, imageType: string): Promise<Blob | string> {
 
         const image = new Image()
         image.src = sourceImage
@@ -27,7 +30,7 @@ class ResizeService {
         return await new Promise<Blob | string>((resolve) => {
             image.onload = async () => {
                 let orientation = this.determineOrientation(image.height, image.width)
-                let d = this.getResizedDimensions(orientation, image.height, image.width)
+                let d = this.getResizedDimensions(orientation, image.height, image.width, imageType)
                 console.log('Prior to resize dimensions - height: ' + image.height + ' width: ' + image.width)
                 const canvas = document.createElement('canvas')
                 canvas.height = d.height
@@ -58,7 +61,7 @@ class ResizeService {
                 }, 'image/jpeg', 1)
             }
 
-            else {
+            if (resultType === URI) {
                 resolve(ctx.canvas.toDataURL('image/jpeg', 1))
             }
         })
@@ -75,28 +78,39 @@ class ResizeService {
         return orientation
     }
 
-    private getResizedDimensions(orientation: string, cHeight: number, cWidth: number): Dimensions {
+    private getResizedDimensions(orientation: string, cHeight: number, cWidth: number, imageType: string): Dimensions {
 
         let scaleFactor
         let width
         let height
+        let defaultSize
+
+        switch (imageType) {
+            case REFERENCE_IMAGE:
+                defaultSize = 640
+                break
+
+            case QUERY_IMAGE:
+                defaultSize = 320
+                break
+        }
 
         switch (orientation) {
             case LANDSCAPE:
-                width = 640
+                width = defaultSize
                 scaleFactor = width / cWidth
                 height = cHeight * scaleFactor
                 break
 
             case PORTRAIT:
-                height = 640
+                height = defaultSize
                 scaleFactor = height / cHeight
                 width = cWidth * scaleFactor
                 break
 
             case SQUARE:
-                height = 640
-                width = 640
+                height = defaultSize
+                width = defaultSize
                 break
 
         }
