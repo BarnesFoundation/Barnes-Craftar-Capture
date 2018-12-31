@@ -35,8 +35,6 @@ class CropContainer extends React.Component<Props> {
         let croppedPhotoUri = this.cropper.getCroppedCanvas().toDataURL()
         let canvas = this.cropper.getCroppedCanvas()
 
-        console.log(canvas.height, canvas.width)
-
         let croppedPhotoBlob = await new Promise(resolve => {
             canvas.toBlob((blob) => {
                 resolve(blob)

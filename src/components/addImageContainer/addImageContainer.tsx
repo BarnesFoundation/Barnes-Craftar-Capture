@@ -5,6 +5,7 @@ import { AddImageToItem, AddImageRequestError, AddImageRequestComplete, ClearAdd
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import Button from '@material-ui/core/Button'
+import { ResizeService } from 'src/services/resizeService';
 
 export interface Props {
     dispatch: Function
@@ -23,12 +24,14 @@ export interface Props {
 
 class AddImageContainer extends React.Component<Props> {
 
-    ImageService: ImageService
+    imageService: ImageService
+    resizeService: ResizeService
 
     constructor(props) {
         super(props)
         this.addImageToItem = this.addImageToItem.bind(this)
-        this.ImageService = new ImageService()
+        this.imageService = new ImageService()
+        this.resizeService = new ResizeService()
     }
 
     componentWillUnmount = () => {
@@ -37,7 +40,9 @@ class AddImageContainer extends React.Component<Props> {
 
     async addImageToItem() {
         try {
-            let addImageResponse = await this.ImageService.addImage(this.props.croppedPhotoBlob, this.props.itemUuid)
+            let image = await this.resizeService.resizeImage(this.props.croppedPhotoUri, 'BLOB') as Blob
+
+            let addImageResponse = await this.imageService.addImage(image, this.props.itemUuid)
             let addImageSuccess = addImageResponse.success
 
             this.props.dispatch(AddImageToItem({ addImageResponse, addImageSuccess }))
