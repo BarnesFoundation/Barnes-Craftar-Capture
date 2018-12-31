@@ -35,7 +35,7 @@ class AddImageView extends React.Component<Props, object> {
 
         const errorSection = (
             <div>
-                <p>An error occurred adding that image to item: {this.props.itemId}</p>
+                <p>The error that occurred:</p>
                 <p>{this.props.addImageRequestErrorMessage}</p>
             </div>
         )

@@ -4,6 +4,9 @@ const LANDSCAPE = 'LANDSCAPE'
 const PORTRAIT = 'PORTRAIT'
 const SQUARE = 'SQUARE'
 
+const BLOB = 'BLOB'
+const URI = 'URI'
+
 class Dimensions {
     height: number
     width: number
@@ -14,18 +17,15 @@ class Dimensions {
     }
 }
 
-
-
 class ResizeService {
 
-    async resizeImage(sourceImage: string): Promise<string> {
+    async resizeImage(sourceImage: string, resultType: string): Promise<Blob | string> {
 
         const image = new Image()
         image.src = sourceImage
 
-        return new Promise<string>((resolve) => {
+        return await new Promise<Blob | string>((resolve) => {
             image.onload = async () => {
-
                 let orientation = this.determineOrientation(image.height, image.width)
                 let d = this.getResizedDimensions(orientation, image.height, image.width)
 
@@ -36,13 +36,8 @@ class ResizeService {
                 const ctx = canvas.getContext('2d')
                 ctx.drawImage(image, 0, 0, d.width, d.height)
 
-                let imageUri = ctx.canvas.toDataURL('image/jpeg', 1)
-                let imageBlob = await new Promise<Blob>((resolve) => {
-                    ctx.canvas.toBlob((blob) => {
-                        resolve(blob)
-                    }, 'image/jpeg', 1)
-                })
-                resolve(imageUri)
+                console.log('Resized to height: ' + d.height + ' width: ' + d.width)
+                resolve(await this.getResizedResult(ctx, resultType))
             }
         })
     }
@@ -52,6 +47,20 @@ class ResizeService {
             loadImage(image, (canvas) => {
                 resolve(canvas.toDataURL('image/jpeg'))
             }, { canvas: true, orientation: true })
+        })
+    }
+
+    private async getResizedResult(ctx: CanvasRenderingContext2D, resultType: string): Promise<Blob | string> {
+        return await new Promise<Blob | string>((resolve) => {
+            if (resultType === BLOB) {
+                ctx.canvas.toBlob((blob) => {
+                    resolve(blob)
+                }, 'image/jpeg', 1)
+            }
+
+            else {
+                resolve(ctx.canvas.toDataURL('image/jpeg', 1))
+            }
         })
     }
 
