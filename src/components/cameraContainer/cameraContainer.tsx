@@ -52,10 +52,8 @@ class CameraContainer extends React.Component<Props> {
 
         const clearItemButton = (<Button variant="contained" onClick={this.onClearCurrentItem}>Clear current item</Button>)
 
-        const cameraButton = (<Button variant="contained" className="fileContainer">
-            Capture Photo
-        <input onChange={this.onTakePhoto} type="file" name="photoInput" accept="image/*" capture="camcorder" />
-        </Button>)
+        const fileInput = <input onChange={this.onTakePhoto} type="file" name="photoInput" accept="image/*" capture="camcorder" />
+        const cameraButton = (<Button variant="contained" className="fileContainer">Capture Photo {fileInput}</Button>)
 
         if (this.props.photoCaptured) {
             return (<Redirect to={{ pathname: '/crop-image' }}></Redirect>)
