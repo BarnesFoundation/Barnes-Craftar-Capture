@@ -47,8 +47,8 @@ class CameraContainer extends React.Component<Props> {
 
     public render() {
 
-        const setItemText = (<p>Currently capturing photos for Item ID: {this.props.itemId}</p>)
-        const noSetItemText = (<p>Capture a photo of an existing image</p>)
+        const setItemText = (<p>Currently capturing photos for item ID: {this.props.itemId}</p>)
+        const noSetItemText = (<p>Capture a photo of an existing item</p>)
 
         const clearItemButton = (<Button variant="contained" onClick={this.onClearCurrentItem}>Clear current item</Button>)
 
@@ -62,13 +62,13 @@ class CameraContainer extends React.Component<Props> {
         }
 
         if (this.itemCleared) {
-            return (<Redirect to={{pathname: '/'}}></Redirect>)
+            return (<Redirect to={{ pathname: '/' }}></Redirect>)
         }
 
         return (
             <div className="camera-container">
-                {(this.props.itemSet) ? setItemText : noSetItemText}
                 {(this.props.itemSet) ? clearItemButton : null}
+                {(this.props.itemSet) ? setItemText : noSetItemText}
                 {cameraButton}
             </div>
         )

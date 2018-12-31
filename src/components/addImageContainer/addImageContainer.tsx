@@ -60,7 +60,7 @@ class AddImageContainer extends React.Component<Props> {
         const cameraButton = (<Button variant="contained" component={({ innerRef, ...props }) => <Link {...props} to="/camera-capture" />}>Return to Camera</Button>)
 
         return (
-            <div>
+            <div className="add-image-container">
                 <AddImageView
                     photoUri={this.props.croppedPhotoUri}
                     itemId={this.props.itemId}

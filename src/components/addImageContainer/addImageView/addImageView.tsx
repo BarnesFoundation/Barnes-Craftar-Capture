@@ -19,34 +19,21 @@ interface Props {
 
 class AddImageView extends React.Component<Props, object> {
 
-    constructor(props) {
-        super(props)
-        this.addImageToItem = this.addImageToItem.bind(this)
-    }
+    constructor(props) { super(props) }
 
-    addImageToItem(event) {
-        this.props.addImageToItem()
-    }
+    addImageToItem = (event) => { this.props.addImageToItem() }
 
     public render() {
 
-        let photoView = (
-            <PhotoView photoUri={this.props.photoUri}></PhotoView>
-        )
+        const photoView = (<PhotoView photoUri={this.props.photoUri}></PhotoView>)
 
-        let addImageButton = (
-            <Button variant="contained" onClick={this.addImageToItem}>Add Image to Item</Button>
-        )
+        const addImageButton = (<div className="button-container"><Button variant="contained" onClick={this.addImageToItem}>Add Image to Item</Button></div>)
 
-        let successSection = (
-            <p>The image was successfully added to item {this.props.itemId}</p>
-        )
+        const successSection = (<p>Successfully added the image to item {this.props.itemId}</p>)
 
-        let failSection = (
-            <p>The image was unable to be added to item {this.props.itemId}</p>
-        )
+        const failSection = (<p>Failed to add the image to item {this.props.itemId}</p>)
 
-        let errorSection = (
+        const errorSection = (
             <div>
                 <p>An error occurred adding that image to item: {this.props.itemId}</p>
                 <p>{this.props.addImageRequestErrorMessage}</p>
@@ -54,13 +41,13 @@ class AddImageView extends React.Component<Props, object> {
         )
 
         return (
-            <div>
+            <>
                 {photoView}
                 {(this.props.addImageRequestComplete) ? null : addImageButton}
                 {(this.props.addImageRequestComplete && this.props.addImageSuccess) ? successSection : null}
                 {(this.props.addImageRequestComplete && !this.props.addImageSuccess) ? failSection : null}
                 {(this.props.addImageRequestError) ? errorSection : null}
-            </div>
+            </>
         )
     }
 

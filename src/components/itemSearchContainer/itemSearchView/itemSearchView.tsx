@@ -1,7 +1,5 @@
 import * as React from 'react'
 import { SearchResponse } from '../../../services/itemSearchService'
-import Button from '@material-ui/core/Button'
-
 
 interface Props {
     itemSearchResponse: SearchResponse,
@@ -13,31 +11,36 @@ interface Props {
 
 class ItemSearchView extends React.Component<Props> {
 
-    constructor(props) {
-        super(props)
+    constructor(props) { super(props) }
 
-    }
-
-    setSearchedItem = (event) => {
-        this.props.setSearchedItem()
-    }
+    /** Sets the searched item into the state of the application */
+    setSearchedItem = (event) => { this.props.setSearchedItem() }
 
     public render() {
 
-        const successSection = (
-            <div>
-                <p>Match found for Item Id: {this.props.searchedItemId}.</p>
-                <p>ID: {this.props.itemSearchResponse.name}</p>
-                <p>UUID: {this.props.itemSearchResponse.uuid}</p>
-                <Button variant="contained" onClick={this.setSearchedItem}>Set item</Button>
-            </div>
+        const matchResultText = ((this.props.itemSearchSuccess) ? 'Match found' : 'No match found')
+
+        const searchResultGrid = (
+            <table>
+                <tbody>
+                    <tr>
+                        <th>ID:</th>
+                        <td>{this.props.itemSearchResponse.name}</td>
+                    </tr>
+                    <tr>
+                        <th>UUID:</th>
+                        <td>{this.props.itemSearchResponse.uuid}</td>
+                    </tr>
+                </tbody>
+            </table>
         )
-        const failureSection = (<p>We could not find a match for item id {this.props.searchedItemId}</p>)
 
         return (
-            <div>
-                {(this.props.itemSearchRequestComplete && this.props.itemSearchSuccess) ? successSection : null}
-                {(this.props.itemSearchRequestComplete && !this.props.itemSearchSuccess) ? failureSection : null}
+            <div className="search-result">
+                <div className={(this.props.itemSearchRequestComplete) ? "unhidden" : "hidden"}>
+                    <h2>{(this.props.itemSearchRequestComplete) ? matchResultText : null}</h2>
+                    {searchResultGrid}
+                </div>
             </div>
         )
 
