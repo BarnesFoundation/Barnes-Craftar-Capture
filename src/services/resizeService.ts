@@ -28,7 +28,7 @@ class ResizeService {
             image.onload = async () => {
                 let orientation = this.determineOrientation(image.height, image.width)
                 let d = this.getResizedDimensions(orientation, image.height, image.width)
-
+                console.log('Prior to resize dimensions - height: ' + image.height + ' width: ' + image.width)
                 const canvas = document.createElement('canvas')
                 canvas.height = d.height
                 canvas.width = d.width
@@ -36,7 +36,7 @@ class ResizeService {
                 const ctx = canvas.getContext('2d')
                 ctx.drawImage(image, 0, 0, d.width, d.height)
 
-                console.log('Resized to height: ' + d.height + ' width: ' + d.width)
+                console.log('Resized dimenions - height: ' + d.height + ' width: ' + d.width)
                 resolve(await this.getResizedResult(ctx, resultType))
             }
         })
