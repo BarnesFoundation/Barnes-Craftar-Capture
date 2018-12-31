@@ -4,6 +4,7 @@ import { SearchService, MatchResponse } from '../../services/searchService'
 import { connect } from 'react-redux'
 import { SearchForImage, SearchForImageError, SearchForImageRequestComplete, SetCollectionItem, ClearSearchData, ClearPhotoData } from '../../actions/actions'
 import { Redirect } from 'react-router-dom'
+import { ResizeService } from 'src/services/resizeService';
 
 export interface Props {
     croppedPhotoUri: string,
@@ -24,11 +25,13 @@ export interface Props {
 class ImageSearchContainer extends React.Component<Props> {
 
     searchService: SearchService
+    resizeService: ResizeService
 
     constructor(props) {
         super(props)
 
         this.searchService = new SearchService()
+        this.resizeService = new ResizeService()
 
         this.imageSearch = this.imageSearch.bind(this)
         this.setCollectionItem = this.setCollectionItem.bind(this)
@@ -40,7 +43,9 @@ class ImageSearchContainer extends React.Component<Props> {
 
     async imageSearch() {
         try {
-            let imageMatchResponse = await this.searchService.findImageMatch(this.props.croppedPhotoBlob)
+            console.log('Resizing prior to search')
+            let searchImage = await this.resizeService.resizeImage(this.props.croppedPhotoUri, 'Blob') as Blob
+            let imageMatchResponse = await this.searchService.findImageMatch(searchImage)
             let imageMatchSuccess = imageMatchResponse.success
 
             this.props.dispatch(SearchForImage({ imageMatchResponse, imageMatchSuccess }))
