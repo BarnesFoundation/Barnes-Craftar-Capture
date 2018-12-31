@@ -44,7 +44,7 @@ class ImageSearchContainer extends React.Component<Props> {
     async imageSearch() {
         try {
             console.log('Resizing prior to search')
-            let searchImage = await this.resizeService.resizeImage(this.props.croppedPhotoUri, 'Blob') as Blob
+            let searchImage = await this.resizeService.resizeImage(this.props.croppedPhotoUri, 'BLOB') as Blob
             let imageMatchResponse = await this.searchService.findImageMatch(searchImage)
             let imageMatchSuccess = imageMatchResponse.success
 
