@@ -40,7 +40,7 @@ class AddImageContainer extends React.Component<Props> {
 
     async addImageToItem() {
         try {
-            let image = await this.resizeService.resizeImage(this.props.croppedPhotoUri, 'BLOB') as Blob
+            let image = await this.resizeService.resizeImage(this.props.croppedPhotoUri, 'BLOB', 'REFERENCE_IMAGE') as Blob
 
             let addImageResponse = await this.imageService.addImage(image, this.props.itemUuid)
             let addImageSuccess = addImageResponse.success
