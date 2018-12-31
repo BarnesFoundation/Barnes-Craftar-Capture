@@ -31,10 +31,10 @@ class CropperView extends React.Component<Props, object> {
 
     public render() {
         return (
-            <>
+            <div className="crop-container">
                 <PhotoView photoUri={this.props.photoUri} photoRef={this.photoRef}></PhotoView>
                 <Button variant="contained" onClick={this.onEvent}>Crop</Button>
-            </>
+            </div>
         )
     }
 }
