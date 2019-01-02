@@ -32,7 +32,6 @@ export function imageSearchReducer(state = initialState, action: Action) {
         }
 
         case at.RESET_IMAGE_SEARCH: {
-
             return undefined
         }
     }

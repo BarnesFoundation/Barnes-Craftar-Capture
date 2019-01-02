@@ -6,7 +6,6 @@ class SearchResponse {
     success: boolean
     uuid?: string
     name?: string
-
 }
 
 class ItemSearchService {

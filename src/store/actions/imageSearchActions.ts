@@ -7,7 +7,7 @@ export class ExecuteImageSearch implements Action {
 
     public type: string = at.EXECUTE_IMAGE_SEARCH
 
-    constructor(public payload: { response: MatchResponse, success: boolean, requestComplete: boolean, error?: boolean, errorMessage?: boolean }) { }
+    constructor(public payload: { response: MatchResponse, success: boolean, requestComplete: boolean, error?: boolean, errorMessage?: boolean }) {}
 }
 
 export class ResetImageSearch implements Action {
