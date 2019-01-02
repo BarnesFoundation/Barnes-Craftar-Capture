@@ -5,7 +5,7 @@ export class ExecuteItemIdSearch implements Action {
 
     public type: string = at.EXECUTE_ITEM_ID_SEARCH
 
-    constructor(public payload: { response: any, success: boolean, requestComplete: boolean, id: string }) {}
+    constructor(public payload: { response: any, success: boolean, requestComplete: boolean, searchedId: string }) {}
 }
 
 export class SubmitItemIdSearchForm implements Action {

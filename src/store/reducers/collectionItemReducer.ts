@@ -24,7 +24,7 @@ export function collectionItemState(state = initialState, action: Action) {
         }
 
         case at.RESET_SET_COLLECTION_ITEM: {
-            return undefined
+            return { id: null, uuid: null }
         }
         
         default: {
