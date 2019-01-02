@@ -4,26 +4,32 @@ import { Action } from '../../interfaces/action'
 
 export interface CropState {
     croppedPhotoUri: string
+    photoWasCropped: boolean
 }
 
 export const initialState: CropState = {
-    croppedPhotoUri: null
+    croppedPhotoUri: null,
+    photoWasCropped: null
 }
 
-export function cropReducer(state: CropState = initialState, action: Action) {
+export function cropState(state: CropState = initialState, action: Action) {
 
     switch (action.type) {
 
         case at.SET_CROPPED_PHOTO: {
 
-            const { croppedPhotoUri } = action.payload
+            const { croppedPhotoUri, photoWasCropped } = action.payload
 
-            return { ...state, croppedPhotoUri }
+            return { ...state, croppedPhotoUri, photoWasCropped }
         }
 
         case at.RESET_CROPPED_PHOTO: {
 
-            return undefined
+            return { ...state, photoWasCropped: false }
+        }
+
+        default: {
+            return state
         }
     }
 }

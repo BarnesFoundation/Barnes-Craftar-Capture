@@ -48,7 +48,7 @@ class ResizeService {
     async correctImageOrientation(image: string): Promise<string> {
         return new Promise<string>((resolve) => {
             loadImage(image, (canvas) => {
-                resolve(canvas.toDataURL('image/jpeg'))
+                resolve(canvas.toDataURL('image/jpeg', 1))
             }, { canvas: true, orientation: true })
         })
     }

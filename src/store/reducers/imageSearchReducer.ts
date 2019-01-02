@@ -20,7 +20,7 @@ export const initialState: ImageSearchState = {
     errorMessage: null
 }
 
-export function imageSearchReducer(state = initialState, action: Action) {
+export function imageSearchState(state = initialState, action: Action) {
 
     switch (action.type) {
 
@@ -32,7 +32,11 @@ export function imageSearchReducer(state = initialState, action: Action) {
         }
 
         case at.RESET_IMAGE_SEARCH: {
-            return undefined
+            return initialState
+        }
+
+        default: {
+            return state
         }
     }
 }

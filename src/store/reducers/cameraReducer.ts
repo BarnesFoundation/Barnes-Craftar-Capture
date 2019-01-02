@@ -12,7 +12,7 @@ export const initialState: CameraState = {
     photoWasCaptured: false
 }
 
-export function cameraReducer(state: CameraState = initialState, action: Action) {
+export function cameraState(state: CameraState = initialState, action: Action) {
 
     switch (action.type) {
 
@@ -25,7 +25,11 @@ export function cameraReducer(state: CameraState = initialState, action: Action)
 
         case at.CLEAR_CAPTURED_PHOTO: {
 
-            return undefined
+            return { ...state, photoWasCaptured: false }
+        }
+
+        default: {
+            return state
         }
     }
 }

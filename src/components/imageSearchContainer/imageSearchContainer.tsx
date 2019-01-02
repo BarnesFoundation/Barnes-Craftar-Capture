@@ -2,24 +2,28 @@ import * as React from 'react'
 import { ImageSearchView } from './imageSearchView/imageSearchView'
 import { SearchService, MatchResponse } from '../../services/searchService'
 import { connect } from 'react-redux'
-import { SearchForImage, SearchForImageError, SearchForImageRequestComplete, SetCollectionItem, ClearSearchData, ClearPhotoData } from '../../store/actions/actions'
+import { ResetImageSearch, ExecuteImageSearch } from '../../store/actions/imageSearchActions'
+import { SetCollectionItem } from '../../store/actions/collectionItemActions'
 import { Redirect } from 'react-router-dom'
 import { ResizeService } from 'src/services/resizeService';
 
 export interface Props {
-    croppedPhotoUri: string,
-    croppedPhotoBlob: Blob,
+
     dispatch: Function,
 
-    itemSet: boolean,
-    itemId: string,
-    itemUuid: string,
+    // Crop State
+    croppedPhotoUri: string,
 
-    imageMatchResponse: MatchResponse,
-    imageMatchSuccess: boolean,
+    // Collection Item State
+    id: string,
+    uuid: string
+
+    // Image Search State
+    response: MatchResponse,
+    success: boolean,
     requestComplete: boolean
-    requestError: boolean,
-    requestErrorMessage: string,
+    error: boolean,
+    errorMessage: string,
 }
 
 class ImageSearchContainer extends React.Component<Props> {
@@ -29,75 +33,77 @@ class ImageSearchContainer extends React.Component<Props> {
 
     constructor(props) {
         super(props)
-
         this.searchService = new SearchService()
         this.resizeService = new ResizeService()
-
-        this.imageSearch = this.imageSearch.bind(this)
-        this.setCollectionItem = this.setCollectionItem.bind(this)
     }
 
-    componentWillUnmount() {
-        this.props.dispatch(ClearSearchData(null))
-    }
+    componentWillUnmount() { this.props.dispatch(new ResetImageSearch()) }
 
-    async imageSearch() {
+    imageSearch = async () => {
+
+        let response
+        let success
+        let requestComplete
+        let error = null
+        let errorMessage = null
+
         try {
+
             console.log('Resizing prior to search')
-            let searchImage = await this.resizeService.resizeImage(this.props.croppedPhotoUri, 'BLOB', 'QUERY_IMAGE') as Blob
-            let imageMatchResponse = await this.searchService.findImageMatch(searchImage)
-            let imageMatchSuccess = imageMatchResponse.success
 
-            this.props.dispatch(SearchForImage({ imageMatchResponse, imageMatchSuccess }))
+            // Resize the image as a blob and execute the search
+            const imageBlob = await this.resizeService.resizeImage(this.props.croppedPhotoUri, 'BLOB', 'QUERY_IMAGE') as Blob
+            response = await this.searchService.findImageMatch(imageBlob)
+            success = response.success
         }
 
-        catch (error) {
-            let requestErrorMessage = error
-            let requestError = true
-            let imageMatchSuccess = false
+        catch (errorOutput) {
 
-            this.props.dispatch(SearchForImageError({ requestErrorMessage, requestError }))
+            // Error information
+            success = false
+            errorMessage = errorOutput
+            error = true
         }
-        let requestComplete = true
-        this.props.dispatch(SearchForImageRequestComplete({ requestComplete }))
+        
+        requestComplete = true
+
+        // Store the image search information
+        this.props.dispatch(new ExecuteImageSearch({ response, success, requestComplete, error, errorMessage }))
     }
 
-    setCollectionItem() {
-        let itemSet = true
-        let itemId = this.props.imageMatchResponse.id
-        let itemUuid = this.props.imageMatchResponse.uuid
-
-        this.props.dispatch(SetCollectionItem({ itemSet, itemId, itemUuid }))
-        this.props.dispatch(ClearPhotoData(null))
+    setCollectionItem = () => {
+        const { id, uuid } = this.props.response
+        this.props.dispatch(new SetCollectionItem({ id, uuid }))
     }
 
     public render() {
 
-        if (this.props.itemSet) {
+        const { id } = this.props
+
+        // If the id was set, navigate to Camera Container component
+        if (id) {
             return (
                 <Redirect to="/camera-capture"></Redirect>
             )
         }
 
-        else {
-            return (
-                <ImageSearchView
-                    setCollectionItem={this.setCollectionItem}
-                    photoUri={this.props.croppedPhotoUri}
-                    findImageMatch={this.imageSearch}
-                    imageMatchSuccess={this.props.imageMatchSuccess}
-                    imageMatchResponse={this.props.imageMatchResponse}
-                    requestError={this.props.requestError}
-                    requestErrorMessage={this.props.requestErrorMessage}
-                    requestComplete={this.props.requestComplete}>
-                </ImageSearchView>
-            )
-        }
+        return (
+            <ImageSearchView
+                setCollectionItem={this.setCollectionItem}
+                photoUri={this.props.croppedPhotoUri}
+                findImageMatch={this.imageSearch}
+                imageMatchSuccess={this.props.success}
+                imageMatchResponse={this.props.response}
+                requestError={this.props.error}
+                requestErrorMessage={this.props.errorMessage}
+                requestComplete={this.props.requestComplete}>
+            </ImageSearchView>
+        )
     }
 }
 
 const mapStateToProps = state => ({
-    ...state
+    ...state.imageSearchState, ...state.collectionItemState, ...state.cropState
 })
 
 export const ConnectedImageSearchContainer = connect(mapStateToProps)(ImageSearchContainer)
