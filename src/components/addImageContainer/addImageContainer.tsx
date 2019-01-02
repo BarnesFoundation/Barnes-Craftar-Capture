@@ -1,25 +1,29 @@
 import * as React from 'react'
 import { AddImageView } from './addImageView/addImageView'
 import { ImageService, CreateResponse } from '../../services/imageService'
-import { AddImageToItem, AddImageRequestError, AddImageRequestComplete, ClearAddImageData } from '../../store/actions/actions'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
+import { AddImageRequestSuccess, AddImageRequestError, ResetAddImageRequest } from '../../store/actions/addImageActions'
 import Button from '@material-ui/core/Button'
 import { ResizeService } from 'src/services/resizeService';
 
 export interface Props {
+
     dispatch: Function
+
+    // Crop State
     croppedPhotoUri: string,
-    croppedPhotoBlob: Blob
 
-    itemId: string,
-    itemUuid: string,
+    // Collection Item State
+    id: string,
+    uuid: string,
 
-    addImageResponse: CreateResponse,
-    addImageSuccess: boolean,
-    addImageRequestComplete: boolean,
-    addImageRequestError: boolean,
-    addImageRequestErrorMessage: string
+    // Add Image State
+    response: CreateResponse,
+    success: boolean,
+    requestComplete: boolean,
+    error: boolean,
+    errorMessage: string
 }
 
 class AddImageContainer extends React.Component<Props> {
@@ -29,35 +33,29 @@ class AddImageContainer extends React.Component<Props> {
 
     constructor(props) {
         super(props)
-        this.addImageToItem = this.addImageToItem.bind(this)
         this.imageService = new ImageService()
         this.resizeService = new ResizeService()
     }
 
-    componentWillUnmount = () => {
-        this.props.dispatch(ClearAddImageData(null))
-    }
+    componentWillUnmount = () => { this.props.dispatch(new ResetAddImageRequest) }
 
-    async addImageToItem() {
+    addImageToItem = async () => {
         try {
-            let image = await this.resizeService.resizeImage(this.props.croppedPhotoUri, 'BLOB', 'REFERENCE_IMAGE') as Blob
+            const imageBlob = await this.resizeService.resizeImage(this.props.croppedPhotoUri, 'BLOB', 'REFERENCE_IMAGE') as Blob
 
-            let addImageResponse = await this.imageService.addImage(image, this.props.itemUuid)
-            let addImageSuccess = addImageResponse.success
+            const response = await this.imageService.addImage(imageBlob, this.props.uuid)
+            const success = response.success
+            const requestComplete = true
 
-            this.props.dispatch(AddImageToItem({ addImageResponse, addImageSuccess }))
+            this.props.dispatch(new AddImageRequestSuccess({response, success, requestComplete}))
         }
 
-        catch (error) {
-            let addImageRequestError = true
-            let addImageRequestErrorMessage = JSON.stringify(error)
-            let addImageSuccess = false
+        catch (e) {
+            const error = true
+            const errorMessage = JSON.stringify(e)
 
-            this.props.dispatch(AddImageRequestError({ addImageRequestError, addImageRequestErrorMessage, addImageSuccess }))
+            this.props.dispatch(new AddImageRequestError({error, errorMessage}))
         }
-
-        let addImageRequestComplete = true
-        this.props.dispatch(AddImageRequestComplete({ addImageRequestComplete }))
     }
 
     public render() {
@@ -68,22 +66,22 @@ class AddImageContainer extends React.Component<Props> {
             <div className="add-image-container">
                 <AddImageView
                     photoUri={this.props.croppedPhotoUri}
-                    itemId={this.props.itemId}
+                    itemId={this.props.id}
                     addImageToItem={this.addImageToItem}
-                    addImageSuccess={this.props.addImageSuccess}
-                    addImageResponse={this.props.addImageResponse}
-                    addImageRequestError={this.props.addImageRequestError}
-                    addImageRequestErrorMessage={this.props.addImageRequestErrorMessage}
-                    addImageRequestComplete={this.props.addImageRequestComplete}
+                    addImageSuccess={this.props.success}
+                    addImageResponse={this.props.response}
+                    addImageRequestError={this.props.error}
+                    addImageRequestErrorMessage={this.props.errorMessage}
+                    addImageRequestComplete={this.props.requestComplete}
                 />
-                {(this.props.addImageRequestComplete) ? cameraButton : null}
+                {(this.props.requestComplete) ? cameraButton : null}
             </div>
         )
     }
 }
 
-const mapStateToProps = state => ({
-    ...state
+const mapStateToProps = (state: any) => ({
+    ...state.addImageState, ...state.collectionItemState, ...state.cropState
 })
 
 export const ConnectedAddImageContainer = connect(mapStateToProps)(AddImageContainer)

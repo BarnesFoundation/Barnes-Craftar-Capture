@@ -12,7 +12,7 @@ export const initialState: CollectionItemState = {
     uuid: null
 }
 
-export function collectionItemReducer(state = initialState, action: Action) {
+export function collectionItemState(state = initialState, action: Action) {
 
     switch (action.type) {
 
@@ -23,8 +23,12 @@ export function collectionItemReducer(state = initialState, action: Action) {
             return { ...state, id, uuid }
         }
 
-        case at.RESET_SET_ITEM: {
+        case at.RESET_SET_COLLECTION_ITEM: {
             return undefined
+        }
+        
+        default: {
+            return state
         }
     }
 }

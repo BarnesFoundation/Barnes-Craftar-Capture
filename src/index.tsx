@@ -5,14 +5,11 @@ import './index.css'
 import './styles/styles.scss'
 import registerServiceWorker from './registerServiceWorker'
 import { Provider } from 'react-redux'
-import { createStore } from 'redux'
-import { rootReducer } from './reducers/reducers'
+import { Store } from './store/store'
 import 'typeface-roboto'
 
-const store = createStore(rootReducer)
-
 render(
-  <Provider store={store}>
+  <Provider store={Store}>
    {Routes}
   </Provider>,
   document.getElementById('root') as HTMLElement

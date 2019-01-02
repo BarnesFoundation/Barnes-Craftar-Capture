@@ -4,62 +4,57 @@ import { CropperView } from './cropperView/cropperView'
 import { LoadingDialog } from '../../shared/components/loadingDialog'
 
 import { connect } from 'react-redux'
-import { CropPhoto, ClearCroppedPhotoSet } from '../../store/actions/actions'
+import { SetCroppedPhoto, ResetCroppedPhoto } from '../../store/actions/cropActions'
 
 import Cropper from 'cropperjs'
 import 'cropperjs/dist/cropper.css'
 
 export interface Props {
-    photoUri: string
-    itemSet: boolean
-    croppedPhotoUri: string
-    croppedPhotoBlob: Blob
-    croppedPhotoSet: boolean
-    dispatch: Function
+    dispatch: Function,
+
+    // Crop State
+    croppedPhotoUri: string,
+    photoWasCropped: boolean,
+
+    // Camera State
+    capturedPhotoUri: string,
+
+    // Collection Item State
+    id: string
 }
 
 class CropContainer extends React.Component<Props> {
 
     cropper: Cropper
     state = { croppingInProgress: false }
-    
 
     constructor(props) {
         super(props)
-        this.cropPhoto = this.cropPhoto.bind(this)
     }
 
-    componentWillUnmount = () => {
-        this.props.dispatch(ClearCroppedPhotoSet(null))
+    componentWillUnmount = () => { this.props.dispatch(new ResetCroppedPhoto()) }
+
+    cropPhoto = async () => {
+        /* console.log('Cropping...')
+        this.setState({ croppingInProgress : true }) */
+
+        const croppedPhotoUri = this.cropper.getCroppedCanvas().toDataURL('image/jpeg', 1)
+        const photoWasCropped = true
+
+        this.props.dispatch(new SetCroppedPhoto({ croppedPhotoUri, photoWasCropped }))
+
+        /* this.setState({ croppingInProgress : false })
+        console.log('Cropping done') */
     }
 
-    async cropPhoto() {
-        console.log('Cropping...')
-        this.setState({ croppingInProgress : true })
-        let canvas = this.cropper.getCroppedCanvas()
-
-        let croppedPhotoBlob = await new Promise(resolve => {
-            canvas.toBlob((blob) => {
-                resolve(blob)
-            }, 'image/jpeg')
-        })
-        let croppedPhotoUri = canvas.toDataURL()
-
-        let croppedPhotoSet = true
-        
-        this.setState({ croppingInProgress : false })
-        console.log('Cropping done')
-        this.props.dispatch(CropPhoto({ croppedPhotoUri, croppedPhotoBlob, croppedPhotoSet }))
-        console.log('Dispatch done')
-    }
-
-    initializeCropper = (photoElement: HTMLImageElement) => {
-        this.cropper = new Cropper(photoElement, { background: false })
-    }
+    initializeCropper = (photoElement: HTMLImageElement) => { this.cropper = new Cropper(photoElement, { background: false }) }
 
     public render() {
 
-        if (this.props.croppedPhotoSet && !this.props.itemSet) {
+        const { photoWasCropped, id, capturedPhotoUri } = this.props
+
+        // If the photo was cropped but not id is set, navigate to Image Search component
+        if (photoWasCropped && !id) {
             return (
                 <Redirect to={{
                     pathname: '/search-image',
@@ -68,7 +63,8 @@ class CropContainer extends React.Component<Props> {
             )
         }
 
-        if (this.props.croppedPhotoSet && this.props.itemSet) {
+        // If the photo was cropped and an id is already set, navigate to Add Image component
+        if (photoWasCropped && id) {
             return (
                 <Redirect to={{
                     pathname: '/add-image',
@@ -77,16 +73,15 @@ class CropContainer extends React.Component<Props> {
             )
         }
 
-
         return (
             <>
-            <CropperView
-                photoUri={this.props.photoUri}
-                initializeCropper={this.initializeCropper}
-                cropper={this.cropper}
-                cropPhoto={this.cropPhoto}>
-            </CropperView>
-            {(this.state.croppingInProgress) ? <LoadingDialog></LoadingDialog> : null}
+                <CropperView
+                    photoUri={capturedPhotoUri}
+                    initializeCropper={this.initializeCropper}
+                    cropper={this.cropper}
+                    cropPhoto={this.cropPhoto}>
+                </CropperView>
+                {(this.state.croppingInProgress) ? <LoadingDialog></LoadingDialog> : null}
             </>
         )
 
@@ -94,7 +89,7 @@ class CropContainer extends React.Component<Props> {
 }
 
 const mapStateToProps = state => ({
-    ...state
+    ...state.cropState, ...state.cameraState, ...state.collectionItemState
 })
 
 export const ConnectedCropContainer = connect(mapStateToProps)(CropContainer)

@@ -18,7 +18,7 @@ export const initialState: ItemIdSearchState = {
     id: null
 }
 
-export function itemIdSearchReducer(state = initialState, action: Action) {
+export function itemIdSearchState(state = initialState, action: Action) {
 
     switch (action.type) {
 
@@ -31,6 +31,10 @@ export function itemIdSearchReducer(state = initialState, action: Action) {
 
         case at.RESET_ITEM_ID_SEARCH: {
             return undefined
+        }
+
+        default: {
+            return state
         }
     }
 }

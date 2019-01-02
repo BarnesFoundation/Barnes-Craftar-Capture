@@ -1,14 +1,16 @@
 import { combineReducers } from 'redux'
-import { cameraReducer } from './cameraReducer'
-import { cropReducer } from './cropReducer'
-import { imageSearchReducer } from './imageSearchReducer'
-import { collectionItemReducer } from './collectionItemReducer'
-import { itemIdSearchReducer } from './itemIdSearchReducer'
+import { cameraState } from './cameraReducer'
+import { cropState } from './cropReducer'
+import { imageSearchState } from './imageSearchReducer'
+import { collectionItemState } from './collectionItemReducer'
+import { itemIdSearchState } from './itemIdSearchReducer'
+import { addImageState } from './addImageReducer'
 
 export const BarnesCraftarCaptureStore = combineReducers({
-    cameraReducer,
-    cropReducer,
-    imageSearchReducer,
-    collectionItemReducer,
-    itemIdSearchReducer
+    cameraState,
+    cropState,
+    imageSearchState,
+    collectionItemState,
+    itemIdSearchState,
+    addImageState
 })
