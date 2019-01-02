@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { AddImageView } from './addImageView/addImageView'
 import { ImageService, CreateResponse } from '../../services/imageService'
-import { AddImageToItem, AddImageRequestError, AddImageRequestComplete, ClearAddImageData } from '../../actions/actions'
+import { AddImageToItem, AddImageRequestError, AddImageRequestComplete, ClearAddImageData } from '../../store/actions/actions'
 import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import Button from '@material-ui/core/Button'

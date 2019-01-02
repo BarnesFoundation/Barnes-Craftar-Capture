@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { AddCapturedPhoto, ClearSetItem, ClearCapturedPhoto } from '../../actions/actions'
+import { AddCapturedPhoto, ClearSetItem, ClearCapturedPhoto } from '../../store/actions/actions'
 import { ResizeService } from '../../services/resizeService'
 import Button from '@material-ui/core/Button'
 
