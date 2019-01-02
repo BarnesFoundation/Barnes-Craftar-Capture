@@ -24,7 +24,6 @@ class CropContainer extends React.Component<Props> {
     constructor(props) {
         super(props)
         this.cropPhoto = this.cropPhoto.bind(this)
-        this.initializeCropper = this.initializeCropper.bind(this)
     }
 
     componentWillUnmount = () => {
@@ -32,7 +31,7 @@ class CropContainer extends React.Component<Props> {
     }
 
     async cropPhoto() {
-        let croppedPhotoUri = this.cropper.getCroppedCanvas().toDataURL()
+        console.log('Cropping...')
         let canvas = this.cropper.getCroppedCanvas()
 
         let croppedPhotoBlob = await new Promise(resolve => {
@@ -40,12 +39,15 @@ class CropContainer extends React.Component<Props> {
                 resolve(blob)
             }, 'image/jpeg')
         })
+        let croppedPhotoUri = canvas.toDataURL()
 
         let croppedPhotoSet = true
+        console.log('Cropping done')
         this.props.dispatch(CropPhoto({ croppedPhotoUri, croppedPhotoBlob, croppedPhotoSet }))
+        console.log('Dispatch done')
     }
 
-    initializeCropper(photoElement: HTMLImageElement) {
+    initializeCropper = (photoElement: HTMLImageElement) => {
         this.cropper = new Cropper(photoElement, { background: false })
     }
 
