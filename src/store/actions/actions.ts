@@ -1,91 +1,100 @@
-import { ADD_CAPTURED_PHOTO, CROP_PHOTO, SEARCH_FOR_IMAGE, SEARCH_FOR_IMAGE_REQUEST_COMPLETE, SET_COLLECTION_ITEM, SEARCH_FOR_IMAGE_ERROR, CLEAR_PHOTO_DATA, CLEAR_SEARCH_DATA, ADD_IMAGE_TO_ITEM, ADD_IMAGE_REQUEST_ERROR, ADD_IMAGE_REQUEST_COMPLETE, CLEAR_SET_ITEM, CLEAR_CAPTURED_PHOTO, CLEAR_CROPPED_PHOTO_SET, CLEAR_ADD_IMAGE_DATA, SEARCH_FOR_ITEM, SUBMIT_SEARCH_FOR_ITEM_FORM, CLEAR_SUBMITTED_SEARCH_FOR_ITEM } from '../actionTypes/actionTypes'
+import * as at from '../actionTypes/actionTypes'
+import { Action } from '../../interfaces/action'
+
+export class AddCapturedPhotoClass implements Action {
+    public type: string = "my_type";
+
+    constructor(public payload: string) {
+
+    }
+}
 
 export const AddCapturedPhoto = payload => ({
-    type: ADD_CAPTURED_PHOTO,
+    type: at.ADD_CAPTURED_PHOTO,
     payload
 })
 
 export const CropPhoto = payload => ({
-    type: CROP_PHOTO,
+    type: at.CROP_PHOTO,
     payload
 })
 
 export const SearchForImage = payload => ({
-    type: SEARCH_FOR_IMAGE,
+    type: at.SEARCH_FOR_IMAGE,
     payload
 })
 
 export const SearchForImageError = payload => ({
-    type: SEARCH_FOR_IMAGE_ERROR,
+    type: at.SEARCH_FOR_IMAGE_ERROR,
     payload
 })
 
 export const SearchForImageRequestComplete = payload => ({
-    type: SEARCH_FOR_IMAGE_REQUEST_COMPLETE,
+    type: at.SEARCH_FOR_IMAGE_REQUEST_COMPLETE,
     payload
 })
 
 export const SetCollectionItem = payload => ({
-    type: SET_COLLECTION_ITEM,
+    type: at.SET_COLLECTION_ITEM,
     payload
 })
 
 export const ClearPhotoData = payload => ({
-  type: CLEAR_PHOTO_DATA,
-  payload  
+    type: at.CLEAR_PHOTO_DATA,
+    payload
 })
 
 export const ClearCapturedPhoto = payload => ({
-    type: CLEAR_CAPTURED_PHOTO,
+    type: at.CLEAR_CAPTURED_PHOTO,
     payload
 })
 
 export const ClearSearchData = payload => ({
-    type: CLEAR_SEARCH_DATA,
+    type: at.CLEAR_SEARCH_DATA,
     payload
 })
 
 export const AddImageToItem = payload => ({
-    type: ADD_IMAGE_TO_ITEM,
+    type: at.ADD_IMAGE_TO_ITEM,
     payload
 })
 
 export const AddImageRequestError = payload => ({
-    type: ADD_IMAGE_REQUEST_ERROR,
+    type: at.ADD_IMAGE_REQUEST_ERROR,
     payload
 })
 
 export const AddImageRequestComplete = payload => ({
-    type: ADD_IMAGE_REQUEST_COMPLETE,
+    type: at.ADD_IMAGE_REQUEST_COMPLETE,
     payload
 })
 
 export const ClearSetItem = payload => ({
-    type: CLEAR_SET_ITEM,
+    type: at.CLEAR_SET_ITEM,
     payload
 })
 
 export const ClearCroppedPhotoSet = payload => ({
-    type: CLEAR_CROPPED_PHOTO_SET,
+    type: at.CLEAR_CROPPED_PHOTO_SET,
     payload
 })
 
 export const ClearAddImageData = payload => ({
-    type: CLEAR_ADD_IMAGE_DATA,
+    type: at.CLEAR_ADD_IMAGE_DATA,
     payload
 })
 
 export const SearchForItem = payload => ({
-    type: SEARCH_FOR_ITEM,
+    type: at.SEARCH_FOR_ITEM,
     payload
 })
 
 export const SubmitSearchForItemForm = payload => ({
-    type: SUBMIT_SEARCH_FOR_ITEM_FORM,
+    type: at.SUBMIT_SEARCH_FOR_ITEM_FORM,
     payload
 })
 
 export const ClearSubmittedSearchForItem = payload => ({
-    type: CLEAR_SUBMITTED_SEARCH_FOR_ITEM,
+    type: at.CLEAR_SUBMITTED_SEARCH_FOR_ITEM,
     payload
 })
