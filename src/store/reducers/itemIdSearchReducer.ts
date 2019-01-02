@@ -8,14 +8,14 @@ export interface ItemIdSearchState {
     response: {} | SearchResponse,
     success: boolean,
     requestComplete: boolean, 
-    id: string
+    searchedId: string
 }
 
 export const initialState: ItemIdSearchState = {
     response: {},
     success: null,
     requestComplete: null,
-    id: null
+    searchedId: null
 }
 
 export function itemIdSearchState(state = initialState, action: Action) {
@@ -24,13 +24,13 @@ export function itemIdSearchState(state = initialState, action: Action) {
 
         case at.EXECUTE_ITEM_ID_SEARCH: {
 
-            const { response, success, requestComplete } = action.payload
+            const { response, success, requestComplete, searchedId } = action.payload
 
-            return { ...state, response, success, requestComplete }
+            return { ...state, response, success, requestComplete, searchedId }
         }
 
         case at.RESET_ITEM_ID_SEARCH: {
-            return undefined
+            return { response: {}, success: null, requestComplete: null, searchedId: null }
         }
 
         default: {

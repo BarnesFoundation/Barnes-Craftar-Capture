@@ -6,15 +6,22 @@ import Button from '@material-ui/core/Button'
 import { ItemSearchService, SearchResponse } from '../../services/itemSearchService'
 import { ItemSearchView } from './itemSearchView/itemSearchView'
 import { ItemSearchForm } from './itemSearchView/itemSearchForm'
-import { SearchForItem, ClearSubmittedSearchForItem, SetCollectionItem } from '../../store/actions/actions'
+import { ExecuteItemIdSearch, SubmitItemIdSearchForm, ResetItemIdSearch } from '../../store/actions/itemIdSearchActions'
+import { SetCollectionItem } from '../../store/actions/collectionItemActions'
 
 interface Props {
+
     dispatch: Function,
-    itemSet: boolean,
-    itemSearchResponse: SearchResponse,
-    itemSearchSuccess: boolean,
-    itemSearchRequestComplete: boolean,
-    searchedItemId: string
+
+    // Image Search State
+    response: SearchResponse,
+    success: boolean,
+    requestComplete: boolean,
+    searchedId: string
+
+    // Collection Item State
+    id: string,
+    uuid: string
 }
 
 class ItemSearchContainer extends React.Component<Props> {
@@ -23,69 +30,70 @@ class ItemSearchContainer extends React.Component<Props> {
 
     constructor(props) {
         super(props)
-
-        this.handleSubmit = this.handleSubmit.bind(this)
         this.itemSearchService = new ItemSearchService()
     }
 
     componentWillUnmount() {
-        this.props.dispatch(ClearSubmittedSearchForItem(null))
+        this.props.dispatch(new ResetItemIdSearch())
     }
 
     handleSubmit = async (event) => {
-        this.props.dispatch(ClearSubmittedSearchForItem(null))
         event.preventDefault()
+        this.props.dispatch(new ResetItemIdSearch())
 
-        let searchedItemId = event.target.itemId.value
+        const searchedId = event.target.itemId.value
+        const response = await this.itemSearchService.searchByItem(searchedId)
+        const success = response.success
+        const requestComplete = true
 
-        let itemSearchResponse = await this.itemSearchService.searchByItem(searchedItemId)
-        let itemSearchSuccess = itemSearchResponse.success
-        let itemSearchRequestComplete = true
-
-        this.props.dispatch(SearchForItem({ itemSearchResponse, itemSearchSuccess, itemSearchRequestComplete, searchedItemId }))
+        this.props.dispatch(new ExecuteItemIdSearch({ response, success, requestComplete, searchedId }))
     }
 
     setSearchedItem = () => {
-        let itemSet = true
-        let itemUuid = this.props.itemSearchResponse.uuid
-        let itemId = this.props.searchedItemId
+        const uuid = this.props.response.uuid
+        const id = this.props.searchedId
 
-        this.props.dispatch(SetCollectionItem({ itemSet, itemUuid, itemId }))
+        this.props.dispatch(new SetCollectionItem({ id, uuid }))
     }
 
     public render() {
 
+        const searchedId = this.props.searchedId
+        const response = this.props.response
+        const success = this.props.success
+        const requestComplete = this.props.requestComplete
+
+        const id = this.props.id
+
         const itemSearchForm = (<ItemSearchForm handleSubmit={this.handleSubmit}></ItemSearchForm>)
         const setItemButton = (<Button variant="contained" onClick={this.setSearchedItem}>Set item</Button>)
 
-        if (this.props.itemSet) {
+        if (id) {
             return (
                 <Redirect to="/camera-capture"></Redirect>
             )
         }
 
-        else {
-            return (
-                <div className="item-search-container">
-                    <ItemSearchView
-                        searchedItemId={this.props.searchedItemId}
-                        itemSearchResponse={this.props.itemSearchResponse}
-                        itemSearchSuccess={this.props.itemSearchSuccess}
-                        itemSearchRequestComplete={this.props.itemSearchRequestComplete}
-                        setSearchedItem={this.setSearchedItem}>
-                    </ItemSearchView>
-                    {itemSearchForm}
-                    <div className="button-container">
-                        {(this.props.itemSearchRequestComplete && this.props.itemSearchSuccess) ? setItemButton : null}
-                    </div>
+        return (
+            <div className="item-search-container">
+                <ItemSearchView
+                    searchedItemId={searchedId}
+                    itemSearchResponse={response}
+                    itemSearchSuccess={success}
+                    itemSearchRequestComplete={requestComplete}
+                    setSearchedItem={this.setSearchedItem}>
+                </ItemSearchView>
+                {itemSearchForm}
+                <div className="button-container">
+                    {(requestComplete && success) ? setItemButton : null}
                 </div>
-            )
-        }
+            </div>
+        )
     }
 }
 
 const mapStateToProps = state => ({
-    ...state
+    ...state.itemIdSearchState, ...state.collectionItemState
 })
 
 export const ConnectedItemSearchContainer = connect(mapStateToProps)(ItemSearchContainer)
