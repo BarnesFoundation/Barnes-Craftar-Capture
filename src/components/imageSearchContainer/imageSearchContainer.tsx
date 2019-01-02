@@ -2,7 +2,7 @@ import * as React from 'react'
 import { ImageSearchView } from './imageSearchView/imageSearchView'
 import { SearchService, MatchResponse } from '../../services/searchService'
 import { connect } from 'react-redux'
-import { SearchForImage, SearchForImageError, SearchForImageRequestComplete, SetCollectionItem, ClearSearchData, ClearPhotoData } from '../../actions/actions'
+import { SearchForImage, SearchForImageError, SearchForImageRequestComplete, SetCollectionItem, ClearSearchData, ClearPhotoData } from '../../store/actions/actions'
 import { Redirect } from 'react-router-dom'
 import { ResizeService } from 'src/services/resizeService';
 

@@ -6,7 +6,7 @@ import Button from '@material-ui/core/Button'
 import { ItemSearchService, SearchResponse } from '../../services/itemSearchService'
 import { ItemSearchView } from './itemSearchView/itemSearchView'
 import { ItemSearchForm } from './itemSearchView/itemSearchForm'
-import { SearchForItem, ClearSubmittedSearchForItem, SetCollectionItem } from '../../actions/actions'
+import { SearchForItem, ClearSubmittedSearchForItem, SetCollectionItem } from '../../store/actions/actions'
 
 interface Props {
     dispatch: Function,
