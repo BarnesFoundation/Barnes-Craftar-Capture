@@ -88,8 +88,12 @@ class CropContainer extends React.Component<Props> {
     }
 }
 
-const mapStateToProps = (state: any) => ({
-    ...state.cropState, ...state.cameraState, ...state.collectionItemState
-})
+const mapStateToProps = (state: any) => {
+
+    const { capturedPhotoUri } =  state.cameraState 
+    const { id } = state.collectionItemState
+
+    return { ...state.cropState, capturedPhotoUri, id }
+}
 
 export const ConnectedCropContainer = connect(mapStateToProps)(CropContainer)

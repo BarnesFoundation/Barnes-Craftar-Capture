@@ -102,8 +102,12 @@ class ImageSearchContainer extends React.Component<Props> {
     }
 }
 
-const mapStateToProps = state => ({
-    ...state.imageSearchState, ...state.collectionItemState, ...state.cropState
-})
+const mapStateToProps = state => {
+
+    const { croppedPhotoUri } = state.cropState
+    const { id, uuid } = state.collectionItemState 
+
+    return { ...state.imageSearchState, croppedPhotoUri, id, uuid }
+}
 
 export const ConnectedImageSearchContainer = connect(mapStateToProps)(ImageSearchContainer)
