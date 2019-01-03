@@ -3,15 +3,13 @@ import * as a from '../actions/cropActions'
 import { Action } from '../../interfaces/action'
 
 export interface CropState {
-    croppedPhotoUri: string
-    photoWasCropped: boolean,
+    croppedPhotoUri: string,
     croppingIsLoading: boolean,
     croppingIsFinished: boolean
 }
 
 export const initialState: CropState = {
     croppedPhotoUri: null,
-    photoWasCropped: null,
     croppingIsLoading: null,
     croppingIsFinished: null
 }
@@ -22,14 +20,14 @@ export function cropState(state: CropState = initialState, action: Action) {
 
         case at.SET_CROPPED_PHOTO: {
 
-            const { croppedPhotoUri, photoWasCropped } = action.payload
+            const { croppedPhotoUri } = action.payload
 
-            return { ...state, croppedPhotoUri, photoWasCropped }
+            return { ...state, croppedPhotoUri }
         }
 
         case at.RESET_CROPPED_PHOTO: {
 
-            return { ...state, photoWasCropped: null, croppingIsLoading: null, croppingIsFinished: null }
+            return { ...state, croppingIsLoading: null, croppingIsFinished: null }
         }
 
         case at.UPDATE_CROPPING_STATUS: {

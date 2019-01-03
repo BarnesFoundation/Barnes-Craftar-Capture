@@ -4,46 +4,37 @@ import { Action } from '../../interfaces/action'
 
 export interface CameraState {
     capturedPhotoUri: string,
-    photoWasCaptured: boolean,
     photoIsLoading: boolean,
-    photoFinishedLoading: boolean
+    photoIsLoaded: boolean
 }
 
 export const initialState: CameraState = {
     capturedPhotoUri: null,
-    photoWasCaptured: false,
     photoIsLoading: null,
-    photoFinishedLoading: null
+    photoIsLoaded: null
 }
 
 export function cameraState(state: CameraState = initialState, action: Action) {
 
     switch (action.type) {
 
-        case at.SET_CAPTURED_PHOTO_AND_LOADING: {
+        case at.SET_CAPTURED_PHOTO_DATA: {
 
-            const { capturedPhotoUri, photoFinishedLoading, photoIsLoading } = action.payload
+            const { capturedPhotoUri } = action.payload
 
-            return { ...state, capturedPhotoUri, photoFinishedLoading, photoIsLoading }
+            return { ...state, capturedPhotoUri }
         }
 
         case at.CLEAR_CAPTURED_PHOTO: {
 
-            return { ...state, photoWasCaptured: false, photoIsLoading: null, photoFinishedLoading: null }
+            return { ...state, photoIsLoading: null, photoIsLoaded: null }
         }
 
         case at.UPDATE_PHOTO_LOADED: {
 
-            const { photoIsLoading } = action.payload
+            const { photoIsLoading, photoIsLoaded } = action.payload
 
-            return { ...state, photoIsLoading }
-        }
-
-        case at.UPDATE_PHOTO_CAPTURED_AND_LOADING: {
-
-            const { photoWasCaptured, photoIsLoading } = action.payload
-
-            return { ...state, photoWasCaptured, photoIsLoading }
+            return { ...state, photoIsLoading, photoIsLoaded }
         }
 
         default: {

@@ -5,7 +5,7 @@ export class SetCroppedPhoto implements Action {
     
     public type: string = at.SET_CROPPED_PHOTO
 
-    constructor(public payload: { croppedPhotoUri: string, photoWasCropped: boolean }) {}
+    constructor(public payload: { croppedPhotoUri: string }) {}
 }
 
 export class ResetCroppedPhoto implements Action {
