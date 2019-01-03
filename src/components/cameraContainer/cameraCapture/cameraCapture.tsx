@@ -43,12 +43,13 @@ class CameraCapture extends React.Component<Props, object> {
         const cameraButton = (<Button variant="contained" className="fileContainer">Capture Photo {fileInput}</Button>)
 
         return (
-            
+
             <div className="camera-container">
+                <h2>Search By Image</h2>
                 {(id) ? setItemText : noSetItemText}
                 {(id) ? clearItemButton : null}
                 {cameraButton}
-                <LoadingDialog displayText={displayText} dialogOpen={dialogOpen}/>
+                <LoadingDialog displayText={displayText} dialogOpen={dialogOpen} />
             </div>
         )
     }
