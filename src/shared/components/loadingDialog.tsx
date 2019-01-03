@@ -5,22 +5,22 @@ import DialogContentText from '@material-ui/core/DialogContentText'
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 export interface Props {
-    open: boolean,
+    dialogOpen: boolean,
     displayText: string
 }
 
-class LoadingDialog extends React.Component {
-
-    open = true
+class LoadingDialog extends React.Component<Props, object> {
 
     public render() {
+
+        const displayText = this.props.displayText
+        const dialogOpen = this.props.dialogOpen
+
         return (
-            <Dialog
-                open={this.open}
-            >
+            <Dialog open={dialogOpen}>
                 <DialogContent>
                     <DialogContentText>
-                        Cropping image...
+                        {displayText}...
                     </DialogContentText>
                     <CircularProgress></CircularProgress>
                 </DialogContent>
