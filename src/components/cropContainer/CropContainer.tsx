@@ -75,13 +75,13 @@ class CropContainer extends React.Component<Props> {
 
         return (
             <CropperView
-                photoWasCropped={this.props.photoWasCropped}
-                photoUri={this.props.capturedPhotoUri}
+                photoWasCropped={photoWasCropped}
+                photoUri={capturedPhotoUri}
                 initializeCropper={this.initializeCropper}
                 cropper={this.cropper}
                 cropPhoto={this.cropPhoto}
-                croppingIsLoading={this.props.croppingIsLoading}
-                croppingIsFinished={this.props.croppingIsFinished}>
+                croppingIsLoading={croppingIsLoading}
+                croppingIsFinished={croppingIsFinished}>
             </CropperView>
         )
 
