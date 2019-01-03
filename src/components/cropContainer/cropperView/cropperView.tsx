@@ -39,13 +39,21 @@ class CropperView extends React.Component<Props, object> {
         const { croppingIsLoading, croppingIsFinished, photoWasCropped, photoUri } = this.props
 
         const displayText = 'Cropping image'
-        console.log('cropping is loading ' , croppingIsLoading)
+        console.log('cropping is loading ', croppingIsLoading)
 
         return (
             <div className="crop-container">
-                {(croppingIsLoading) ? <LoadingDialog dialogOpen={true} displayText={displayText} /> : null}
+                <h2>Crop Image</h2>
+                <p>Adjust the crop to focus in on the artwork.</p>
                 <PhotoView photoUri={photoUri} photoRef={this.photoRef}></PhotoView>
+                {/* <p>Expand the crop to capture additional areas relevant to the item such as</p>
+                <ul>
+                    <li>Borders</li>
+                    <li>Frames</li>
+                    <li>Containers</li>
+                </ul> */}
                 <Button variant="contained" onClick={this.onEvent}>Crop</Button>
+                {(croppingIsLoading) ? <LoadingDialog dialogOpen={true} displayText={displayText} /> : null}
             </div>
         )
     }
