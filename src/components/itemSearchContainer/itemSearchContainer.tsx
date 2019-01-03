@@ -1,11 +1,10 @@
 import * as React from 'react'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
-import Button from '@material-ui/core/Button'
 
 import { ItemSearchService, SearchResponse } from '../../services/itemSearchService'
 import { ItemSearchView } from './itemSearchView/itemSearchView'
-import { ItemSearchForm } from './itemSearchView/itemSearchForm'
+
 import { ExecuteItemIdSearch, SubmitItemIdSearchForm, ResetItemIdSearch } from '../../store/actions/itemIdSearchActions'
 import { SetCollectionItem } from '../../store/actions/collectionItemActions'
 
@@ -33,9 +32,7 @@ class ItemSearchContainer extends React.Component<Props> {
         this.itemSearchService = new ItemSearchService()
     }
 
-    componentWillUnmount() {
-        this.props.dispatch(new ResetItemIdSearch())
-    }
+    componentWillUnmount() { this.props.dispatch(new ResetItemIdSearch()) }
 
     handleSubmit = async (event) => {
         event.preventDefault()
@@ -49,24 +46,15 @@ class ItemSearchContainer extends React.Component<Props> {
         this.props.dispatch(new ExecuteItemIdSearch({ response, success, requestComplete, searchedId }))
     }
 
-    setSearchedItem = () => {
+    setSearchedItem = (event: any) => {
         const uuid = this.props.response.uuid
         const id = this.props.searchedId
-
         this.props.dispatch(new SetCollectionItem({ id, uuid }))
     }
 
     public render() {
 
-        const searchedId = this.props.searchedId
-        const response = this.props.response
-        const success = this.props.success
-        const requestComplete = this.props.requestComplete
-
-        const id = this.props.id
-
-        const itemSearchForm = (<ItemSearchForm handleSubmit={this.handleSubmit}></ItemSearchForm>)
-        const setItemButton = (<Button variant="contained" onClick={this.setSearchedItem}>Set item</Button>)
+        const { searchedId, response, success, requestComplete, id } = this.props
 
         if (id) {
             return (
@@ -75,24 +63,19 @@ class ItemSearchContainer extends React.Component<Props> {
         }
 
         return (
-            <div className="item-search-container">
-                <ItemSearchView
-                    searchedItemId={searchedId}
-                    itemSearchResponse={response}
-                    itemSearchSuccess={success}
-                    itemSearchRequestComplete={requestComplete}
-                    setSearchedItem={this.setSearchedItem}>
-                </ItemSearchView>
-                {itemSearchForm}
-                <div className="button-container">
-                    {(requestComplete && success) ? setItemButton : null}
-                </div>
-            </div>
+            <ItemSearchView
+                searchedId={searchedId}
+                response={response}
+                success={success}
+                requestComplete={requestComplete}
+                setSearchedItem={this.setSearchedItem}
+                handleSubmit={this.handleSubmit}
+                />
         )
     }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: any) => ({
     ...state.itemIdSearchState, ...state.collectionItemState
 })
 

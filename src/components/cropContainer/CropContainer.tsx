@@ -49,7 +49,10 @@ class CropContainer extends React.Component<Props> {
         this.props.dispatch(new UpdateCroppingStatus({ croppingIsLoading, croppingIsFinished }))
     }
 
-    initializeCropper = (photoElement: HTMLImageElement) => { this.cropper = new Cropper(photoElement, { background: false }) }
+    initializeCropper = (photoElement: HTMLImageElement) => {
+
+        this.cropper = new Cropper(photoElement, { zoomable: false, background: false, viewMode: 1, })
+    }
 
     public render() {
 
@@ -90,7 +93,7 @@ class CropContainer extends React.Component<Props> {
 
 const mapStateToProps = (state: any) => {
 
-    const { capturedPhotoUri } =  state.cameraState 
+    const { capturedPhotoUri } = state.cameraState
     const { id } = state.collectionItemState
 
     return { ...state.cropState, capturedPhotoUri, id }
