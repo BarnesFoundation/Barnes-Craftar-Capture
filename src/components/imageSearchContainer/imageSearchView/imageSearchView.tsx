@@ -56,13 +56,13 @@ class ImageSearchView extends React.Component<Props, object> {
 
             successSection = (
                 <div>
-                    <p>A matching item was found for this image</p>
-                    <p>Image Id: {id}</p>
-                    <p>Use 'Set Item' to capture reference images for the above item</p>
+                    <p>Match found</p>
+                    <p>Record Id: {id}</p>
+                    <p>Use 'Set Item' to capture additional reference images for this item</p>
                 </div>
             )
 
-            failSection = (<p>No matching item was found for this image</p>)
+            failSection = (<p>No match found for this image</p>)
         }
 
         if (requestComplete && error) {

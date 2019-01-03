@@ -37,8 +37,9 @@ class ItemSearchView extends React.Component<Props> {
 
         return (
             <div className="search-result">
+            <h2>Search By Item ID</h2>
                 <div className={(this.props.itemSearchRequestComplete) ? "unhidden" : "hidden"}>
-                    <h2>{(this.props.itemSearchRequestComplete) ? matchResultText : null}</h2>
+                    <h3>{(this.props.itemSearchRequestComplete) ? matchResultText : null}</h3>
                     {searchResultGrid}
                 </div>
             </div>
