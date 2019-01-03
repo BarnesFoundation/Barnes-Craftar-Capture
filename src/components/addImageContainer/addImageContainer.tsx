@@ -2,9 +2,7 @@ import * as React from 'react'
 import { AddImageView } from './addImageView/addImageView'
 import { ImageService, CreateResponse } from '../../services/imageService'
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
-import { AddImageRequestSuccess, AddImageRequestError, ResetAddImageRequest } from '../../store/actions/addImageActions'
-import Button from '@material-ui/core/Button'
+import { AddImageRequestSuccess, AddImageRequestError, ResetAddImageRequest, UpdateAddImageRequestStatus } from '../../store/actions/addImageActions'
 import { ResizeService } from 'src/services/resizeService';
 
 export interface Props {
@@ -21,6 +19,7 @@ export interface Props {
     // Add Image State
     response: CreateResponse,
     success: boolean,
+    requestInProgress: boolean,
     requestComplete: boolean,
     error: boolean,
     errorMessage: string
@@ -40,46 +39,51 @@ class AddImageContainer extends React.Component<Props> {
     componentWillUnmount = () => { this.props.dispatch(new ResetAddImageRequest) }
 
     addImageToItem = async () => {
+
+        const { croppedPhotoUri, uuid } = this.props
+
+        let requestInProgress = true
+        let requestComplete = false
+        this.props.dispatch(new UpdateAddImageRequestStatus({ requestInProgress, requestComplete }))
+
         try {
-
             // Get the resized image blob
-            const imageBlob = await this.resizeService.resizeImage(this.props.croppedPhotoUri, 'BLOB', 'REFERENCE_IMAGE') as Blob
-
-            const response = await this.imageService.addImage(imageBlob, this.props.uuid)
-            const success = response.success
-            const requestComplete = true
+            const imageBlob = await this.resizeService.resizeImage(croppedPhotoUri, 'BLOB', 'REFERENCE_IMAGE') as Blob
 
             // Update the image request success
-            this.props.dispatch(new AddImageRequestSuccess({response, success, requestComplete}))
+            const response = await this.imageService.addImage(imageBlob, uuid)
+            const success = response.success
+            this.props.dispatch(new AddImageRequestSuccess({ response, success, }))
         }
 
         catch (e) {
+            // Update the image request error
             const error = true
             const errorMessage = JSON.stringify(e)
-
-            // Update the image request error
-            this.props.dispatch(new AddImageRequestError({error, errorMessage}))
+            this.props.dispatch(new AddImageRequestError({ error, errorMessage }))
         }
+
+        requestInProgress = false
+        requestComplete = true
+        this.props.dispatch(new UpdateAddImageRequestStatus({ requestInProgress, requestComplete }))
     }
 
     public render() {
 
-        const cameraButton = (<Button variant="contained" component={({ innerRef, ...props }) => <Link {...props} to="/camera-capture" />}>Return to Camera</Button>)
+        const { croppedPhotoUri, id, success, response, error, errorMessage, requestInProgress, requestComplete } = this.props
 
         return (
-            <div className="add-image-container">
-                <AddImageView
-                    photoUri={this.props.croppedPhotoUri}
-                    itemId={this.props.id}
-                    addImageToItem={this.addImageToItem}
-                    addImageSuccess={this.props.success}
-                    addImageResponse={this.props.response}
-                    addImageRequestError={this.props.error}
-                    addImageRequestErrorMessage={this.props.errorMessage}
-                    addImageRequestComplete={this.props.requestComplete}
-                />
-                {(this.props.requestComplete) ? cameraButton : null}
-            </div>
+            <AddImageView
+                photoUri={croppedPhotoUri}
+                id={id}
+                addImageToItem={this.addImageToItem}
+                success={success}
+                response={response}
+                error={error}
+                errorMessage={errorMessage}
+                requestComplete={requestComplete}
+                requestInProgress={requestInProgress}
+            />
         )
     }
 }
@@ -89,7 +93,7 @@ const mapStateToProps = (state: any) => {
     const { id, uuid } = state.collectionItemState
     const { croppedPhotoUri } = state.cropState
 
-    return { ...state.addImageState, id, croppedPhotoUri }
+    return { ...state.addImageState, id, uuid, croppedPhotoUri }
 }
 
 export const ConnectedAddImageContainer = connect(mapStateToProps)(AddImageContainer)

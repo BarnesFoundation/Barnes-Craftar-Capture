@@ -5,6 +5,7 @@ import { Action } from '../../interfaces/action'
 export interface AddImageState {
     response: any,
     success: boolean,
+    requestInProgress: boolean
     requestComplete: boolean,
     error: boolean,
     errorMessage: any
@@ -13,6 +14,7 @@ export interface AddImageState {
 export const initialState: AddImageState = {
     response: {},
     success: null,
+    requestInProgress: null,
     requestComplete: null,
     error: null,
     errorMessage: null
@@ -24,9 +26,9 @@ export function addImageState(state: AddImageState = initialState, action: Actio
 
         case at.ADD_IMAGE_REQUEST_SUCCESS: {
 
-            const { response, success, requestComplete } = action.payload
+            const { response, success } = action.payload
             
-            return { ...state, response, success, requestComplete }
+            return { ...state, response, success }
         }
 
         case at.ADD_IMAGE_REQUEST_ERROR: {
@@ -38,7 +40,14 @@ export function addImageState(state: AddImageState = initialState, action: Actio
 
         case at.RESET_ADD_IMAGE_REQUEST: {
 
-            return { ...state, response: {}, success: null, requestComplete: null, error: null, errorMessage: null }
+            return { ...state, response: {}, success: null, requestComplete: null, error: null, errorMessage: null, requestInProgress: null }
+        }
+
+        case at.UPDATE_ADD_IMAGE_REQUEST_STATUS: {
+
+            const { requestInProgress, requestComplete } = action.payload
+
+            return { ...state, requestInProgress, requestComplete }
         }
 
         default: {
