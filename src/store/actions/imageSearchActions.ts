@@ -3,11 +3,25 @@ import { Action } from '../../interfaces/action'
 
 import { MatchResponse } from '../../services/searchService'
 
-export class ExecuteImageSearch implements Action {
+export class UpdateImageSearchRequestData implements Action {
 
-    public type: string = at.EXECUTE_IMAGE_SEARCH
+    public type: string = at.UPDATE_IMAGE_SEARCH_REQUEST_DATA
 
-    constructor(public payload: { response: MatchResponse, success: boolean, requestComplete: boolean, error?: boolean, errorMessage?: boolean }) {}
+    constructor(public payload: { response: MatchResponse, success: boolean }) {}
+}
+
+export class UpdateImageSearchRequestStatus implements Action {
+
+    public type: string = at.UPDATE_IMAGE_SEARCH_REQUEST_STATUS
+
+    constructor(public payload: { requestInProgress: boolean, requestComplete: boolean }) {}
+}
+
+export class UpdateImageSearchRequestError implements Action {
+
+    public type: string = at.UPDATE_IMAGE_SEARCH_REQUEST_ERROR
+
+    constructor(public payload: { error: boolean, errorMessage: any }) {}
 }
 
 export class ResetImageSearch implements Action {

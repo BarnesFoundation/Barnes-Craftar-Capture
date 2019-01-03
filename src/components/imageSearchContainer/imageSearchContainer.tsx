@@ -2,7 +2,7 @@ import * as React from 'react'
 import { ImageSearchView } from './imageSearchView/imageSearchView'
 import { SearchService, MatchResponse } from '../../services/searchService'
 import { connect } from 'react-redux'
-import { ResetImageSearch, ExecuteImageSearch } from '../../store/actions/imageSearchActions'
+import { UpdateImageSearchRequestStatus, UpdateImageSearchRequestData, UpdateImageSearchRequestError, ResetImageSearch } from '../../store/actions/imageSearchActions'
 import { SetCollectionItem } from '../../store/actions/collectionItemActions'
 import { Redirect } from 'react-router-dom'
 import { ResizeService } from 'src/services/resizeService';
@@ -21,7 +21,8 @@ export interface Props {
     // Image Search State
     response: MatchResponse,
     success: boolean,
-    requestComplete: boolean
+    requestInProgress: boolean,
+    requestComplete: boolean,
     error: boolean,
     errorMessage: string,
 }
@@ -41,34 +42,32 @@ class ImageSearchContainer extends React.Component<Props> {
 
     imageSearch = async () => {
 
-        let response
-        let success
-        let requestComplete
-        let error = null
-        let errorMessage = null
+        const { croppedPhotoUri } = this.props
+
+        let requestInProgress = true
+        let requestComplete = false
+        this.props.dispatch(new UpdateImageSearchRequestStatus({ requestInProgress, requestComplete }))
 
         try {
+            // Resize the image as a blob
+            const imageBlob = await this.resizeService.resizeImage(croppedPhotoUri, 'BLOB', 'QUERY_IMAGE') as Blob
 
-            console.log('Resizing prior to search')
-
-            // Resize the image as a blob and execute the search
-            const imageBlob = await this.resizeService.resizeImage(this.props.croppedPhotoUri, 'BLOB', 'QUERY_IMAGE') as Blob
-            response = await this.searchService.findImageMatch(imageBlob)
-            success = response.success
+            // Execute the search
+            const response = await this.searchService.findImageMatch(imageBlob)
+            const success = response.success
+            this.props.dispatch(new UpdateImageSearchRequestData({ response, success }))
         }
 
         catch (errorOutput) {
-
-            // Error information
-            success = false
-            errorMessage = errorOutput
-            error = true
+            // Update the search request error
+            const error = true
+            const errorMessage = errorOutput
+            this.props.dispatch(new UpdateImageSearchRequestError({ error, errorMessage }))
         }
-        
-        requestComplete = true
 
-        // Store the image search information
-        this.props.dispatch(new ExecuteImageSearch({ response, success, requestComplete, error, errorMessage }))
+        requestInProgress = false
+        requestComplete = true
+        this.props.dispatch(new UpdateImageSearchRequestStatus({ requestInProgress, requestComplete }))
     }
 
     setCollectionItem = () => {
@@ -78,7 +77,7 @@ class ImageSearchContainer extends React.Component<Props> {
 
     public render() {
 
-        const { id } = this.props
+        const { croppedPhotoUri, success, response, error, errorMessage, requestComplete, requestInProgress, id } = this.props
 
         // If the id was set, navigate to Camera Container component
         if (id) {
@@ -90,14 +89,14 @@ class ImageSearchContainer extends React.Component<Props> {
         return (
             <ImageSearchView
                 setCollectionItem={this.setCollectionItem}
-                photoUri={this.props.croppedPhotoUri}
+                photoUri={croppedPhotoUri}
                 findImageMatch={this.imageSearch}
-                imageMatchSuccess={this.props.success}
-                imageMatchResponse={this.props.response}
-                requestError={this.props.error}
-                requestErrorMessage={this.props.errorMessage}
-                requestComplete={this.props.requestComplete}>
-            </ImageSearchView>
+                success={success}
+                response={response}
+                error={error}
+                errorMessage={errorMessage}
+                requestComplete={requestComplete}
+                requestInProgress={requestInProgress}/>
         )
     }
 }
@@ -105,7 +104,7 @@ class ImageSearchContainer extends React.Component<Props> {
 const mapStateToProps = state => {
 
     const { croppedPhotoUri } = state.cropState
-    const { id, uuid } = state.collectionItemState 
+    const { id, uuid } = state.collectionItemState
 
     return { ...state.imageSearchState, croppedPhotoUri, id, uuid }
 }
