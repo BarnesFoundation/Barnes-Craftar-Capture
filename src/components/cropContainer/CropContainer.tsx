@@ -41,7 +41,7 @@ class CropContainer extends React.Component<Props> {
 
         this.props.dispatch(new UpdateCroppingStatus({ croppingIsLoading, croppingIsFinished }))
 
-        const croppedPhotoUri = await this.cropper.getCroppedCanvas().toDataURL('image/jpeg', 1)
+        const croppedPhotoUri = this.cropper.getCroppedCanvas().toDataURL('image/jpeg', 1)
         this.props.dispatch(new SetCroppedPhoto({ croppedPhotoUri, photoWasCropped }))
 
         croppingIsLoading = false
@@ -56,7 +56,7 @@ class CropContainer extends React.Component<Props> {
         const { photoWasCropped, id, capturedPhotoUri, croppingIsLoading, croppingIsFinished } = this.props
 
         // If the photo was cropped but not id is set, navigate to Image Search component
-        /* if ((photoWasCropped && croppingIsFinished) && !id) {
+        if ((photoWasCropped && croppingIsFinished) && !id) {
             return (
                 <Redirect to={{
                     pathname: '/search-image',
@@ -71,7 +71,7 @@ class CropContainer extends React.Component<Props> {
                     pathname: '/add-image',
                 }} />
             )
-        } */
+        }
 
         return (
             <CropperView
