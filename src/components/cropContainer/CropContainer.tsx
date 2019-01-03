@@ -1,10 +1,9 @@
 import * as React from 'react'
 import { Redirect } from 'react-router-dom'
 import { CropperView } from './cropperView/cropperView'
-import { LoadingDialog } from '../../shared/components/loadingDialog'
 
 import { connect } from 'react-redux'
-import { SetCroppedPhoto, ResetCroppedPhoto } from '../../store/actions/cropActions'
+import { SetCroppedPhoto, ResetCroppedPhoto, UpdateCroppingStatus } from '../../store/actions/cropActions'
 
 import Cropper from 'cropperjs'
 import 'cropperjs/dist/cropper.css'
@@ -15,6 +14,8 @@ export interface Props {
     // Crop State
     croppedPhotoUri: string,
     photoWasCropped: boolean,
+    croppingIsLoading: boolean,
+    croppingIsFinished: boolean,
 
     // Camera State
     capturedPhotoUri: string,
@@ -26,7 +27,6 @@ export interface Props {
 class CropContainer extends React.Component<Props> {
 
     cropper: Cropper
-    state = { croppingInProgress: false }
 
     constructor(props) {
         super(props)
@@ -35,60 +35,60 @@ class CropContainer extends React.Component<Props> {
     componentWillUnmount = () => { this.props.dispatch(new ResetCroppedPhoto()) }
 
     cropPhoto = async () => {
-        /* console.log('Cropping...')
-        this.setState({ croppingInProgress : true }) */
-
-        const croppedPhotoUri = this.cropper.getCroppedCanvas().toDataURL('image/jpeg', 1)
         const photoWasCropped = true
+        let croppingIsLoading = true
+        let croppingIsFinished = false
 
+        this.props.dispatch(new UpdateCroppingStatus({ croppingIsLoading, croppingIsFinished }))
+
+        const croppedPhotoUri = await this.cropper.getCroppedCanvas().toDataURL('image/jpeg', 1)
         this.props.dispatch(new SetCroppedPhoto({ croppedPhotoUri, photoWasCropped }))
 
-        /* this.setState({ croppingInProgress : false })
-        console.log('Cropping done') */
+        croppingIsLoading = false
+        croppingIsFinished = true
+        this.props.dispatch(new UpdateCroppingStatus({ croppingIsLoading, croppingIsFinished }))
     }
 
     initializeCropper = (photoElement: HTMLImageElement) => { this.cropper = new Cropper(photoElement, { background: false }) }
 
     public render() {
 
-        const { photoWasCropped, id, capturedPhotoUri } = this.props
+        const { photoWasCropped, id, capturedPhotoUri, croppingIsLoading, croppingIsFinished } = this.props
 
         // If the photo was cropped but not id is set, navigate to Image Search component
-        if (photoWasCropped && !id) {
+        /* if ((photoWasCropped && croppingIsFinished) && !id) {
             return (
                 <Redirect to={{
                     pathname: '/search-image',
-                }}>
-                </Redirect>
+                }} />
             )
         }
 
         // If the photo was cropped and an id is already set, navigate to Add Image component
-        if (photoWasCropped && id) {
+        if ((photoWasCropped && croppingIsFinished) && id) {
             return (
                 <Redirect to={{
                     pathname: '/add-image',
-                }}>
-                </Redirect>
+                }} />
             )
-        }
+        } */
 
         return (
-            <>
-                <CropperView
-                    photoUri={capturedPhotoUri}
-                    initializeCropper={this.initializeCropper}
-                    cropper={this.cropper}
-                    cropPhoto={this.cropPhoto}>
-                </CropperView>
-                {(this.state.croppingInProgress) ? <LoadingDialog></LoadingDialog> : null}
-            </>
+            <CropperView
+                photoWasCropped={this.props.photoWasCropped}
+                photoUri={this.props.capturedPhotoUri}
+                initializeCropper={this.initializeCropper}
+                cropper={this.cropper}
+                cropPhoto={this.cropPhoto}
+                croppingIsLoading={this.props.croppingIsLoading}
+                croppingIsFinished={this.props.croppingIsFinished}>
+            </CropperView>
         )
 
     }
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state: any) => ({
     ...state.cropState, ...state.cameraState, ...state.collectionItemState
 })
 
