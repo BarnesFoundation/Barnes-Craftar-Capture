@@ -7,6 +7,7 @@ import { MatchResponse } from '../../services/searchService'
 export interface ImageSearchState {
     response: {} | MatchResponse, 
     success: boolean, 
+    requestInProgress: boolean,
     requestComplete: boolean, 
     error: boolean, 
     errorMessage: any
@@ -15,6 +16,7 @@ export interface ImageSearchState {
 export const initialState: ImageSearchState = {
     response: {},
     success: null,
+    requestInProgress: null,
     requestComplete: null,
     error: null,
     errorMessage: null
@@ -24,11 +26,25 @@ export function imageSearchState(state = initialState, action: Action) {
 
     switch (action.type) {
 
-        case at.EXECUTE_IMAGE_SEARCH: {
+        case at.UPDATE_IMAGE_SEARCH_REQUEST_DATA: {
 
-            const { response, success, requestComplete, error, errorMessage } = action.payload
+            const { response, success } = action.payload
 
-            return { ...state, response, success, requestComplete, error, errorMessage }
+            return { ...state, response, success }
+        }
+
+        case at.UPDATE_IMAGE_SEARCH_REQUEST_STATUS: {
+
+            const { requestInProgress, requestComplete } = action.payload
+
+            return { ...state, requestInProgress, requestComplete } 
+        }
+
+        case at.UPDATE_IMAGE_SEARCH_REQUEST_ERROR: {
+
+            const { error, errorMessage } = action.payload
+
+            return { ...state, error, errorMessage }
         }
 
         case at.RESET_IMAGE_SEARCH: {

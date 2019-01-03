@@ -31,7 +31,6 @@ class AddImageView extends React.Component<Props, object> {
         const { photoUri, requestComplete, success, error, errorMessage, requestInProgress, id } = this.props
 
         const displayText = 'Adding image to Catchoom'
-        const dialogOpen = requestInProgress
 
         const photoView = (<PhotoView photoUri={photoUri}></PhotoView>)
         const addImageButton = (<div className="button-container"><Button variant="contained" onClick={this.addImageToItem}>Add Image to Item</Button></div>)
