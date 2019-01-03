@@ -13,7 +13,6 @@ export interface Props {
 
     // Crop State
     croppedPhotoUri: string,
-    photoWasCropped: boolean,
     croppingIsLoading: boolean,
     croppingIsFinished: boolean,
 
@@ -35,31 +34,26 @@ class CropContainer extends React.Component<Props> {
     componentWillUnmount = () => { this.props.dispatch(new ResetCroppedPhoto()) }
 
     cropPhoto = async () => {
-        const photoWasCropped = true
         let croppingIsLoading = true
         let croppingIsFinished = false
-
         this.props.dispatch(new UpdateCroppingStatus({ croppingIsLoading, croppingIsFinished }))
 
         const croppedPhotoUri = this.cropper.getCroppedCanvas().toDataURL('image/jpeg', 1)
-        this.props.dispatch(new SetCroppedPhoto({ croppedPhotoUri, photoWasCropped }))
+        this.props.dispatch(new SetCroppedPhoto({ croppedPhotoUri }))
 
         croppingIsLoading = false
         croppingIsFinished = true
         this.props.dispatch(new UpdateCroppingStatus({ croppingIsLoading, croppingIsFinished }))
     }
 
-    initializeCropper = (photoElement: HTMLImageElement) => {
-
-        this.cropper = new Cropper(photoElement, { zoomable: false, background: false, viewMode: 1, })
-    }
+    initializeCropper = (photoElement: HTMLImageElement) => { this.cropper = new Cropper(photoElement, { zoomable: false, background: false, viewMode: 1, }) }
 
     public render() {
 
-        const { photoWasCropped, id, capturedPhotoUri, croppingIsLoading, croppingIsFinished } = this.props
+        const { id, capturedPhotoUri, croppingIsLoading, croppingIsFinished } = this.props
 
         // If the photo was cropped but not id is set, navigate to Image Search component
-        if ((photoWasCropped && croppingIsFinished) && !id) {
+        if ((croppingIsFinished) && !id) {
             return (
                 <Redirect to={{
                     pathname: '/search-image',
@@ -68,7 +62,7 @@ class CropContainer extends React.Component<Props> {
         }
 
         // If the photo was cropped and an id is already set, navigate to Add Image component
-        if ((photoWasCropped && croppingIsFinished) && id) {
+        if ((croppingIsFinished) && id) {
             return (
                 <Redirect to={{
                     pathname: '/add-image',
@@ -78,14 +72,12 @@ class CropContainer extends React.Component<Props> {
 
         return (
             <CropperView
-                photoWasCropped={photoWasCropped}
                 photoUri={capturedPhotoUri}
                 initializeCropper={this.initializeCropper}
                 cropper={this.cropper}
                 cropPhoto={this.cropPhoto}
                 croppingIsLoading={croppingIsLoading}
-                croppingIsFinished={croppingIsFinished}>
-            </CropperView>
+            />
         )
 
     }

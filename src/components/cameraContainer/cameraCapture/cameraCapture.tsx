@@ -7,12 +7,11 @@ export interface Props {
     onClearCurrentItem: any,
 
     capturedPhotoUri: string,
-    photoWasCaptured: boolean,
 
     id: string,
 
     photoIsLoading: boolean,
-    photoFinishedLoading: boolean
+    photoIsLoaded: boolean
 }
 
 class CameraCapture extends React.Component<Props, object> {
@@ -27,11 +26,8 @@ class CameraCapture extends React.Component<Props, object> {
     public render() {
 
         const displayText = 'Loading the captured image'
-        const dialogOpen = (this.props.photoIsLoading && !this.props.photoFinishedLoading) ? true : false
 
-        const id = this.props.id
-        const onClearCurrentItem = this.props.onClearCurrentItem
-        const onTakePhoto = this.props.onTakePhoto
+        const { id, photoIsLoading, onClearCurrentItem, onTakePhoto } = this.props
 
         const setItemText = (<p>Currently capturing photos for item ID: {id}</p>)
         const noSetItemText = (<p>Capture a photo of an existing item</p>)
@@ -49,7 +45,7 @@ class CameraCapture extends React.Component<Props, object> {
                 {(id) ? setItemText : noSetItemText}
                 {(id) ? clearItemButton : null}
                 {cameraButton}
-                <LoadingDialog displayText={displayText} dialogOpen={dialogOpen} />
+                {(photoIsLoading) ? <LoadingDialog displayText={displayText} dialogOpen={true}/> : null}
             </div>
         )
     }

@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { SetCapturedPhotoAndLoading, ClearCapturedPhoto, UpdatePhotoLoaded, UpdatePhotoCapturedAndLoading } from '../../store/actions/cameraActions'
+import { SetCapturedPhotoData, ClearCapturedPhoto, UpdatePhotoLoaded } from '../../store/actions/cameraActions'
 import { ResetSetCollectionItem } from '../../store/actions/collectionItemActions'
 import { ResizeService } from '../../services/resizeService'
 import { CameraCapture } from './cameraCapture/cameraCapture'
@@ -11,9 +11,8 @@ export interface Props {
 
     // Camera State
     capturedPhotoUri: string,
-    photoWasCaptured: boolean,
     photoIsLoading: boolean,
-    photoFinishedLoading: boolean,
+    photoIsLoaded: boolean,
 
     // Collection Item State
     id: string,
@@ -37,22 +36,20 @@ class CameraContainer extends React.Component<Props> {
 
     onTakePhoto = async (event: React.ChangeEvent<HTMLInputElement>) => {
 
-        const photoWasCaptured = true
+        // Update that photo is loading
         let photoIsLoading = true
-        let photoFinishedLoading = false
-    
-        // Update that photo was captured and is loading
-        this.props.dispatch(new UpdatePhotoCapturedAndLoading({ photoWasCaptured, photoIsLoading }))
+        let photoIsLoaded = false
+        this.props.dispatch(new UpdatePhotoLoaded({ photoIsLoading, photoIsLoaded }))
 
         // Get the file and convert to correctly oriented uri
         const file = event.target.files[0]
         const capturedPhotoUri = await this.resizeService.correctImageOrientation(URL.createObjectURL(file))
+        this.props.dispatch(new SetCapturedPhotoData({ capturedPhotoUri }))
 
-        photoFinishedLoading = true
+        // Update that photo is loaded
         photoIsLoading = false
-
-        // Update state with the uri 
-        this.props.dispatch(new SetCapturedPhotoAndLoading({ capturedPhotoUri, photoFinishedLoading, photoIsLoading }))
+        photoIsLoaded = true
+        this.props.dispatch(new UpdatePhotoLoaded({ photoIsLoading, photoIsLoaded }))
     }
 
     onClearCurrentItem = (event) => {
@@ -62,16 +59,11 @@ class CameraContainer extends React.Component<Props> {
 
     public render() {
 
-        const id = this.props.id
-        const capturedPhotoUri = this.props.capturedPhotoUri
+        const { id, capturedPhotoUri, photoIsLoading, photoIsLoaded } = this.props
 
-        const photoWasCaptured = this.props.photoWasCaptured
-        const photoIsLoading = this.props.photoIsLoading
-        const photoFinishedLoading = this.props.photoFinishedLoading
 
         // Navigate to crop component once a photo is captured
-        if (photoWasCaptured && photoFinishedLoading) {
-            console.log('Navigating to crop', photoFinishedLoading)
+        if (photoIsLoaded) {
             return (<Redirect to={{ pathname: '/crop-image' }}></Redirect>)
         }
 
@@ -83,9 +75,8 @@ class CameraContainer extends React.Component<Props> {
                 onTakePhoto={this.onTakePhoto}
                 onClearCurrentItem={this.onClearCurrentItem}
                 capturedPhotoUri={capturedPhotoUri}
-                photoWasCaptured={photoWasCaptured}
                 photoIsLoading={photoIsLoading}
-                photoFinishedLoading={photoFinishedLoading}
+                photoIsLoaded={photoIsLoaded}
                 id={id}
             />
         )
