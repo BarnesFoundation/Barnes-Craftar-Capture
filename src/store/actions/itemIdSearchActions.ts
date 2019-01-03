@@ -1,11 +1,18 @@
 import * as at from '../actionTypes/itemIdSearchActionTypes'
 import { Action } from '../../interfaces/action'
 
-export class ExecuteItemIdSearch implements Action {
+export class UpdateItemIdSearchData implements Action {
 
-    public type: string = at.EXECUTE_ITEM_ID_SEARCH
+    public type: string = at.UPDATE_ITEM_ID_SEARCH_DATA
 
-    constructor(public payload: { response: any, success: boolean, requestComplete: boolean, searchedId: string }) {}
+    constructor(public payload: { response: any, success: boolean, searchedId: string }) {}
+}
+
+export class UpdateItemIdSearchStatus implements Action {
+
+    public type: string = at.UPDATE_ITEM_ID_SEARCH_STATUS
+
+    constructor(public payload: { requestInProgress: boolean, requestComplete: boolean }) {}
 }
 
 export class SubmitItemIdSearchForm implements Action {

@@ -1,11 +1,13 @@
 import * as React from 'react'
 import { SearchResponse } from '../../../services/itemSearchService'
 import { ItemSearchForm } from '../itemSearchView/itemSearchForm'
+import { LoadingDialog } from '../../../shared/components/loadingDialog'
 import Button from '@material-ui/core/Button'
 
 interface Props {
     response: SearchResponse,
     success: boolean,
+    requestInProgress: boolean,
     requestComplete: boolean,
     searchedId: string,
     setSearchedItem: any
@@ -18,7 +20,9 @@ class ItemSearchView extends React.Component<Props> {
 
     public render() {
 
-        const { requestComplete, success, searchedId } = this.props
+        const { requestComplete, requestInProgress, success } = this.props
+
+        const displayText = 'Searching Catchoom for the ID'
 
         const itemSearchForm = (<ItemSearchForm handleSubmit={this.props.handleSubmit}></ItemSearchForm>)
         const setItemButton = (<Button variant="contained" onClick={this.props.setSearchedItem}>Set item</Button>)
@@ -53,6 +57,7 @@ class ItemSearchView extends React.Component<Props> {
                 <div className="button-container">
                     {(requestComplete && success) ? setItemButton : null}
                 </div>
+                {(requestInProgress) ? <LoadingDialog displayText={displayText} dialogOpen={true} /> : null}
             </div>
         )
 

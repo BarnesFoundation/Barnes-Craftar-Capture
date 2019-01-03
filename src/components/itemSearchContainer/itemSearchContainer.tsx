@@ -5,7 +5,7 @@ import { Redirect } from 'react-router-dom'
 import { ItemSearchService, SearchResponse } from '../../services/itemSearchService'
 import { ItemSearchView } from './itemSearchView/itemSearchView'
 
-import { ExecuteItemIdSearch, SubmitItemIdSearchForm, ResetItemIdSearch } from '../../store/actions/itemIdSearchActions'
+import { UpdateItemIdSearchData, UpdateItemIdSearchStatus, SubmitItemIdSearchForm, ResetItemIdSearch } from '../../store/actions/itemIdSearchActions'
 import { SetCollectionItem } from '../../store/actions/collectionItemActions'
 
 interface Props {
@@ -15,6 +15,7 @@ interface Props {
     // Image Search State
     response: SearchResponse,
     success: boolean,
+    requestInProgress: boolean,
     requestComplete: boolean,
     searchedId: string
 
@@ -35,15 +36,28 @@ class ItemSearchContainer extends React.Component<Props> {
     componentWillUnmount() { this.props.dispatch(new ResetItemIdSearch()) }
 
     handleSubmit = async (event) => {
+
+        // Prevent default behavior and reset the search before starting a new one
         event.preventDefault()
         this.props.dispatch(new ResetItemIdSearch())
 
+        // Update that request is in progress
+        let requestInProgress = true
+        let requestComplete = false
+        this.props.dispatch(new UpdateItemIdSearchStatus({ requestInProgress, requestComplete }))
+
+        // Get the id to search
         const searchedId = event.target.itemId.value
+
+        // Update with response data
         const response = await this.itemSearchService.searchByItem(searchedId)
         const success = response.success
-        const requestComplete = true
+        this.props.dispatch(new UpdateItemIdSearchData({ response, success, searchedId }))
 
-        this.props.dispatch(new ExecuteItemIdSearch({ response, success, requestComplete, searchedId }))
+        // Update that request is complete
+        requestInProgress = false
+        requestComplete = true
+        this.props.dispatch(new UpdateItemIdSearchStatus({ requestInProgress, requestComplete }))
     }
 
     setSearchedItem = (event: any) => {
@@ -54,7 +68,7 @@ class ItemSearchContainer extends React.Component<Props> {
 
     public render() {
 
-        const { searchedId, response, success, requestComplete, id } = this.props
+        const { searchedId, response, success, requestInProgress, requestComplete, id } = this.props
 
         if (id) {
             return (
@@ -67,10 +81,11 @@ class ItemSearchContainer extends React.Component<Props> {
                 searchedId={searchedId}
                 response={response}
                 success={success}
+                requestInProgress={requestInProgress}
                 requestComplete={requestComplete}
                 setSearchedItem={this.setSearchedItem}
                 handleSubmit={this.handleSubmit}
-                />
+            />
         )
     }
 }
