@@ -41,12 +41,15 @@ class AddImageContainer extends React.Component<Props> {
 
     addImageToItem = async () => {
         try {
+
+            // Get the resized image blob
             const imageBlob = await this.resizeService.resizeImage(this.props.croppedPhotoUri, 'BLOB', 'REFERENCE_IMAGE') as Blob
 
             const response = await this.imageService.addImage(imageBlob, this.props.uuid)
             const success = response.success
             const requestComplete = true
 
+            // Update the image request success
             this.props.dispatch(new AddImageRequestSuccess({response, success, requestComplete}))
         }
 
@@ -54,6 +57,7 @@ class AddImageContainer extends React.Component<Props> {
             const error = true
             const errorMessage = JSON.stringify(e)
 
+            // Update the image request error
             this.props.dispatch(new AddImageRequestError({error, errorMessage}))
         }
     }
@@ -80,8 +84,12 @@ class AddImageContainer extends React.Component<Props> {
     }
 }
 
-const mapStateToProps = (state: any) => ({
-    ...state.addImageState, ...state.collectionItemState, ...state.cropState
-})
+const mapStateToProps = (state: any) => {
+
+    const { id, uuid } = state.collectionItemState
+    const { croppedPhotoUri } = state.cropState
+
+    return { ...state.addImageState, id, croppedPhotoUri }
+}
 
 export const ConnectedAddImageContainer = connect(mapStateToProps)(AddImageContainer)
