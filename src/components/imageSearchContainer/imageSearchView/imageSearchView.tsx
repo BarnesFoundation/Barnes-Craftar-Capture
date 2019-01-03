@@ -69,12 +69,13 @@ class ImageSearchView extends React.Component<Props, object> {
             errorSection = (<p>An error occurred when searching with that image: {errorMessage}</p>)
         }
 
-        let searchButton = (<Button variant="contained" onClick={this.findImageMatch}>Search</Button>)
+        let searchButton = (<Button variant="contained" onClick={this.findImageMatch}>Search Catchoom for Image</Button>)
         let photoView = (<PhotoView photoUri={this.props.photoUri}></PhotoView>)
         let cameraBtn = (<Button variant="contained" component={({ innerRef, ...props }) => <Link {...props} to="/camera-capture" />}>Return to Camera</Button>)
 
         return (
             <div className="image-search-container">
+                <h2>Image Search</h2>
                 {photoView}
                 {(requestComplete) ? null : searchButton}
                 {(requestComplete && success) ? successSection : null}
