@@ -36,7 +36,7 @@ class CropperView extends React.Component<Props, object> {
 
     public render() {
 
-        const { croppingIsLoading, croppingIsFinished, photoWasCropped } = this.props
+        const { croppingIsLoading, croppingIsFinished, photoWasCropped, photoUri } = this.props
 
         const displayText = 'Cropping image'
         console.log('cropping is loading ' , croppingIsLoading)
@@ -44,7 +44,7 @@ class CropperView extends React.Component<Props, object> {
         return (
             <div className="crop-container">
                 {(croppingIsLoading) ? <LoadingDialog dialogOpen={true} displayText={displayText} /> : null}
-                <PhotoView photoUri={this.props.photoUri} photoRef={this.photoRef}></PhotoView>
+                <PhotoView photoUri={photoUri} photoRef={this.photoRef}></PhotoView>
                 <Button variant="contained" onClick={this.onEvent}>Crop</Button>
             </div>
         )
