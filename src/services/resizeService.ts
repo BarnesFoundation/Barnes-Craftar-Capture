@@ -80,37 +80,96 @@ class ResizeService {
 
     private getResizedDimensions(orientation: string, cHeight: number, cWidth: number, imageType: string): Dimensions {
 
-        let scaleFactor
-        let width
-        let height
-        let defaultSize
 
         switch (imageType) {
             case REFERENCE_IMAGE:
-                defaultSize = 640
-                break
+                return this.getResizedReferenceImageDimensions(orientation, cHeight, cWidth)
 
             case QUERY_IMAGE:
-                defaultSize = 320
-                break
+                return this.getResizedQueryImageDimensions(orientation, cHeight, cWidth)
+
+            default:
+                return null
         }
+
+
+    }
+
+    private getResizedQueryImageDimensions(orientation: string, cHeight: number, cWidth: number) {
+        let scaleFactor
+        let width
+        let height
+        let shorterEdgeSize = 240
 
         switch (orientation) {
             case LANDSCAPE:
-                width = defaultSize
-                scaleFactor = width / cWidth
-                height = cHeight * scaleFactor
-                break
-
-            case PORTRAIT:
-                height = defaultSize
+                height = shorterEdgeSize
                 scaleFactor = height / cHeight
                 width = cWidth * scaleFactor
                 break
 
+            case PORTRAIT:
+                width = shorterEdgeSize
+                scaleFactor = width / cWidth
+                height = cHeight * scaleFactor
+                break
+
             case SQUARE:
-                height = defaultSize
-                width = defaultSize
+                height = shorterEdgeSize
+                width = shorterEdgeSize
+                break
+
+        }
+        return new Dimensions(height, width)
+    }
+
+    private getResizedReferenceImageDimensions(orientation: string, cHeight: number, cWidth: number): Dimensions {
+
+        let scaleFactor
+        let width
+        let height
+        let minSizeShorterEdge = 480
+
+        switch (orientation) {
+            case LANDSCAPE:
+                if (cHeight < minSizeShorterEdge) {
+                    height = minSizeShorterEdge
+                    scaleFactor = height / cHeight
+                    width = cWidth * scaleFactor
+                }
+
+                else {
+                    height = cHeight
+                    width = cWidth
+                }
+
+                break
+
+            case PORTRAIT:
+                if (cWidth < minSizeShorterEdge) {
+                    width = minSizeShorterEdge
+                    scaleFactor = width / cWidth
+                    height = cHeight * scaleFactor
+                }
+
+                else {
+                    height = cHeight
+                    width = cWidth
+                }
+
+                break
+
+            case SQUARE:
+                if (cWidth < minSizeShorterEdge) {
+                    height = minSizeShorterEdge
+                    width = minSizeShorterEdge
+                }
+
+                else {
+                    height = cHeight
+                    width = cWidth
+                }
+
                 break
 
         }

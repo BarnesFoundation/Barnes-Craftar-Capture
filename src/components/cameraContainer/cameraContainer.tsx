@@ -61,7 +61,6 @@ class CameraContainer extends React.Component<Props> {
 
         const { id, capturedPhotoUri, photoIsLoading, photoIsLoaded } = this.props
 
-
         // Navigate to crop component once a photo is captured
         if (photoIsLoaded) {
             return (<Redirect to={{ pathname: '/crop-image' }}></Redirect>)
