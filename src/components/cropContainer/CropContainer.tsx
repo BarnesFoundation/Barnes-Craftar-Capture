@@ -38,12 +38,13 @@ class CropContainer extends React.Component<Props> {
         let croppingIsFinished = false
         this.props.dispatch(new UpdateCroppingStatus({ croppingIsLoading, croppingIsFinished }))
 
-        const croppedPhotoUri = this.cropper.getCroppedCanvas().toDataURL('image/jpeg', 1)
+
+        const croppedPhotoUri = await new Promise<string>((resolve) => { resolve(this.cropper.getCroppedCanvas().toDataURL('image/jpeg', 1)) })
         this.props.dispatch(new SetCroppedPhoto({ croppedPhotoUri }))
 
         croppingIsLoading = false
         croppingIsFinished = true
-        this.props.dispatch(new UpdateCroppingStatus({ croppingIsLoading, croppingIsFinished }))
+        setTimeout(() => { this.props.dispatch(new UpdateCroppingStatus({ croppingIsLoading, croppingIsFinished })) }, 500)
     }
 
     initializeCropper = (photoElement: HTMLImageElement) => { this.cropper = new Cropper(photoElement, { zoomable: false, background: false, viewMode: 1, }) }
