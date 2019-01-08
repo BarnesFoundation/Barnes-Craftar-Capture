@@ -1,11 +1,11 @@
-@import './components/photoviewer.scss';
-@import './components/itemSearchForm.scss';
-@import './components/imageSearchViewContainer.scss';
-@import './components/cameraContainer.scss';
-@import './components/cropContainer.scss';
-@import './components/itemSearchContainer.scss';
-@import './components/addImageContainer.scss';
-@import './components/app.scss';
+
+
+$button-color: #ff8f00;
+$button-fc: white;
+
+html {
+    background-image: url('../assets/background.png');
+}
 
 body {
     margin: 0;
@@ -19,3 +19,16 @@ body {
     height: inherit;
     width: inherit;
 }
+
+h1 {
+    color: white;
+}
+
+@import './components/photoviewer.scss';
+@import './components/itemSearchForm.scss';
+@import './components/imageSearchViewContainer.scss';
+@import './components/cameraContainer.scss';
+@import './components/cropContainer.scss';
+@import './components/itemSearchContainer.scss';
+@import './components/addImageContainer.scss';
+@import './components/app.scss';
