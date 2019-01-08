@@ -26,3 +26,10 @@ export class ResetItemIdSearch implements Action {
 
     public type: string = at.RESET_ITEM_ID_SEARCH
 }
+
+export class UpdateItemImageUrl implements Action {
+
+    public type: string = at.UPDATE_ITEM_IMAGE_URL
+
+    constructor(public payload: { itemImageUrl: string }) {}
+}

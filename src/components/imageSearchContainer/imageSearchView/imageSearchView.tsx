@@ -56,7 +56,7 @@ class ImageSearchView extends React.Component<Props, object> {
 
             successSection = (
                 <div>
-                    <p>Match found</p>
+                    <h3>Match found</h3>
                     <p>Record Id: {id}</p>
                     <p>Use 'Set Item' to capture additional reference images for this item</p>
                 </div>
