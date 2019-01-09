@@ -47,13 +47,15 @@ class AddImageView extends React.Component<Props, object> {
 
         return (
             <div className="add-image-container">
+                <h2>Add Image</h2>
+                <p>Use the button below to add the image to Catchoom</p>
                 {photoView}
                 {(requestComplete) ? null : addImageButton}
                 {(requestComplete && success) ? successSection : null}
                 {(requestComplete && !success) ? failSection : null}
                 {(error) ? errorSection : null}
                 {(requestComplete) ? cameraButton : null}
-                {(requestInProgress) ? <LoadingDialog displayText={displayText} dialogOpen={true}/> : null}
+                {(requestInProgress) ? <LoadingDialog displayText={displayText} dialogOpen={true} /> : null}
             </div>
         )
     }

@@ -48,7 +48,7 @@ export function imageSearchState(state = initialState, action: Action) {
         }
 
         case at.RESET_IMAGE_SEARCH: {
-            return initialState
+            return initialState  
         }
 
         default: {
