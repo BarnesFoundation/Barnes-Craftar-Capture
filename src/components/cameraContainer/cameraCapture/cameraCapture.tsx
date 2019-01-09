@@ -30,7 +30,7 @@ class CameraCapture extends React.Component<Props, object> {
 
         const { id, photoIsLoading, onClearCurrentItem, onTakePhoto } = this.props
 
-        const setItemText = (<p>Currently capturing photos for Item ID: {id}</p>)
+        const setItemText = (<p>Capturing additional reference images for Item ID: {id}</p>)
         const noSetItemText = (<p>Capture a photo of an existing item</p>)
 
         const clearItemButton = (<Button variant="contained" onClick={onClearCurrentItem}>Clear current item</Button>)
