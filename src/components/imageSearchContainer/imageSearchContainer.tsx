@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import { UpdateImageSearchRequestStatus, UpdateImageSearchRequestData, UpdateImageSearchRequestError, ResetImageSearch } from '../../store/actions/imageSearchActions'
 import { SetCollectionItem } from '../../store/actions/collectionItemActions'
 import { Redirect } from 'react-router-dom'
-import { ResizeService } from 'src/services/resizeService';
+import { ResizeService } from '../../services/resizeService';
 
 export interface Props {
 
