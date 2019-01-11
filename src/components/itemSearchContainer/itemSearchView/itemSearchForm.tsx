@@ -26,7 +26,9 @@ class ItemSearchForm extends React.Component<Props> {
         return (
             <div className="item-search-form">
                 <form className="form" onSubmit={this.handleSubmit} noValidate autoComplete="off">
-                    <TextField id="itemId" label="Item ID" margin="normal" />
+                    <div className="text-field">
+                        <TextField id="itemId" label="Item ID" margin="normal" />
+                    </div>
                     <Button variant="contained" type="submit" value="Submit">Submit</Button>
                 </form>
             </div>
