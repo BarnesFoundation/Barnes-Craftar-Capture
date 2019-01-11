@@ -46,7 +46,9 @@ class CropperView extends React.Component<Props, object> {
                     <li>Frames</li>
                     <li>Containers</li>
                 </ul> */}
-                <Button variant="contained" onClick={cropPhoto}>Crop</Button>
+                <div className="bottom-buttons">
+                    <Button variant="contained" onClick={cropPhoto}>Crop</Button>
+                </div>
                 {(croppingIsLoading) ? <LoadingDialog dialogOpen={true} displayText={displayText} /> : null}
             </div>
         )

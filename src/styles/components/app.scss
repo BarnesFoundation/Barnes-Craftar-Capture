@@ -3,11 +3,13 @@
     padding-top: $container-padding-top;
     height: inherit;
     width: inherit;
+    display: flex;
+    flex-direction: column;
     .button-container {
-        height: inherit;
         display: flex;
         flex-direction: column;
         justify-content: center;
+        flex-grow: 1;
         a {
             background-color:$app-button-bc;
             color: $app-button-fc;
