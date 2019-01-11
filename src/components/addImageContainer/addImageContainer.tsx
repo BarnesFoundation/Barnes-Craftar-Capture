@@ -3,7 +3,7 @@ import { AddImageView } from './addImageView/addImageView'
 import { ImageService, CreateResponse } from '../../services/imageService'
 import { connect } from 'react-redux'
 import { AddImageRequestSuccess, AddImageRequestError, ResetAddImageRequest, UpdateAddImageRequestStatus } from '../../store/actions/addImageActions'
-import { ResizeService } from 'src/services/resizeService';
+import { ResizeService } from '../../services/resizeService';
 
 export interface Props {
 

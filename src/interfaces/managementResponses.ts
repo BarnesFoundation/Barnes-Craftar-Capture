@@ -1,6 +1,6 @@
 /** Catchoom Management API Responses */
 
-interface ImageCreateResponse {
+export interface ImageCreateResponse {
     file: string,
     item: string,
     name: string,
@@ -13,7 +13,7 @@ interface ImageCreateResponse {
     uuid: string
 }
 
-interface ItemCreateResponse {
+export interface ItemCreateResponse {
     collection: string,
     content: any,
     name: string,
@@ -22,7 +22,7 @@ interface ItemCreateResponse {
     uuid: string
 }
 
-interface ItemSearchResponse {
+export interface ItemSearchResponse {
     collection: string,
     content: any,
     custom: any,
@@ -33,4 +33,4 @@ interface ItemSearchResponse {
     uuid: string
 }
 
-export { ImageCreateResponse, ItemCreateResponse, ItemSearchResponse }
+// export { ImageCreateResponse, ItemCreateResponse, ItemSearchResponse }
