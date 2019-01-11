@@ -1,6 +1,17 @@
 .crop-container {
     display: flex;
     flex-direction: column;
+    h2 {
+        margin-left: $margin-left;
+        color: $heading-color;
+    }
+    p {
+        margin-left: $margin-left;
+    }
+    button {
+        background-color: $button-bc;
+        color: $button-fc;
+    }
 }
 
 .cropper-point {
