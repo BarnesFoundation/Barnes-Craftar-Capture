@@ -23,12 +23,14 @@
     "experimentalDecorators": true,
   },
   "exclude": [
+    "dist",
+    "server",
     "node_modules",
     "build",
     "scripts",
     "acceptance-tests",
     "webpack",
     "jest",
-    "src/setupTests.ts"
+    "src/setupTests.ts", 
   ]
 }
