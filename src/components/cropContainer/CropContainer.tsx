@@ -47,7 +47,10 @@ class CropContainer extends React.Component<Props> {
         setTimeout(() => { this.props.dispatch(new UpdateCroppingStatus({ croppingIsLoading, croppingIsFinished })) }, 500)
     }
 
-    initializeCropper = (photoElement: HTMLImageElement) => { this.cropper = new Cropper(photoElement, { zoomable: false, background: false, viewMode: 1, }) }
+    initializeCropper = (photoElement: HTMLImageElement) => {
+        const dragMode = 'none' as Cropper.DragMode
+        this.cropper = new Cropper(photoElement, { zoomable: false, background: false, viewMode: 1, dragMode: dragMode })
+    }
 
     public render() {
 
