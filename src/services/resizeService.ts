@@ -9,6 +9,7 @@ const URI = 'URI'
 
 const QUERY_IMAGE = 'QUERY_IMAGE'
 const REFERENCE_IMAGE = 'REFERENCE_IMAGE'
+const DISPLAY_IMAGE = 'DISPLAY_IMAGE'
 
 class Dimensions {
     height: number
@@ -29,17 +30,20 @@ class ResizeService {
 
         return await new Promise<Blob | string>((resolve) => {
             image.onload = async () => {
-                let orientation = this.determineOrientation(image.height, image.width)
-                let d = this.getResizedDimensions(orientation, image.height, image.width, imageType)
+
                 console.log('Prior to resize dimensions - height: ' + image.height + ' width: ' + image.width)
+
+                let orientation = this.determineOrientation(image.height, image.width)
+                let dimensions = this.getResizedDimensions(orientation, image.height, image.width, imageType)
+                
                 const canvas = document.createElement('canvas')
-                canvas.height = d.height
-                canvas.width = d.width
+                canvas.height = dimensions.height
+                canvas.width = dimensions.width
 
                 const ctx = canvas.getContext('2d')
-                ctx.drawImage(image, 0, 0, d.width, d.height)
+                ctx.drawImage(image, 0, 0, dimensions.width, dimensions.height)
 
-                console.log('Resized dimenions - height: ' + d.height + ' width: ' + d.width)
+                console.log('Resized dimenions - height: ' + dimensions.height + ' width: ' + dimensions.width)
                 resolve(await this.getResizedResult(ctx, resultType))
             }
         })
@@ -87,6 +91,9 @@ class ResizeService {
 
             case QUERY_IMAGE:
                 return this.getResizedQueryImageDimensions(orientation, cHeight, cWidth)
+
+            case DISPLAY_IMAGE:
+                return this.getResizedDisplayImageDimensions(orientation, cHeight, cWidth)
 
             default:
                 return null
@@ -163,6 +170,59 @@ class ResizeService {
                 if (cWidth < minSizeShorterEdge) {
                     height = minSizeShorterEdge
                     width = minSizeShorterEdge
+                }
+
+                else {
+                    height = cHeight
+                    width = cWidth
+                }
+
+                break
+
+        }
+        return new Dimensions(height, width)
+    }
+
+    private getResizedDisplayImageDimensions(orientation: string, cHeight: number, cWidth: number): Dimensions {
+
+        let scaleFactor
+        let width
+        let height
+        let maxSizeLongerEdge = 480
+
+        switch (orientation) {
+            case LANDSCAPE:
+                if (cWidth > maxSizeLongerEdge) {
+                    width = maxSizeLongerEdge
+                    scaleFactor = width / cWidth
+                    height = cHeight * scaleFactor
+                }
+
+                else {
+                    height = cHeight
+                    width = cWidth
+                }
+
+                break
+
+            case PORTRAIT:
+                if (cHeight > maxSizeLongerEdge) {
+                    height = maxSizeLongerEdge
+                    scaleFactor = height / cHeight
+                    width = cWidth * scaleFactor
+                }
+
+                else {
+                    height = cHeight
+                    width = cWidth
+                }
+
+                break
+
+            case SQUARE:
+                if (cWidth > maxSizeLongerEdge) {
+                    height = maxSizeLongerEdge
+                    width = maxSizeLongerEdge
                 }
 
                 else {
