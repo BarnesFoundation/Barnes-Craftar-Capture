@@ -1,4 +1,7 @@
 .add-image-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
     h2 {
         margin-left: $margin-left;
         color: $heading-color;
@@ -9,6 +12,8 @@
     .button-container {
         display: flex;
         flex-direction: column;
+        flex: 1;
+        justify-content: flex-end;
         a, button {
             background-color: $button-bc;
             color: $button-fc;

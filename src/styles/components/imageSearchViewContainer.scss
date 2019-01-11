@@ -16,9 +16,15 @@
         background-color: $button-bc;
         color: $button-fc;
     }
+    .bottom-buttons {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        justify-content: flex-end;
+    }
 }
 
 .photoviewer {
-    flex-basis: 50%;
-    flex-grow: 1;
+    /* flex-basis: 50%;
+    flex-grow: 1; */
 }

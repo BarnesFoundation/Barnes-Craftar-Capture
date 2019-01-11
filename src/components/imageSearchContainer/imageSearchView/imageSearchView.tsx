@@ -77,12 +77,14 @@ class ImageSearchView extends React.Component<Props, object> {
             <div className="image-search-container">
                 <h2>Image Search</h2>
                 {photoView}
-                {(requestComplete) ? null : searchButton}
                 {(requestComplete && success) ? successSection : null}
                 {(requestComplete && !success) ? failSection : null}
                 {(error) ? errorSection : null}
-                {(requestComplete && success) ? setItem : null}
-                {cameraBtn}
+                <div className="bottom-buttons">
+                    {(requestComplete) ? null : searchButton}
+                    {(requestComplete && success) ? setItem : null}
+                    {cameraBtn}
+                </div>
                 {(requestInProgress) ? <LoadingDialog displayText={displayText} dialogOpen={true} /> : null}
             </div>
         )
