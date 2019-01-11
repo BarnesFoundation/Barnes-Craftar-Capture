@@ -42,10 +42,13 @@ class CameraContainer extends React.Component<Props> {
         this.props.dispatch(new UpdatePhotoLoaded({ photoIsLoading, photoIsLoaded }))
 
         // Get the file and convert to correctly oriented uri
-        const file = event.target.files[0]
-        const orientedPhotoUri = await this.resizeService.correctImageOrientation(URL.createObjectURL(file)) as string;
+        const fileUrl = URL.createObjectURL(event.target.files[0])
+        const orientedPhotoUri = await this.resizeService.correctImageOrientation(fileUrl) as string;
         const capturedPhotoUri = await this.resizeService.resizeImage(orientedPhotoUri, 'URI', 'DISPLAY_IMAGE') as string;
         this.props.dispatch(new SetCapturedPhotoData({ capturedPhotoUri }))
+
+        // Revoke the url now that it's stored
+        URL.revokeObjectURL(fileUrl)
 
         // Update that photo is loaded
         photoIsLoading = false
