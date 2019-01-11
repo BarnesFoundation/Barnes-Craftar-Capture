@@ -1,6 +1,8 @@
 .camera-container {
     display: flex;
     flex-direction: column;
+    height: inherit; 
+    width: inherit;
     h2 {
         margin-left: $margin-left;
         color: $heading-color;
@@ -8,9 +10,15 @@
     p {
         margin-left: $margin-left;
     }
-    button {
+    button, a {
         background-color: $button-bc;
         color: $button-fc;
+    }
+    .bottom-buttons {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        flex: 1;
     }
 }
 

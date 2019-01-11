@@ -45,9 +45,11 @@ class CameraCapture extends React.Component<Props, object> {
             <div className="camera-container">
                 <h2>Camera Capture</h2>
                 {(id) ? setItemText : noSetItemText}
-                {(id) ? clearItemButton : null}
                 {cameraButton}
-                {/*homeButton*/}
+                <div className="bottom-buttons">
+                    {(id) ? clearItemButton : null}
+                    {homeButton}
+                </div>
                 {(photoIsLoading) ? <LoadingDialog displayText={displayText} dialogOpen={true} /> : null}
             </div>
         )
