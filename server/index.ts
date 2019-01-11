@@ -1,10 +1,10 @@
 import * as express from 'express'
 import * as path from 'path'
+import { Config } from './config'
 
 /** Set up server constants */
 const app = express()
-const port = 8080
-
+const port = Config.port
 const buildDir = path.join(__dirname, '../build')
 
 
