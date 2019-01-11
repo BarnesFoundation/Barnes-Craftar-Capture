@@ -36,7 +36,7 @@ class AddImageView extends React.Component<Props, object> {
         const addImageButton = (<div className="button-container"><Button variant="contained" onClick={this.addImageToItem}>Add Image to Item</Button></div>)
         const successSection = (<p>Successfully added the image to item {id}</p>)
         const failSection = (<p>Failed to add the image to item {id}</p>)
-        const cameraButton = (<Button variant="contained" component={({ innerRef, ...props }) => <Link {...props} to="/camera-capture" />}>Return to Camera</Button>)
+        const cameraButton = (<div className="button-container"><Button variant="contained" component={({ innerRef, ...props }) => <Link {...props} to="/camera-capture" />}>Return to Camera</Button></div>)
 
         const errorSection = (
             <div>
