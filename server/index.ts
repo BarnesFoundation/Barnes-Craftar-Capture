@@ -3,7 +3,7 @@ import * as path from 'path'
 
 /** Set up server constants */
 const app = express()
-const port = 3002
+const port = 8080
 
 const buildDir = path.join(__dirname, '../build')
 
