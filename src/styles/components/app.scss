@@ -1,4 +1,6 @@
 .app-container {
+    background-image: url('../assets/background.png');
+    padding-top: $container-padding-top;
     height: inherit;
     width: inherit;
     .button-container {
@@ -6,9 +8,9 @@
         display: flex;
         flex-direction: column;
         justify-content: center;
-        .MuiButton-contained-12 {
-            background-color: $button-color;
-            color: $button-fc;
+        a {
+            background-color:$app-button-bc;
+            color: $app-button-fc;
         }
     }
 }

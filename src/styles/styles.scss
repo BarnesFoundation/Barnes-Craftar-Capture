@@ -1,11 +1,18 @@
 
 
-$button-color: #ff8f00;
+$button-bc: #ff6624;
 $button-fc: white;
 
-html {
-    background-image: url('../assets/background.png');
-}
+$app-button-bc: white;
+$app-button-fc: #ff6624;
+
+
+$heading-color: #ff6624;
+
+$container-padding-top: 40px;
+
+$margin-left: 15px;
+
 
 body {
     margin: 0;
@@ -22,6 +29,8 @@ body {
 
 h1 {
     color: white;
+    margin-top: 0;
+    margin-left: 15px;
 }
 
 @import './components/photoviewer.scss';

@@ -1,4 +1,12 @@
 .item-search-container {
+    h2 {
+        margin-left: $margin-left;
+        color: $heading-color;
+    }
+    button {
+        background-color: $button-bc;
+        color: $button-fc;
+    }
     th {
         text-align: left;
     }
@@ -17,5 +25,14 @@
     }
     .unhidden {
         visibility: visible;
+        margin-left: $margin-left;
+    }
+    .form {
+        .text-field{
+            display: flex;
+            flex-direction: column;
+            margin-left: $margin-left;
+            margin-right: $margin-left;
+        }
     }
 }

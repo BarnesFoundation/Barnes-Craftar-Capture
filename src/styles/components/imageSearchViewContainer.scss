@@ -3,6 +3,19 @@
     flex-direction: column;
     height: 100%;
     justify-content: flex-start;
+    h2, h3 {
+        margin-left: $margin-left;
+    }
+    h2 {
+        color: $heading-color;
+    }
+    p {
+        margin-left: $margin-left;
+    }
+    button, a {
+        background-color: $button-bc;
+        color: $button-fc;
+    }
 }
 
 .photoviewer {
