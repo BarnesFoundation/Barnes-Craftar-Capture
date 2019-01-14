@@ -4,18 +4,13 @@ import Button from '@material-ui/core/Button'
 
 
 interface Props {
-    handleSubmit: Function
+    handleSubmit: any
 }
 
 class ItemSearchForm extends React.Component<Props> {
 
     constructor(props) {
         super(props)
-        this.handleSubmit = this.handleSubmit.bind(this)
-    }
-
-    handleSubmit(event) {
-        this.props.handleSubmit(event)
     }
 
     handleChange(event) {
@@ -25,11 +20,11 @@ class ItemSearchForm extends React.Component<Props> {
     public render() {
         return (
             <div className="item-search-form">
-                <form className="form" onSubmit={this.handleSubmit} noValidate autoComplete="off">
+                <form className="form" onSubmit={this.props.handleSubmit} noValidate autoComplete="off">
                     <div className="text-field">
                         <TextField id="itemId" label="Item ID" margin="normal" />
                     </div>
-                    <Button variant="contained" type="submit" value="Submit">Submit</Button>
+                    <Button variant="contained" type="submit">Submit</Button>
                 </form>
             </div>
         )
