@@ -30,17 +30,12 @@ There isn't automated deployment configured yet for the application. You can fol
 
 You must set the following three variables in the `.env` if they ever change from their currently set values
 
-```
-- REACT_APP_MANAGEMENT_API_KEY - The API Key provides you with authentication for Catchoom's (Management API)[https://documentation.catchoom.com/documentation/management-api/] 
 
-You can retrieve it from the (Craftar Website)[https://my.craftar.net/] > Developer Portal > Management API Key
+- `REACT_APP_MANAGEMENT_API_KEY` - The API Key provides you with authentication for Catchoom's [Management API](https://documentation.catchoom.com/documentation/management-api/). You can retrieve it from the [Craftar Website](https://my.craftar.net/) > Developer Portal > Management API Key
 
-- REACT_APP_COLLECTION_UUID - This is the UUID identifying the collection in Catchoom that you would like to add the additional reference images into. 
+- `REACT_APP_COLLECTION_UUID` - This is the UUID identifying the collection in Catchoom that you would like to add the additional reference images into. You can retrieve it by going to the [Craftar Website](https://my.craftar.net/) > Collections > [ Collection ] > URL address. It's the long string following 'https://my.craftar.net/collections/'.
 
-You can retrieve it by going to the (Craftar Website)[https://my.craftar.net/] > Collections > [ Collection ] > URL address. It's the long string following 'https://my.craftar.net/collections/'.
-
-- REACT_APP_COLLECTION_TOKEN - This is the token that provides you access to Catchoom's (Image Recognition API)[https://documentation.catchoom.com/documentation/image-recognition-api/]. You grab the token from the collection that you want to perform image recognition against and the value is different from one collection to another.
-```
+- `REACT_APP_COLLECTION_TOKEN` - This is the token that provides you access to Catchoom's [Image Recognition API](https://documentation.catchoom.com/documentation/image-recognition-api/). You grab the token from the collection that you want to perform image recognition against and the value is different from one collection to another.
 
 These values are already configured and working in the current `.env` file, but in case any of the above ever changes, you'll need to be update the `.env` and redeploy the application.
 
