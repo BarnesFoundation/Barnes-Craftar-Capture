@@ -10,7 +10,7 @@
         flex-direction: column;
         justify-content: center;
         flex-grow: 1;
-        a {
+        a, button {
             background-color:$app-button-bc;
             color: $app-button-fc;
         }
