@@ -6,6 +6,7 @@ import { UpdateImageSearchRequestStatus, UpdateImageSearchRequestData, UpdateIma
 import { SetCollectionItem } from '../../store/actions/collectionItemActions'
 import { Redirect } from 'react-router-dom'
 import { ResizeService } from '../../services/resizeService';
+import { ItemImageRetrievalService } from '../../services/itemImageRetrievalService';
 
 export interface Props {
 
@@ -31,11 +32,13 @@ class ImageSearchContainer extends React.Component<Props> {
 
     searchService: SearchService
     resizeService: ResizeService
+    itemImageRetrievalService: ItemImageRetrievalService
 
     constructor(props) {
         super(props)
         this.searchService = new SearchService()
         this.resizeService = new ResizeService()
+        this.itemImageRetrievalService = new ItemImageRetrievalService()
     }
 
     componentWillUnmount() { this.props.dispatch(new ResetImageSearch()) }
@@ -70,9 +73,10 @@ class ImageSearchContainer extends React.Component<Props> {
         this.props.dispatch(new UpdateImageSearchRequestStatus({ requestInProgress, requestComplete }))
     }
 
-    setCollectionItem = () => {
+    setCollectionItem = async () => {
         const { id, uuid } = this.props.response
-        this.props.dispatch(new SetCollectionItem({ id, uuid }))
+        const itemImageUrl = await this.itemImageRetrievalService.retrieveImage(uuid)
+        this.props.dispatch(new SetCollectionItem({ id, uuid, itemImageUrl }))
     }
 
     public render() {
