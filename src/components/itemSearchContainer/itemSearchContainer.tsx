@@ -19,17 +19,19 @@ interface Props {
     requestInProgress: boolean,
     requestComplete: boolean,
     searchedId: string,
-    itemImageUrl: string,
 
     // Collection Item State
     id: string,
-    uuid: string
+    uuid: string,
+    itemImageUrl: string,
 }
 
 class ItemSearchContainer extends React.Component<Props> {
 
     itemSearchService: ItemSearchService
     itemImageRetrievalService: ItemImageRetrievalService
+
+    itemImageUrl: string
 
     constructor(props) {
         super(props)
@@ -56,15 +58,13 @@ class ItemSearchContainer extends React.Component<Props> {
         // Update with response data
         const response = await this.itemSearchService.searchByItem(searchedId)
         const success = response.success
-        this.props.dispatch(new UpdateItemIdSearchData({ response, success, searchedId }))
 
-        // Retrieve image for item 
         if (success) {
-            const itemImageUrl = await this.itemImageRetrievalService.retrieveImage(response.uuid)
-            if (itemImageUrl) {
-                this.props.dispatch(new UpdateItemImageUrl({ itemImageUrl }))
-            }
+            this.itemImageUrl = await this.itemImageRetrievalService.retrieveImage(response.uuid)
+            this.props.dispatch(new UpdateItemImageUrl({itemImageUrl: this.itemImageUrl}))
         }
+
+        this.props.dispatch(new UpdateItemIdSearchData({ response, success, searchedId }))
 
         // Update that request is complete
         requestInProgress = false
@@ -72,10 +72,14 @@ class ItemSearchContainer extends React.Component<Props> {
         this.props.dispatch(new UpdateItemIdSearchStatus({ requestInProgress, requestComplete }))
     }
 
-    setSearchedItem = (event: any) => {
+    setSearchedItem = async (event: any) => {
+
         const uuid = this.props.response.uuid
         const id = this.props.searchedId
-        this.props.dispatch(new SetCollectionItem({ id, uuid }))
+        const itemImageUrl = this.itemImageUrl
+        console.log('The item imageUrl in contianer' , itemImageUrl)
+
+        this.props.dispatch(new SetCollectionItem({ id, uuid, itemImageUrl }))
     }
 
     public render() {
@@ -93,7 +97,7 @@ class ItemSearchContainer extends React.Component<Props> {
                 searchedId={searchedId}
                 response={response}
                 success={success}
-                itemImageUrl={itemImageUrl}
+                itemImageUrl={this.itemImageUrl}
                 requestInProgress={requestInProgress}
                 requestComplete={requestComplete}
                 setSearchedItem={this.setSearchedItem}

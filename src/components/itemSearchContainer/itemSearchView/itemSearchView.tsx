@@ -23,6 +23,8 @@ class ItemSearchView extends React.Component<Props> {
 
         const { requestComplete, requestInProgress, success, itemImageUrl } = this.props
 
+        console.log('The item image url' , itemImageUrl)
+
         const displayText = 'Searching Catchoom for the ID'
 
         const itemSearchForm = (<ItemSearchForm handleSubmit={this.props.handleSubmit}></ItemSearchForm>)

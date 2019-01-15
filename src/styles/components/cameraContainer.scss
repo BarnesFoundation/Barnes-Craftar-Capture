@@ -7,9 +7,6 @@
         margin-left: $margin-left;
         color: $heading-color;
     }
-    p {
-        margin-left: $margin-left;
-    }
     button, a {
         background-color: $button-bc;
         color: $button-fc;
@@ -19,6 +16,9 @@
         flex-direction: column;
         justify-content: flex-end;
         flex: 1;
+    }
+    .image-box {
+        margin-left: $margin-left;
     }
 }
 

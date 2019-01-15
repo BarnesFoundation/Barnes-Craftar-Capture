@@ -5,7 +5,7 @@ export class SetCollectionItem implements Action {
 
     public type: string = at.SET_COLLECTION_ITEM
 
-    constructor(public payload: { id: string, uuid: string }) {}
+    constructor(public payload: { id: string, uuid: string, itemImageUrl: string }) {}
 }
 
 export class ResetSetCollectionItem implements Action {

@@ -16,7 +16,8 @@ export interface Props {
 
     // Collection Item State
     id: string,
-    uuid: string
+    uuid: string, 
+    itemImageUrl: string,
 }
 
 class CameraContainer extends React.Component<Props> {
@@ -63,7 +64,7 @@ class CameraContainer extends React.Component<Props> {
 
     public render() {
 
-        const { id, capturedPhotoUri, photoIsLoading, photoIsLoaded } = this.props
+        const { id, capturedPhotoUri, photoIsLoading, photoIsLoaded, itemImageUrl } = this.props
 
         // Navigate to crop component once a photo is captured
         if (photoIsLoaded) {
@@ -81,6 +82,7 @@ class CameraContainer extends React.Component<Props> {
                 photoIsLoading={photoIsLoading}
                 photoIsLoaded={photoIsLoaded}
                 id={id}
+                itemImageUrl={itemImageUrl}
             />
         )
     }

@@ -10,6 +10,7 @@ export interface Props {
     capturedPhotoUri: string,
 
     id: string,
+    itemImageUrl: string,
 
     photoIsLoading: boolean,
     photoIsLoaded: boolean
@@ -28,10 +29,11 @@ class CameraCapture extends React.Component<Props, object> {
 
         const displayText = 'Loading the captured image'
 
-        const { id, photoIsLoading, onClearCurrentItem, onTakePhoto } = this.props
+        const { id, photoIsLoading, onClearCurrentItem, onTakePhoto, itemImageUrl } = this.props
 
         const setItemText = (<p>Capturing reference images for Item ID: {id}</p>)
         const noSetItemText = (<p>Capture a photo of an existing item</p>)
+        const itemImage = (<img src={itemImageUrl} ></img>)
 
         const clearItemButton = (<Button variant="contained" onClick={onClearCurrentItem}>Clear current item</Button>)
 
@@ -44,7 +46,10 @@ class CameraCapture extends React.Component<Props, object> {
 
             <div className="camera-container">
                 <h2>Camera Capture</h2>
-                {(id) ? setItemText : noSetItemText}
+                <div className="image-box">
+                    {(id) ? setItemText : noSetItemText}
+                    {(itemImageUrl) ? itemImage : null}
+                </div>
                 {cameraButton}
                 <div className="bottom-buttons">
                     {(id) ? clearItemButton : null}
