@@ -31,7 +31,7 @@ class InvnoSearchView extends React.Component<Props> {
 
         const matchResultText = ((this.props.success) ? 'Match found' : 'No match found')
 
-        const itemImage = (<img src={itemImageUrl} ></img>)
+        const itemImage = (itemImageUrl ? <img src={itemImageUrl} ></img> : <p>A reference image does not exist</p>)
 
         const searchResultGrid = (
             <table>
