@@ -6,7 +6,8 @@ import { ConnectedCameraContainer } from './components/cameraContainer/cameraCon
 import { ConnectedCropContainer } from './components/cropContainer/CropContainer'
 import { ConnectedItemSearchContainer } from './components/itemSearchContainer/itemSearchContainer'
 import { ConnectedImageSearchContainer } from './components/imageSearchContainer/imageSearchContainer'
-import { ConnectedAddImageContainer } from './components/addImageContainer/addImageContainer';
+import { ConnectedAddImageContainer } from './components/addImageContainer/addImageContainer'
+import { ConnectedInvnoSearchContainer } from './components/invnoSearchContainer/invnoSearchContainer'
 
 const Routes = (
 	<BrowserRouter>
@@ -17,6 +18,7 @@ const Routes = (
 			<Route path="/crop-image" component={ConnectedCropContainer} />
 			<Route path="/search-image" component={ConnectedImageSearchContainer} />
 			<Route path="/add-image" component={ConnectedAddImageContainer} />
+			<Route path="/invno-search" component={ConnectedInvnoSearchContainer} />
 		</>
 	</BrowserRouter>
 )

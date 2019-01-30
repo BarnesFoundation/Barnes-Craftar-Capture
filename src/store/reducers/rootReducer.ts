@@ -5,6 +5,7 @@ import { imageSearchState } from './imageSearchReducer'
 import { collectionItemState } from './collectionItemReducer'
 import { itemIdSearchState } from './itemIdSearchReducer'
 import { addImageState } from './addImageReducer'
+import { invnoSearchState } from './invnoSearchReducer'
 
 export const BarnesCraftarCaptureStore = combineReducers({
     cameraState,
@@ -12,5 +13,6 @@ export const BarnesCraftarCaptureStore = combineReducers({
     imageSearchState,
     collectionItemState,
     itemIdSearchState,
-    addImageState
+    addImageState,
+    invnoSearchState
 })
