@@ -28,7 +28,7 @@ class ItemSearchView extends React.Component<Props> {
         const displayText = 'Searching Catchoom for the ID'
 
         const itemSearchForm = (<ItemSearchForm handleSubmit={this.props.handleSubmit}></ItemSearchForm>)
-        const setItemButton = (<Button variant="contained" onClick={this.props.setSearchedItem}>Set item</Button>)
+        const setItemButton = (<Button variant="contained" onClick={this.props.setSearchedItem} className="set-item-button">Set item {this.props.searchedId} for capture</Button>)
 
         const matchResultText = ((this.props.success) ? 'Match found' : 'No match found')
 

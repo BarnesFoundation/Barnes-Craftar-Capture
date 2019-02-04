@@ -6,6 +6,10 @@
     button {
         background-color: $button-bc;
         color: $button-fc;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        padding: 15px;
+        font-size: 17px;
     }
     th {
         text-align: left;
@@ -19,6 +23,12 @@
     .button-container {
         display: flex;
         flex-direction: column;
+    }
+    .set-item-button {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      margin: 0;
     }
     .hidden {
         visibility: hidden
