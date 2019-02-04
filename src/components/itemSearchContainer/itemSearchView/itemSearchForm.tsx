@@ -24,7 +24,7 @@ class ItemSearchForm extends React.Component<Props> {
                     <div className="text-field">
                         <TextField id="itemId" label="Item ID" margin="normal" />
                     </div>
-                    <Button variant="contained" type="submit">Submit</Button>
+                    <Button variant="contained" type="submit">Search for item</Button>
                 </form>
             </div>
         )
