@@ -8,9 +8,10 @@ export interface ItemIdSearchState {
     response: {} | SearchResponse,
     success: boolean,
     requestInProgress: null,
-    requestComplete: boolean, 
+    requestComplete: boolean,
     searchedId: string,
-    itemImageUrl: string
+    itemImageUrl: string,
+    setItemClicked: boolean
 }
 
 export const initialState: ItemIdSearchState = {
@@ -19,7 +20,8 @@ export const initialState: ItemIdSearchState = {
     requestInProgress: null,
     requestComplete: null,
     searchedId: null,
-    itemImageUrl: null
+    itemImageUrl: null,
+    setItemClicked: null
 }
 
 export function itemIdSearchState(state = initialState, action: Action) {
@@ -33,6 +35,13 @@ export function itemIdSearchState(state = initialState, action: Action) {
             return { ...state, response, success, searchedId }
         }
 
+        case at.UPDATE_SET_ITEM_CLICKED: {
+
+            const { setItemClicked } = action.payload
+
+            return { ...state, setItemClicked }
+        }
+
         case at.UPDATE_ITEM_ID_SEARCH_STATUS: {
 
             const { requestInProgress, requestComplete } = action.payload
@@ -41,7 +50,7 @@ export function itemIdSearchState(state = initialState, action: Action) {
         }
 
         case at.RESET_ITEM_ID_SEARCH: {
-            return { ...state, response: {}, success: null, requestInProgress: null, requestComplete: null, searchedId: null, itemImageUrl: null }
+            return { ...state, response: {}, success: null, requestInProgress: null, requestComplete: null, searchedId: null, itemImageUrl: null, setItemClicked: null }
         }
 
         case at.UPDATE_ITEM_IMAGE_URL: {
