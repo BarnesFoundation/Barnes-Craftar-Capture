@@ -26,3 +26,9 @@ export class UpdateItemImageUrl implements Action {
 
     constructor(public payload: { itemImageUrl: string }) {}
 }
+
+export class UpdateSetItemClicked implements Action {
+    public type: string = at.UPDATE_SET_ITEM_CLICKED
+
+    constructor(public payload: { setItemClicked: boolean }) {}
+}

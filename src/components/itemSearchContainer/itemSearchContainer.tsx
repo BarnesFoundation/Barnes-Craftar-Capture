@@ -35,8 +35,6 @@ class ItemSearchContainer extends React.Component<Props> {
 
     itemImageUrl: string
 
-
-
     constructor(props) {
         super(props)
         this.itemSearchService = new ItemSearchService()
@@ -99,8 +97,6 @@ class ItemSearchContainer extends React.Component<Props> {
                 <Redirect to="/camera-capture"></Redirect>
             )
         }
-
-
 
         return (
             <ItemSearchView
