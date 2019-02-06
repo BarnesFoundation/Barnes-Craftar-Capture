@@ -9,7 +9,8 @@ export interface InvnoSearchState {
     requestComplete: boolean,
     searchedInvno: string,
     searchedId: string,
-    itemImageUrl: string
+    itemImageUrl: string,
+    setItemClicked: boolean
 }
 
 export const initialState: InvnoSearchState = {
@@ -19,7 +20,8 @@ export const initialState: InvnoSearchState = {
     requestComplete: null,
     searchedInvno: null,
     searchedId: null,
-    itemImageUrl: null
+    itemImageUrl: null,
+    setItemClicked: null
 }
 
 export function invnoSearchState(state = initialState, action: Action) {
@@ -31,6 +33,13 @@ export function invnoSearchState(state = initialState, action: Action) {
             const { response, success, searchedInvno, searchedId } = action.payload
 
             return { ...state, response, success, searchedInvno, searchedId }
+        }
+
+        case at.UPDATE_SET_ITEM_CLICKED: {
+
+            const { setItemClicked } = action.payload
+
+            return { ...state, setItemClicked }
         }
 
         case at.UPDATE_INVNO_SEARCH_STATUS: {

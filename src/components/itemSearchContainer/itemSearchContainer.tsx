@@ -8,6 +8,7 @@ import { ItemSearchView } from './itemSearchView/itemSearchView'
 
 import { UpdateItemIdSearchData, UpdateItemIdSearchStatus, SubmitItemIdSearchForm, ResetItemIdSearch, UpdateItemImageUrl } from '../../store/actions/itemIdSearchActions'
 import { SetCollectionItem } from '../../store/actions/collectionItemActions'
+import { UpdateSetItemClicked } from '../../store/actions/itemIdSearchActions'
 
 interface Props {
 
@@ -24,6 +25,7 @@ interface Props {
     id: string,
     uuid: string,
     itemImageUrl: string,
+    setItemClicked: boolean,
 }
 
 class ItemSearchContainer extends React.Component<Props> {
@@ -77,16 +79,20 @@ class ItemSearchContainer extends React.Component<Props> {
         const uuid = this.props.response.uuid
         const id = this.props.searchedId
         const itemImageUrl = this.itemImageUrl
-        console.log('The item imageUrl in contianer' , itemImageUrl)
+        const setItemClicked = true
 
         this.props.dispatch(new SetCollectionItem({ id, uuid, itemImageUrl }))
+
+        this.props.dispatch(new UpdateSetItemClicked({ setItemClicked }))
     }
 
     public render() {
 
-        const { searchedId, response, success, requestInProgress, requestComplete, id, itemImageUrl } = this.props
-
-        if (id) {
+        const { searchedId, response, success, requestInProgress, requestComplete, id, itemImageUrl, setItemClicked } = this.props
+        console.log("render function ran")
+        console.log(setItemClicked)
+        console.log("id " + id)
+        if (id && setItemClicked) {
             return (
                 <Redirect to="/camera-capture"></Redirect>
             )
