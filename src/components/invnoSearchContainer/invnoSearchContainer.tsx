@@ -6,9 +6,8 @@ import { InvnoSearchService, InvnoResponse } from '../../services/invnoSearchSer
 import { ItemImageRetrievalService } from '../../services/itemImageRetrievalService'
 import { InvnoSearchView } from './invnoSearchView/invnoSearchView'
 
-import { UpdateInvnoSearchData, UpdateInvnoSearchStatus, ResetInvnoSearch, UpdateItemImageUrl } from '../../store/actions/invnoSearchActions'
+import { UpdateSetItemClicked, UpdateInvnoSearchData, UpdateInvnoSearchStatus, ResetInvnoSearch, UpdateItemImageUrl } from '../../store/actions/invnoSearchActions'
 import { SetCollectionItem } from '../../store/actions/collectionItemActions'
-import { UpdateSetItemClicked } from '../../store/actions/itemIdSearchActions'
 
 interface Props {
 
@@ -26,7 +25,7 @@ interface Props {
     id: string,
     uuid: string,
     itemImageUrl: string,
-    setItemClicked: boolean,
+    setInvnoClicked: boolean,
 }
 
 class InvnoSearchContainer extends React.Component<Props> {
@@ -81,18 +80,17 @@ class InvnoSearchContainer extends React.Component<Props> {
         const uuid = this.props.response.idResponse.uuid
         const id = this.props.response.id
         const itemImageUrl = this.itemImageUrl
-        const setItemClicked = true
+        const setInvnoClicked = true
 
         this.props.dispatch(new SetCollectionItem({ id, uuid, itemImageUrl }))
 
-        this.props.dispatch(new UpdateSetItemClicked({ setItemClicked }))
+        this.props.dispatch(new UpdateSetItemClicked({ setInvnoClicked }))
     }
 
     public render() {
 
-        const { searchedInvno, response, success, requestInProgress, requestComplete, id, setItemClicked } = this.props
-
-        if (id && setItemClicked) {
+        const { searchedInvno, response, success, requestInProgress, requestComplete, id, setInvnoClicked } = this.props
+        if (id && setInvnoClicked) {
             return (
                 <Redirect to="/camera-capture"></Redirect>
             )

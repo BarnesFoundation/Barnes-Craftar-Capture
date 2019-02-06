@@ -6,9 +6,8 @@ import { ItemSearchService, SearchResponse } from '../../services/itemSearchServ
 import { ItemImageRetrievalService } from '../../services/itemImageRetrievalService'
 import { ItemSearchView } from './itemSearchView/itemSearchView'
 
-import { UpdateItemIdSearchData, UpdateItemIdSearchStatus, SubmitItemIdSearchForm, ResetItemIdSearch, UpdateItemImageUrl } from '../../store/actions/itemIdSearchActions'
+import { UpdateSetItemClicked, UpdateItemIdSearchData, UpdateItemIdSearchStatus, SubmitItemIdSearchForm, ResetItemIdSearch, UpdateItemImageUrl } from '../../store/actions/itemIdSearchActions'
 import { SetCollectionItem } from '../../store/actions/collectionItemActions'
-import { UpdateSetItemClicked } from '../../store/actions/itemIdSearchActions'
 
 interface Props {
 
@@ -89,9 +88,6 @@ class ItemSearchContainer extends React.Component<Props> {
     public render() {
 
         const { searchedId, response, success, requestInProgress, requestComplete, id, itemImageUrl, setItemClicked } = this.props
-        console.log("render function ran")
-        console.log(setItemClicked)
-        console.log("id " + id)
         if (id && setItemClicked) {
             return (
                 <Redirect to="/camera-capture"></Redirect>
