@@ -5,7 +5,7 @@ import { Action } from '../../interfaces/action'
 import { SearchResponse } from '../../services/itemSearchService'
 
 export interface ItemIdSearchState {
-    response: {} | SearchResponse,
+    response: any,
     success: boolean,
     requestInProgress: null,
     requestComplete: boolean,
