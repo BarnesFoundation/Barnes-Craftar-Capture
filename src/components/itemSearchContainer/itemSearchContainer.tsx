@@ -9,25 +9,12 @@ import { ItemSearchView } from './itemSearchView/itemSearchView'
 import { UpdateSetItemClicked, UpdateItemIdSearchData, UpdateItemIdSearchStatus, SubmitItemIdSearchForm, ResetItemIdSearch, UpdateItemImageUrl } from '../../store/actions/itemIdSearchActions'
 import { SetCollectionItem } from '../../store/actions/collectionItemActions'
 
-interface Props {
+import { ItemIdSearchState } from '../../store/reducers/itemIdSearchReducer'
+import { ConnectedProps } from '../../interfaces/connectedProps'
+import { CollectionItemState } from '../../store/reducers/collectionItemReducer'
 
-    dispatch: Function,
+class ItemSearchContainer extends React.Component<ConnectedProps & ItemIdSearchState & CollectionItemState> {
 
-    // Item Id Search State
-    response: SearchResponse,
-    success: boolean,
-    requestInProgress: boolean,
-    requestComplete: boolean,
-    searchedId: string,
-
-    // Collection Item State
-    id: string,
-    uuid: string,
-    itemImageUrl: string,
-    setItemClicked: boolean,
-}
-
-class ItemSearchContainer extends React.Component<Props> {
 
     itemSearchService: ItemSearchService
     itemImageRetrievalService: ItemImageRetrievalService

@@ -9,26 +9,30 @@ import { InvnoSearchView } from './invnoSearchView/invnoSearchView'
 import { UpdateSetItemClicked, UpdateInvnoSearchData, UpdateInvnoSearchStatus, ResetInvnoSearch, UpdateItemImageUrl } from '../../store/actions/invnoSearchActions'
 import { SetCollectionItem } from '../../store/actions/collectionItemActions'
 
-interface Props {
+import { InvnoSearchState } from '../../store/reducers/invnoSearchReducer'
+import { ConnectedProps } from '../../interfaces/connectedProps'
+import { CollectionItemState } from '../../store/reducers/collectionItemReducer'
 
-    dispatch: Function,
+// interface Props {
+//
+//     dispatch: Function,
+//
+//     // Invno Search State
+//     response: InvnoResponse , //SearchResponse,
+//     success: boolean,
+//     requestInProgress: boolean,
+//     requestComplete: boolean,
+//     searchedInvno: string,
+//     searchedId: string,
+//
+//     // Collection Item State
+//     id: string,
+//     uuid: string,
+//     itemImageUrl: string,
+//     setInvnoClicked: boolean,
+// }
 
-    // Invno Search State
-    response: InvnoResponse , //SearchResponse,
-    success: boolean,
-    requestInProgress: boolean,
-    requestComplete: boolean,
-    searchedInvno: string,
-    searchedId: string,
-
-    // Collection Item State
-    id: string,
-    uuid: string,
-    itemImageUrl: string,
-    setInvnoClicked: boolean,
-}
-
-class InvnoSearchContainer extends React.Component<Props> {
+class InvnoSearchContainer extends React.Component<ConnectedProps & InvnoSearchState & CollectionItemState> {
 
     invnoSearchService: InvnoSearchService
     itemImageRetrievalService: ItemImageRetrievalService

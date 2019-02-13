@@ -6,21 +6,11 @@ import { ResetSetCollectionItem } from '../../store/actions/collectionItemAction
 import { ResizeService } from '../../services/resizeService'
 import { CameraCapture } from './cameraCapture/cameraCapture'
 
-export interface Props {
-    dispatch: Function,
+import { CameraState } from '../../store/reducers/cameraReducer'
+import { ConnectedProps } from '../../interfaces/connectedProps'
+import { CollectionItemState } from '../../store/reducers/collectionItemReducer'
 
-    // Camera State
-    capturedPhotoUri: string,
-    photoIsLoading: boolean,
-    photoIsLoaded: boolean,
-
-    // Collection Item State
-    id: string,
-    uuid: string, 
-    itemImageUrl: string,
-}
-
-class CameraContainer extends React.Component<Props> {
+class CameraContainer extends React.Component<ConnectedProps & CameraState & CollectionItemState> {
 
     resizeService: ResizeService
     photoInput
