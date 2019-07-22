@@ -3,7 +3,7 @@ import * as a from '../actions/invnoSearchActions'
 import { Action } from '../../interfaces/action'
 
 export interface InvnoSearchState {
-    response: {},
+    response: any,
     success: boolean,
     requestInProgress: null,
     requestComplete: boolean,
