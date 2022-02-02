@@ -5,7 +5,10 @@
         "noImplicitAny": false,
         "moduleResolution": "node",
         "sourceMap": true,
-        "outDir": "../dist/",
-        "baseUrl": "."
-    }
+        "outDir": "../dist/server",
+		"baseUrl": "../server",
+    },
+	"include": [
+        "**/*.ts"
+	]
 }
