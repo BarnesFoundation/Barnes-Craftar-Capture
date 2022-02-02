@@ -8,9 +8,10 @@
     "elasticsearch": "^15.3.1",
     "express": "^4.16.4"
   },
+  "engines" : { "node" : ">=0.10" },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build; npm run build-server",
+    "build": "rm -rf dist; react-scripts build; npm run build-server",
 	"build-server": "tsc -p server/",
 	"postbuild": "cp -r build dist && rm -rf build",
     "test": "react-scripts test --env=jsdom",
