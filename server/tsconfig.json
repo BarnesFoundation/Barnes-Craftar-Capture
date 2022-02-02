@@ -7,6 +7,7 @@
         "sourceMap": true,
         "outDir": "../dist/server",
 		"baseUrl": "../server",
+		"esModuleInterop": true,
     },
 	"include": [
         "**/*.ts"
