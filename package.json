@@ -21,7 +21,7 @@
       "eject": "react-scripts eject",
       "serve": "npm run build-server && node dist/index.js",
 	  "deploy:dev": "serverless deploy -v --stage dev",
-      "deploy:prod": "serverless deploy -v --stage prod",
+      "deploy:prod": "serverless deploy -v --stage prod"
    },
    "devDependencies": {
       "@material-ui/core": "^3.7.1",
