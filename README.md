@@ -37,5 +37,5 @@ You must set the following three variables in the `.env` if they ever change fro
 
 - `REACT_APP_COLLECTION_TOKEN` - This is the token that provides you access to Catchoom's [Image Recognition API](https://documentation.catchoom.com/documentation/image-recognition-api/). You grab the token from the collection that you want to perform image recognition against and the value is different from one collection to another.
 
-These values are already configured and working in the current `.env` file, but in case any of the above ever changes, you'll need to be update the `.env` and redeploy the application.
+These values are already configured and working in the current `.env` file, but in case any of the above ever changes, you'll need to be update the `.env` and redeploy the application, including rebuilding the frontend directory.
 
