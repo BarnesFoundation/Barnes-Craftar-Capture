@@ -20,7 +20,7 @@
       "test": "react-scripts test --env=jsdom",
       "eject": "react-scripts eject",
       "serve": "npm run build-server && node dist/index.js",
-	  "deploy:dev": "serverless deploy -v --stage dev",
+      "deploy:dev": "serverless deploy -v --stage dev",
       "deploy:prod": "serverless deploy -v --stage prod"
    },
    "devDependencies": {
@@ -38,7 +38,7 @@
       "@types/react-redux": "^6.0.11",
       "@types/react-router-dom": "^4.3.1",
       "blueimp-load-image": "^2.20.1",
-      "cropperjs": "^1.4.3",
+      "cropperjs": "^1.5.12",
       "node-sass": "^4.10.0",
       "react": "^16.6.3",
       "react-dom": "^16.6.3",
