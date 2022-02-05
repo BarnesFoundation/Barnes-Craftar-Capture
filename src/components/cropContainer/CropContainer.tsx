@@ -27,32 +27,42 @@ export interface Props {
 }
 
 class CropContainer extends React.Component<Props> {
-
-    cropper: Cropper
-	photoRef: React.RefObject<{}> | HTMLElement | any
+    cropper: Cropper;
+    photoRef: React.RefObject<{}> | HTMLElement | any;
 
     constructor(props) {
         super(props);
-		this.photoRef = React.createRef();
+        this.photoRef = React.createRef();
     }
 
-    componentWillUnmount = () => { this.props.dispatch(new ResetCroppedPhoto()) }
+    componentWillUnmount() {
+        this.props.dispatch(new ResetCroppedPhoto());
+    };
 
-    cropPhoto = async () => {
-        let croppingIsLoading = true
-        let croppingIsFinished = false
-        this.props.dispatch(new UpdateCroppingStatus({ croppingIsLoading, croppingIsFinished }))
+    async cropPhoto() {
+        this.props.dispatch(
+            new UpdateCroppingStatus({
+                croppingIsLoading: true,
+                croppingIsFinished: false,
+            })
+        );
 
+        const croppedPhotoUri = await new Promise<string>((resolve) => {
+            resolve(this.cropper.getCroppedCanvas().toDataURL("image/jpeg", 1));
+        });
+        this.props.dispatch(new SetCroppedPhoto({ croppedPhotoUri }));
 
-        const croppedPhotoUri = await new Promise<string>((resolve) => { resolve(this.cropper.getCroppedCanvas().toDataURL('image/jpeg', 1)) })
-        this.props.dispatch(new SetCroppedPhoto({ croppedPhotoUri }))
+        setTimeout(() => {
+            this.props.dispatch(
+                new UpdateCroppingStatus({
+                    croppingIsLoading: false,
+                    croppingIsFinished: true,
+                })
+            );
+        }, 500);
+    };
 
-        croppingIsLoading = false
-        croppingIsFinished = true
-        setTimeout(() => { this.props.dispatch(new UpdateCroppingStatus({ croppingIsLoading, croppingIsFinished })) }, 500)
-    }
-
-    initializeCropper = (photoElement: HTMLImageElement) => {
+    initializeCropper (photoElement: HTMLImageElement) {
         const dragMode = "none" as Cropper.DragMode;
         this.cropper = new Cropper(photoElement, {
             zoomable: false,
@@ -60,55 +70,72 @@ class CropContainer extends React.Component<Props> {
             viewMode: 1,
             dragMode: dragMode,
         });
+    };
+
+    componentDidMount() {
+        this.initializeCropper(this.photoRef.current);
     }
 
-	componentDidMount() {
-		this.initializeCropper(this.photoRef.current)
-	};
-
     public render() {
-
-        const { id, capturedPhotoUri, croppingIsLoading, croppingIsFinished } = this.props
+        const {
+            id,
+            capturedPhotoUri,
+            croppingIsLoading,
+            croppingIsFinished,
+        } = this.props;
 
         // If the photo was cropped but not id is set, navigate to Image Search component
-        if ((croppingIsFinished) && !id) {
+        if (croppingIsFinished && !id) {
             return (
-                <Redirect to={{
-                    pathname: '/search-image',
-                }} />
-            )
+                <Redirect
+                    to={{
+                        pathname: "/search-image",
+                    }}
+                />
+            );
         }
 
         // If the photo was cropped and an id is already set, navigate to Add Image component
-        if ((croppingIsFinished) && id) {
+        if (croppingIsFinished && id) {
             return (
-                <Redirect to={{
-                    pathname: '/add-image',
-                }} />
-            )
+                <Redirect
+                    to={{
+                        pathname: "/add-image",
+                    }}
+                />
+            );
         }
 
-        return <div className="crop-container">
+        return (
+            <div className="crop-container">
                 <h2>Crop Image</h2>
                 <p>Adjust the crop to focus in on the artwork.</p>
-                <PhotoView photoUri={capturedPhotoUri} photoRef={this.photoRef} />
+                <PhotoView
+                    photoUri={capturedPhotoUri}
+                    photoRef={this.photoRef}
+                />
                 <div className="bottom-buttons">
                     <Button variant="contained" onClick={this.cropPhoto}>
                         Crop
                     </Button>
                 </div>
-                {croppingIsLoading ? <LoadingDialog dialogOpen={true} displayText={"Cropping an image"} /> : null}
-            </div>;
-
+                {croppingIsLoading ? (
+                    <LoadingDialog
+                        dialogOpen={true}
+                        displayText={"Cropping an image"}
+                    />
+                ) : null}
+            </div>
+        );
     }
 }
 
 const mapStateToProps = (state: any) => {
 
-    const { capturedPhotoUri } = state.cameraState
-    const { id } = state.collectionItemState
+    const { capturedPhotoUri } = state.cameraState;
+    const { id } = state.collectionItemState;
 
-    return { ...state.cropState, capturedPhotoUri, id }
+    return { ...state.cropState, capturedPhotoUri, id };
 }
 
 export const ConnectedCropContainer = connect(mapStateToProps)(CropContainer)
