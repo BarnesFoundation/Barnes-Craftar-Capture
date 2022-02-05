@@ -106,27 +106,17 @@ class CropContainer extends React.Component<Props> {
             );
         }
 
-        return (
-            <div className="crop-container">
+        return <div className="crop-container">
                 <h2>Crop Image</h2>
                 <p>Adjust the crop to focus in on the artwork.</p>
-                <PhotoView
-                    photoUri={capturedPhotoUri}
-                    photoRef={this.photoRef}
-                />
+                <PhotoView photoUri={capturedPhotoUri} photoRef={this.photoRef} />
                 <div className="bottom-buttons">
                     <Button variant="contained" onClick={this.cropPhoto}>
                         Crop
                     </Button>
                 </div>
-                {croppingIsLoading ? (
-                    <LoadingDialog
-                        dialogOpen={true}
-                        displayText={"Cropping an image"}
-                    />
-                ) : null}
-            </div>
-        );
+                {croppingIsLoading && <LoadingDialog dialogOpen={true} displayText={"Cropping an image"} />}
+            </div>;
     }
 }
 
