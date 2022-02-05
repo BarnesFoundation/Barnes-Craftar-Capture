@@ -1,4 +1,4 @@
-import * as express from 'express'
+import express from 'express'
 import * as path from 'path'
 import { Config } from './config'
 
@@ -15,6 +15,11 @@ app.use('*', (request, response) => {
     response.sendFile(path.join(buildDir, 'index.html'));
 })
 
-app.listen(port, () => {
-    console.log('Server running on port:' , port)
-})
+// Only start the server when working locally
+if (Config.nodeEnv === 'LOCAL') {
+	app.listen(port, () => {
+		console.log('Server running on port:' , port)
+	});
+}
+
+export default app;

@@ -1,0 +1,28 @@
+service: barnes-craftar-capture
+
+provider:
+    name: aws
+    runtime: nodejs12.x
+    region: us-east-1
+    timeout: 900
+    memorySize: 3008
+
+    # Accept stage from command line, defaults to dev
+    # - Should be EITHER prod or dev
+    stage: ${opt:stage, 'dev'}
+
+functions:
+    server:
+        handler: dist/server/handler.server
+        events:
+            - http: ANY /
+            - http: "ANY {proxy+}"
+            - cors: true
+
+package:
+    include:
+        - dist/**
+        - package.json
+        - node_modules/**
+    exclude:
+        - ./**

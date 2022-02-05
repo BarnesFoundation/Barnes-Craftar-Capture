@@ -5,7 +5,7 @@ export interface Props {
     photoRef?: any
 }
 
-class PhotoView extends React.Component<Props, object> {
+export class PhotoView extends React.Component<Props, object> {
 
     public render() {
         return (
@@ -14,5 +14,3 @@ class PhotoView extends React.Component<Props, object> {
         )
     }
 }
-
-export { PhotoView }

@@ -5,7 +5,11 @@
         "noImplicitAny": false,
         "moduleResolution": "node",
         "sourceMap": true,
-        "outDir": "../dist/",
-        "baseUrl": "."
-    }
+        "outDir": "../dist/server",
+		"baseUrl": "../server",
+		"esModuleInterop": true,
+    },
+	"include": [
+        "**/*.ts"
+	]
 }
