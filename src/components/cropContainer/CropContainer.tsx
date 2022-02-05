@@ -109,6 +109,7 @@ class CropContainer extends React.Component<Props> {
                     onInitialized={(cropperInstance) => {
                         this.cropper = cropperInstance;
                     }}
+					checkOrientation={false}
                 />
 
                 <div className="bottom-buttons">
