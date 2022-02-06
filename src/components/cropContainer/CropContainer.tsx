@@ -1,98 +1,141 @@
-import * as React from 'react'
-import { Redirect } from 'react-router-dom'
-import { CropperView } from './cropperView/cropperView'
+import * as React from "react";
+import { Redirect } from "react-router-dom";
+import Button from "@material-ui/core/Button";
 
-import { connect } from 'react-redux'
-import { SetCroppedPhoto, ResetCroppedPhoto, UpdateCroppingStatus } from '../../store/actions/cropActions'
+import { connect } from "react-redux";
+import {
+    SetCroppedPhoto,
+    ResetCroppedPhoto,
+    UpdateCroppingStatus,
+} from "../../store/actions/cropActions";
+import { LoadingDialog } from "../../shared/components/loadingDialog";
 
-import Cropper from 'cropperjs'
-import 'cropperjs/dist/cropper.css'
+import Cropper from "react-cropper";
+import "cropperjs/dist/cropper.css";
 
 export interface Props {
-    dispatch: Function,
+    dispatch: Function;
 
     // Crop State
-    croppedPhotoUri: string,
-    croppingIsLoading: boolean,
-    croppingIsFinished: boolean,
+    croppedPhotoUri: string;
+    croppingIsLoading: boolean;
+    croppingIsFinished: boolean;
 
     // Camera State
-    capturedPhotoUri: string,
+    capturedPhotoUri: string;
 
     // Collection Item State
-    id: string
+    id: string;
 }
 
 class CropContainer extends React.Component<Props> {
-
-    cropper: Cropper
+    cropper: Cropper;
+    cropperRef: React.RefObject<HTMLImageElement>;
 
     constructor(props) {
-        super(props)
+        super(props);
+        this.cropperRef = React.createRef<HTMLImageElement>();
     }
 
-    componentWillUnmount = () => { this.props.dispatch(new ResetCroppedPhoto()) }
-
-    cropPhoto = async () => {
-        let croppingIsLoading = true
-        let croppingIsFinished = false
-        this.props.dispatch(new UpdateCroppingStatus({ croppingIsLoading, croppingIsFinished }))
-
-
-        const croppedPhotoUri = await new Promise<string>((resolve) => { resolve(this.cropper.getCroppedCanvas().toDataURL('image/jpeg', 1)) })
-        this.props.dispatch(new SetCroppedPhoto({ croppedPhotoUri }))
-
-        croppingIsLoading = false
-        croppingIsFinished = true
-        setTimeout(() => { this.props.dispatch(new UpdateCroppingStatus({ croppingIsLoading, croppingIsFinished })) }, 500)
+    componentWillUnmount() {
+        this.props.dispatch(new ResetCroppedPhoto());
     }
 
-    initializeCropper = (photoElement: HTMLImageElement) => {
-        const dragMode = 'none' as Cropper.DragMode
-        this.cropper = new Cropper(photoElement, { zoomable: false, background: false, viewMode: 1, dragMode: dragMode })
-    }
+    onCrop = () => {
+        this.props.dispatch(
+            new UpdateCroppingStatus({
+                croppingIsLoading: true,
+                croppingIsFinished: false,
+            })
+        );
+
+        const croppedPhotoUri = this.cropper.getCroppedCanvas().toDataURL();
+
+        this.props.dispatch(new SetCroppedPhoto({ croppedPhotoUri }));
+        setTimeout(() => {
+            this.props.dispatch(
+                new UpdateCroppingStatus({
+                    croppingIsLoading: false,
+                    croppingIsFinished: true,
+                })
+            );
+        }, 500);
+    };
 
     public render() {
-
-        const { id, capturedPhotoUri, croppingIsLoading, croppingIsFinished } = this.props
+        const {
+            id,
+            capturedPhotoUri,
+            croppingIsLoading,
+            croppingIsFinished,
+        } = this.props;
 
         // If the photo was cropped but not id is set, navigate to Image Search component
-        if ((croppingIsFinished) && !id) {
+        if (croppingIsFinished && !id) {
             return (
-                <Redirect to={{
-                    pathname: '/search-image',
-                }} />
-            )
+                <Redirect
+                    to={{
+                        pathname: "/search-image",
+                    }}
+                />
+            );
         }
 
         // If the photo was cropped and an id is already set, navigate to Add Image component
-        if ((croppingIsFinished) && id) {
+        if (croppingIsFinished && id) {
             return (
-                <Redirect to={{
-                    pathname: '/add-image',
-                }} />
-            )
+                <Redirect
+                    to={{
+                        pathname: "/add-image",
+                    }}
+                />
+            );
         }
 
         return (
-            <CropperView
-                photoUri={capturedPhotoUri}
-                initializeCropper={this.initializeCropper}
-                cropper={this.cropper}
-                cropPhoto={this.cropPhoto}
-                croppingIsLoading={croppingIsLoading}
-            />
-        )
+            <div className="crop-container">
+                <h2>Crop Image</h2>
+                <p>Adjust the crop to focus in on the artwork.</p>
 
+                <Cropper
+                    src={capturedPhotoUri}
+                    style={{ height: 400, width: "100%" }}
+                    initialAspectRatio={1}
+                    responsive={true}
+                    guides={false}
+                    ref={this.cropperRef}
+                    autoCropArea={1}
+                    viewMode={1}
+                    onInitialized={(cropperInstance) => {
+                        this.cropper = cropperInstance;
+                    }}
+					checkOrientation={false}
+					zoomable={false}
+					rotateTo={-90}
+                />
+
+                <div className="bottom-buttons">
+                    <Button variant="contained" onClick={this.onCrop}>
+                        Crop
+                    </Button>
+                </div>
+                {croppingIsLoading && (
+                    <LoadingDialog
+                        dialogOpen={true}
+                        displayText={"Cropping an image"}
+                    />
+                )}
+            </div>
+        );
     }
 }
 
 const mapStateToProps = (state: any) => {
+    return {
+        ...state.cropState,
+        capturedPhotoUri: state.cameraState.capturedPhotoUri,
+        id: state.collectionItemState.id,
+    };
+};
 
-    const { capturedPhotoUri } = state.cameraState
-    const { id } = state.collectionItemState
-
-    return { ...state.cropState, capturedPhotoUri, id }
-}
-
-export const ConnectedCropContainer = connect(mapStateToProps)(CropContainer)
+export const ConnectedCropContainer = connect(mapStateToProps)(CropContainer);

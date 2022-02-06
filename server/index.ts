@@ -9,7 +9,7 @@ const buildDir = path.join(__dirname, '../build')
 
 
 /** Express serves the build directory */
-app.use(express.static(buildDir))
+app.use(express.static(buildDir, { index: false, etag: false }))
 
 app.use('*', (request, response) => {
     response.sendFile(path.join(buildDir, 'index.html'));
