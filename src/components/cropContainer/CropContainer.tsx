@@ -110,6 +110,8 @@ class CropContainer extends React.Component<Props> {
                         this.cropper = cropperInstance;
                     }}
 					checkOrientation={false}
+					zoomable={false}
+					rotateTo={-90}
                 />
 
                 <div className="bottom-buttons">
