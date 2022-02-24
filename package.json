@@ -13,7 +13,7 @@
       "node": ">=0.10"
    },
    "scripts": {
-      "start": "react-scripts start",
+      "start": "PORT=3000 react-scripts start",
       "build": "rm -rf dist; react-scripts build; npm run build-server",
       "build-server": "tsc -p server/",
       "postbuild": "cp -r build dist && rm -rf build",
@@ -21,7 +21,10 @@
       "eject": "react-scripts eject",
       "serve": "npm run build-server && node dist/index.js",
       "deploy:dev": "serverless deploy -v --stage dev",
-      "deploy:prod": "serverless deploy -v --stage prod"
+      "deploy:prod": "serverless deploy -v --stage prod",
+      "watch-server": "tsc -w -p server/",
+      "run-dev-server": "nodemon --delay 500ms dist/server/index.js",
+      "dev": "concurrently \"npm run watch-server\" \"npm run run-dev-server\""
    },
    "devDependencies": {
       "@material-ui/core": "^3.7.1",
@@ -37,6 +40,7 @@
       "@types/react-redux": "^6.0.20",
       "@types/react-router-dom": "^4.3.1",
       "blueimp-load-image": "^2.20.1",
+      "concurrently": "^7.0.0",
       "cropperjs": "^1.5.12",
       "node-sass": "^4.10.0",
       "react": "^16.14.0",
@@ -56,5 +60,6 @@
       "not dead",
       "not ie <= 11",
       "not op_mini all"
-   ]
+   ],
+   "proxy": "http://localhost:4000"
 }
