@@ -6,7 +6,7 @@
       "axios": "^0.18.0",
       "dotenv": "^6.2.0",
       "elasticsearch": "^15.3.1",
-      "express": "^4.16.4",
+      "express": "^4.17.3",
       "serverless-http": "^2.7.0"
    },
    "engines": {
