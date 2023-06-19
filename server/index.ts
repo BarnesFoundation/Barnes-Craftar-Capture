@@ -13,14 +13,14 @@ app.use(express.static(buildDir, { index: false, etag: false }));
 app.use("/api", ApiRouter);
 
 app.use("*", (request, response) => {
-    response.sendFile(path.join(buildDir, "index.html"));
+  response.sendFile(path.join(buildDir, "index.html"));
 });
 
 // Only start the server when working locally
 if (Config.nodeEnv === "LOCAL") {
-    app.listen(Config.port, () => {
-        console.log("Server running on port:", Config.port);
-    });
+  app.listen(Config.port, () => {
+    console.log("Server running on port:", Config.port);
+  });
 }
 
 export default app;
