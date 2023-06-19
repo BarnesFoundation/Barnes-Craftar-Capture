@@ -2,8 +2,9 @@
 {
 	"extends": "./tsconfig.json",
 	"include": [
-		"src/**/*.ts",
-		"src/**/*.tsx",
-		"server/**/*.ts",
+		"src",
+		"server",
+		".eslintrc.js"
 	],
+	"exclude": []
 }
