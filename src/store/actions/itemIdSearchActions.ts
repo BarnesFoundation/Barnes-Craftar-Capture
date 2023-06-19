@@ -1,41 +1,40 @@
-import * as at from '../actionTypes/itemIdSearchActionTypes'
-import { Action } from '../../interfaces/action'
+import * as at from "../actionTypes/itemIdSearchActionTypes";
+import { Action } from "../../interfaces/action";
 
 export class UpdateItemIdSearchData implements Action {
+  public type: string = at.UPDATE_ITEM_ID_SEARCH_DATA;
 
-    public type: string = at.UPDATE_ITEM_ID_SEARCH_DATA
-
-    constructor(public payload: { response: any, success: boolean, searchedId: string }) {}
+  constructor(
+    public payload: { response: any; success: boolean; searchedId: string }
+  ) {}
 }
 
 export class UpdateItemIdSearchStatus implements Action {
+  public type: string = at.UPDATE_ITEM_ID_SEARCH_STATUS;
 
-    public type: string = at.UPDATE_ITEM_ID_SEARCH_STATUS
-
-    constructor(public payload: { requestInProgress: boolean, requestComplete: boolean }) {}
+  constructor(
+    public payload: { requestInProgress: boolean; requestComplete: boolean }
+  ) {}
 }
 
 export class SubmitItemIdSearchForm implements Action {
+  public type: string = at.SUBMIT_ITEM_ID_SEARCH_FORM;
 
-    public type: string = at.SUBMIT_ITEM_ID_SEARCH_FORM
-
-    constructor(public payload: { idToSearch: string }) {}
+  constructor(public payload: { idToSearch: string }) {}
 }
 
 export class ResetItemIdSearch implements Action {
-
-    public type: string = at.RESET_ITEM_ID_SEARCH
+  public type: string = at.RESET_ITEM_ID_SEARCH;
 }
 
 export class UpdateItemImageUrl implements Action {
+  public type: string = at.UPDATE_ITEM_IMAGE_URL;
 
-    public type: string = at.UPDATE_ITEM_IMAGE_URL
-
-    constructor(public payload: { itemImageUrl: string }) {}
+  constructor(public payload: { itemImageUrl: string }) {}
 }
 
 export class UpdateSetItemClicked implements Action {
-    public type: string = at.UPDATE_SET_ITEM_CLICKED
+  public type: string = at.UPDATE_SET_ITEM_CLICKED;
 
-    constructor(public payload: { setItemClicked: boolean }) {}
+  constructor(public payload: { setItemClicked: boolean }) {}
 }
