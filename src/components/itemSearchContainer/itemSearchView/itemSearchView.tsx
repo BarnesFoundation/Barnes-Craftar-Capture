@@ -1,73 +1,91 @@
-import * as React from 'react'
-import { SearchResponse } from '../../../services/itemSearchService'
-import { ItemSearchForm } from '../itemSearchView/itemSearchForm'
-import { LoadingDialog } from '../../../shared/components/loadingDialog'
-import Button from '@material-ui/core/Button'
+import * as React from "react";
+import { SearchResponse } from "../../../services/itemSearchService";
+import { ItemSearchForm } from "../itemSearchView/itemSearchForm";
+import { LoadingDialog } from "../../../shared/components/loadingDialog";
+import Button from "@material-ui/core/Button";
 
 interface Props {
-    response: SearchResponse,
-    success: boolean,
-    requestInProgress: boolean,
-    requestComplete: boolean,
-    itemImageUrl: string,
-    searchedId: string,
-    setSearchedItem: any
-    handleSubmit: Function
+  response: SearchResponse;
+  success: boolean;
+  requestInProgress: boolean;
+  requestComplete: boolean;
+  itemImageUrl: string;
+  searchedId: string;
+  setSearchedItem: any;
+  handleSubmit: Function;
 }
 
 class ItemSearchView extends React.Component<Props> {
+  constructor(props) {
+    super(props);
+  }
 
-    constructor(props) { super(props) }
+  public render() {
+    const { requestComplete, requestInProgress, success, itemImageUrl } =
+      this.props;
 
-    public render() {
+    console.log("The item image url", itemImageUrl);
 
-        const { requestComplete, requestInProgress, success, itemImageUrl } = this.props
+    const displayText = "Searching Catchoom for the ID";
 
-        console.log('The item image url' , itemImageUrl)
+    const itemSearchForm = (
+      <ItemSearchForm handleSubmit={this.props.handleSubmit}></ItemSearchForm>
+    );
+    const setItemButton = (
+      <Button
+        variant="contained"
+        onClick={this.props.setSearchedItem}
+        className="set-item-button"
+      >
+        Set item {this.props.searchedId} for capture
+      </Button>
+    );
 
-        const displayText = 'Searching Catchoom for the ID'
+    const matchResultText = this.props.success
+      ? "Match found"
+      : "No match found";
 
-        const itemSearchForm = (<ItemSearchForm handleSubmit={this.props.handleSubmit}></ItemSearchForm>)
-        const setItemButton = (<Button variant="contained" onClick={this.props.setSearchedItem} className="set-item-button">Set item {this.props.searchedId} for capture</Button>)
+    const itemImage = itemImageUrl ? (
+      <img src={itemImageUrl}></img>
+    ) : (
+      <p>A reference image does not exist</p>
+    );
 
-        const matchResultText = ((this.props.success) ? 'Match found' : 'No match found')
+    const searchResultGrid = (
+      <table>
+        <tbody>
+          <tr>
+            <th>ID:</th>
+            <td>{this.props.response.name}</td>
+          </tr>
+          <tr>
+            <th>UUID:</th>
+            <td>{this.props.response.uuid}</td>
+          </tr>
+        </tbody>
+      </table>
+    );
 
-        const itemImage = (itemImageUrl ? <img src={itemImageUrl} ></img> : <p>A reference image does not exist</p>)
-
-        const searchResultGrid = (
-            <table>
-                <tbody>
-                    <tr>
-                        <th>ID:</th>
-                        <td>{this.props.response.name}</td>
-                    </tr>
-                    <tr>
-                        <th>UUID:</th>
-                        <td>{this.props.response.uuid}</td>
-                    </tr>
-                </tbody>
-            </table>
-        )
-
-        return (
-            <div className="item-search-container">
-                <div className="search-result">
-                    <h2>Search By Item ID</h2>
-                    <div className={(this.props.requestComplete) ? "unhidden" : "hidden"}>
-                        <h3>{(this.props.requestComplete) ? matchResultText : null}</h3>
-                        {(requestComplete && success) ? itemImage : null }
-                        {searchResultGrid}
-                    </div>
-                </div>
-                {itemSearchForm}
-                <div className="button-container">
-                    {(requestComplete && success) ? setItemButton : null}
-                </div>
-                {(requestInProgress) ? <LoadingDialog displayText={displayText} dialogOpen={true} /> : null}
-            </div>
-        )
-
-    }
+    return (
+      <div className="item-search-container">
+        <div className="search-result">
+          <h2>Search By Item ID</h2>
+          <div className={this.props.requestComplete ? "unhidden" : "hidden"}>
+            <h3>{this.props.requestComplete ? matchResultText : null}</h3>
+            {requestComplete && success ? itemImage : null}
+            {searchResultGrid}
+          </div>
+        </div>
+        {itemSearchForm}
+        <div className="button-container">
+          {requestComplete && success ? setItemButton : null}
+        </div>
+        {requestInProgress ? (
+          <LoadingDialog displayText={displayText} dialogOpen={true} />
+        ) : null}
+      </div>
+    );
+  }
 }
 
-export { ItemSearchView }
+export { ItemSearchView };
