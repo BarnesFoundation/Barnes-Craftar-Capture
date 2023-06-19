@@ -6,6 +6,6 @@ import app from "./index";
 const handler = serverlessHTTP(app);
 
 module.exports.server = async (event: APIGatewayEvent, context: Context) => {
-    // Handler will pass the event and context to the app server
-    return await handler(event, context);
+  // Handler will pass the event and context to the app server
+  return await handler(event, context);
 };
