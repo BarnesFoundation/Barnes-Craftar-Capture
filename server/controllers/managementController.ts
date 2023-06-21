@@ -1,7 +1,6 @@
 import express from "express";
 import multer from "multer";
 import vuforia from "vuforia-api";
-import util from "util";
 
 import { Config } from "../config";
 import { getNextReferenceTag } from "../utils";
