@@ -1,6 +1,7 @@
+import axios from "axios";
+
 import { Config } from "../utils/config";
 import { ImageCreateResponse } from "../interfaces/managementResponses";
-import axios from "axios";
 
 class CreateResponse {
   success: boolean;
