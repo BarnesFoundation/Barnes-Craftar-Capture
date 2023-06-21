@@ -12,6 +12,9 @@ export const Config = {
   esPassword: process.env.ES_PASSWORD,
 
   /** Vuforia API Credentials */
-  vuforiaAccessKey: process.env.VUFORIA_SERVER_ACCESS_KEY,
-  vuforiaSecretKey: process.env.VUFORIA_SERVER_SECRET_KEY,
+  vuforiaServerAccessKey: process.env.VUFORIA_SERVER_ACCESS_KEY,
+  vuforiaServerSecretKey: process.env.VUFORIA_SERVER_SECRET_KEY,
+
+  vuforiaClientAccessKey: process.env.VUFORIA_CLIENT_ACCESS_KEY,
+  vuforiaClientSecretKey: process.env.VUFORIA_CLIENT_SECRET_KEY,
 };
