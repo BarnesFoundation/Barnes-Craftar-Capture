@@ -51,10 +51,12 @@ class ImageSearchContainer extends React.Component<Props> {
   imageSearch = async () => {
     const { croppedPhotoUri } = this.props;
 
-    let requestInProgress = true;
-    let requestComplete = false;
+    // Update the state that the request is in progress
     this.props.dispatch(
-      new UpdateImageSearchRequestStatus({ requestInProgress, requestComplete })
+      new UpdateImageSearchRequestStatus({
+        requestInProgress: true,
+        requestComplete: false,
+      })
     );
 
     try {
@@ -71,19 +73,18 @@ class ImageSearchContainer extends React.Component<Props> {
       this.props.dispatch(
         new UpdateImageSearchRequestData({ response, success })
       );
-    } catch (errorOutput) {
-      // Update the search request error
-      const error = true;
-      const errorMessage = errorOutput;
+    } catch (error) {
       this.props.dispatch(
-        new UpdateImageSearchRequestError({ error, errorMessage })
+        new UpdateImageSearchRequestError({ error: true, errorMessage: error })
       );
     }
 
-    requestInProgress = false;
-    requestComplete = true;
+    // Update the state that the request is complete
     this.props.dispatch(
-      new UpdateImageSearchRequestStatus({ requestInProgress, requestComplete })
+      new UpdateImageSearchRequestStatus({
+        requestInProgress: false,
+        requestComplete: true,
+      })
     );
   };
 
