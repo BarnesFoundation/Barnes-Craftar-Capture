@@ -1,17 +1,11 @@
 import express from "express";
 import multer from "multer";
-import vuforia from "vuforia-api";
 
-import { Config } from "../config";
 import { getNextReferenceTag } from "../utils";
+import { VuforiaClient as vuforiaClient } from "../vuforiaClient";
 
 export const uploadMiddleware = multer({ storage: multer.memoryStorage() });
 export const MULTER_FIELD_NAME = "image";
-
-const vuforiaClient = vuforia.client({
-  serverAccessKey: Config.vuforiaAccessKey,
-  serverSecretKey: Config.vuforiaSecretKey,
-});
 
 type AddTargetResponseSuccess = {
   result_code: "TargetCreated";
@@ -36,17 +30,17 @@ class ManagementController {
     // Image Id, but that has an additional segment to indicate it's an
     // additional reference image for the object
     const tokenizedImageId = getNextReferenceTag(imageId);
-    const options = {
-      name: tokenizedImageId,
-      width: 2.0,
-      image: queryImage.buffer.toString("base64"),
-      active_flag: true,
-    };
     try {
       const addImageTargetResponse =
         await new Promise<AddTargetResponseSuccess>((resolve, reject) => {
           vuforiaClient.addTarget(
-            options,
+            {
+              // Options to send out for the `addTarget` call
+              name: tokenizedImageId,
+              width: 2.0,
+              image: queryImage.buffer.toString("base64"),
+              active_flag: true,
+            },
             function (
               error: AddTargetResponseFailure,
               result: AddTargetResponseSuccess
