@@ -1,0 +1,1 @@
+export { getNextReferenceTag } from "./tokenString";
