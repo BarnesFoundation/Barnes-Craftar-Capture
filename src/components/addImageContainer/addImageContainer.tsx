@@ -1,6 +1,9 @@
 import * as React from "react";
 import { AddImageView } from "./addImageView/addImageView";
-import { ImageService, CreateResponse } from "../../services/imageService";
+import {
+  ImageService,
+  ImageReferenceResponse,
+} from "../../services/imageService";
 import { connect } from "react-redux";
 import {
   AddImageRequestSuccess,
@@ -21,7 +24,7 @@ export interface Props {
   uuid: string;
 
   // Add Image State
-  response: CreateResponse;
+  response: ImageReferenceResponse;
   success: boolean;
   requestInProgress: boolean;
   requestComplete: boolean;

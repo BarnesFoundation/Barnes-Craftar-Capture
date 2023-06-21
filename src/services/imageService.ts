@@ -1,74 +1,39 @@
 import axios from "axios";
 
-import { Config } from "../utils/config";
-import { ImageCreateResponse } from "../interfaces/managementResponses";
-
-class CreateResponse {
+export interface ImageReferenceResponse {
+  message: string;
   success: boolean;
-  uuid?: string;
-  item?: string;
+
+  item: string;
+  uuid: string | null;
 }
 
 class ImageService {
-  httpConfig;
-
-  constructor() {
-    this.httpConfig = {
-      url:
-        Config.managementApiUrl +
-        Config.imageRoute +
-        "/?api_key=" +
-        Config.managementApiKey,
-      headers: { "Content-Type": "multipart/form-data" },
-      method: "post",
-      data: null,
-    };
-  }
-
-  private prepareRequest(file: Blob, itemUuid: string) {
-    let item = "/api/v0/item/" + itemUuid + "/";
-    let fd = new FormData();
-
-    fd.append("file", file);
-    fd.append("item", item);
-
-    this.httpConfig.data = fd;
-
-    return this.httpConfig;
-  }
-
-  private parseImageCreateResponse(
-    response: ImageCreateResponse
-  ): CreateResponse {
-    let createResponse = new CreateResponse();
-
-    if (response.status === "CR" || response.status === "OK") {
-      createResponse.success = true;
-      createResponse.item = response.item;
-      createResponse.uuid = response.uuid;
-    }
-    return createResponse;
-  }
-
-  private parseErrorResponse(error): {} {
-    let errorCode = error.response.data.error.code;
-    let errorMessage = error.response.data.error.message;
-
-    return { errorCode: errorCode, errorMessage: errorMessage };
-  }
-
-  async addImage(image: Blob, itemUuid: string): Promise<CreateResponse> {
-    let request = this.prepareRequest(image, itemUuid);
+  public async addImage(
+    imageBlob: Blob,
+    imageId: string
+  ): Promise<ImageReferenceResponse> {
+    const form = new FormData();
+    form.append("image", imageBlob);
+    form.append("imageId", imageId);
 
     try {
-      let response = await axios(request);
-      let createResponse = this.parseImageCreateResponse(response.data);
-      return createResponse;
+      const response = await axios({
+        url: "/api/add-image",
+        headers: { "Content-Type": "multipart/form-data" },
+        method: "post",
+        data: form,
+      });
+      const imageCreationResponse = response.data as ImageReferenceResponse;
+      return imageCreationResponse;
     } catch (error) {
-      let message = this.parseErrorResponse(error);
-      throw message;
+      console.error(
+        `An error occurred adding the reference image for Image Id ${imageId}`,
+        error
+      );
+      throw error;
     }
   }
 }
 
-export { ImageService, CreateResponse };
+export { ImageService };
