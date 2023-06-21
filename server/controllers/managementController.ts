@@ -29,7 +29,7 @@ class ManagementController {
     request: express.Request,
     response: express.Response
   ) {
-    const imageId = request.query.imageId as string;
+    const imageId = request.body.imageId as string;
     const queryImage = request.file;
 
     // We need to generate a new token string that contains the original
@@ -43,40 +43,47 @@ class ManagementController {
       active_flag: true,
     };
     try {
-      const addImageTargetResponse = await new Promise<
-        AddTargetResponseSuccess | AddTargetResponseFailure
-      >((resolve, reject) => {
-        vuforiaClient.addTarget(
-          options,
-          function (
-            error: AddTargetResponseFailure,
-            result: AddTargetResponseSuccess
-          ) {
-            if (error) {
-              return reject(error);
+      const addImageTargetResponse =
+        await new Promise<AddTargetResponseSuccess>((resolve, reject) => {
+          vuforiaClient.addTarget(
+            options,
+            function (
+              error: AddTargetResponseFailure,
+              result: AddTargetResponseSuccess
+            ) {
+              if (error) {
+                return reject(error);
+              }
+              return resolve(result);
             }
-            return resolve(result);
-          }
-        );
-      });
+          );
+        });
 
       console.debug(
         "Successfully added the reference image as a new target into Vuforia",
         JSON.stringify(addImageTargetResponse)
       );
 
-      return response
-        .status(200)
-        .json("Successfully added the reference image");
+      return response.status(200).json({
+        message: "Successfully added the reference image",
+        success: true,
+
+        item: imageId,
+        uuid: addImageTargetResponse.target_id,
+      });
     } catch (error) {
       console.error(
         `An error occurred adding the reference image as a new target into Vuforia`,
         error
       );
 
-      return response
-        .status(400)
-        .json("Failed to add the image as a new reference image");
+      return response.status(400).json({
+        message: "Failed to add the image as a new reference image",
+        success: false,
+
+        item: imageId,
+        uuid: null,
+      });
     }
   }
 }
