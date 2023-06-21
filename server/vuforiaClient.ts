@@ -3,6 +3,9 @@ import vuforia from "vuforia-api";
 import { Config } from "./config";
 
 export const VuforiaClient = vuforia.client({
-  serverAccessKey: Config.vuforiaAccessKey,
-  serverSecretKey: Config.vuforiaSecretKey,
+  serverAccessKey: Config.vuforiaServerAccessKey,
+  serverSecretKey: Config.vuforiaServerSecretKey,
+
+  clientAccessKey: Config.vuforiaClientAccessKey,
+  clientSecretKey: Config.vuforiaClientSecretKey,
 });
