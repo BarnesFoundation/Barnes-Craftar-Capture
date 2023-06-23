@@ -25,3 +25,22 @@ deploy_dev: builds dev reset_node
 
 # Deploy to production
 deploy_prod: builds prod reset_node
+
+
+######################################
+#
+# Make commands for local development
+#
+######################################
+
+# Starts a local ngrok tunnel
+# connected to the React FE on localhost:3006
+# Ngrok had recent breaking changes in new releases, so hardcode old version until we upgrade
+ngrok-client:
+	npx ngrok@4.3.0 http 3004 --host-header=localhost:3004
+
+# Starts a local ngrok tunnel
+# connected to the Node BE on localhost:4006
+# Ngrok had recent breaking changes in new releases, so hardcode old version until we upgrade
+ngrok-server:
+	npx ngrok@4.3.0 http 4004 --host-header=localhost:4004

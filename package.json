@@ -15,7 +15,7 @@
       "node": ">=0.10"
    },
    "scripts": {
-      "start": "PORT=3000 react-scripts start",
+      "start": "PORT=3004 react-scripts start",
       "build": "rm -rf dist; react-scripts build; npm run build-server",
       "build-server": "tsc -p server/",
       "postbuild": "cp -r build dist && rm -rf build",
@@ -72,5 +72,5 @@
       "not ie <= 11",
       "not op_mini all"
    ],
-   "proxy": "http://localhost:4000"
+   "proxy": "http://localhost:4004"
 }
