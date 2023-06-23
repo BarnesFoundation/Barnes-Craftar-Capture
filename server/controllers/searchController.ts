@@ -97,6 +97,61 @@ class SearchController {
       });
     }
   }
+
+  public static async searchByItemId(
+    request: express.Request,
+    response: express.Response
+  ) {
+    const imageId = request.query.imageId as string;
+
+    try {
+      const listTargetsResponse = await new Promise((resolve, reject) => {
+        vuforiaClient.listTargets(function (error, result) {
+          if (error) {
+            return reject(error);
+          }
+          return resolve(result);
+        });
+      });
+
+      console.debug(
+        "Successfully retrieved all targets from the Vuforia database",
+        JSON.stringify(listTargetsResponse)
+      );
+
+      return response.status(200).json({
+        message:
+          "Successfully retrieved associated target for the provided Image ID",
+        success: true,
+
+        /* item: imageId,
+        uuid: addImageTargetResponse.target_id, */
+      });
+    } catch (error) {
+      console.error(
+        `An error occurred retrieved targets from the Vuforia database`,
+        error
+      );
+
+      return response.status(400).json({
+        message:
+          "Failed to retrieve associated target for the provided Image ID",
+        success: false,
+
+        item: imageId,
+        uuid: null,
+      });
+    }
+  }
+
+  private static async resolveTargetForImageId(imageId: string) {
+    // When we receive an Image ID, there's no way to directly relate this back to the
+    // associated image target in Vuforia. For example, for an Image ID 6726, we can't query
+    // Vuforia's Web API to return to us the image target(s) associated with this specific ID.
+    // There's no ability to providie a specific field to their List Targets API to retrieve a specific
+    // image target associated with the Image ID 6726. So we have to look up the origina reference image
+    // and provide that to Vuforia to then have it provide us with the right image target
+  }
 }
 
 export { SearchController };
