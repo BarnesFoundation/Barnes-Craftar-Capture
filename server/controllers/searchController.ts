@@ -116,7 +116,7 @@ class SearchController {
       if (imageTargetResult === null) {
         return response.status(400).json({
           message: "Could not find associated target for the provided Image ID",
-          success: true,
+          success: false,
         });
       }
 
@@ -125,8 +125,9 @@ class SearchController {
           "Successfully retrieved associated target for the provided Image ID",
         success: true,
 
-        item: imageTargetResult.name,
+        name: imageTargetResult.name,
         uuid: imageTargetResult.uuid,
+        imageUrl: imageTargetResult.imageUrl,
       });
     } catch (error) {
       console.error(
@@ -138,9 +139,6 @@ class SearchController {
         message:
           "Failed to retrieve associated target for the provided Image ID",
         success: false,
-
-        item: imageId,
-        uuid: null,
       });
     }
   }
@@ -204,6 +202,7 @@ class SearchController {
     return {
       name: identifiedTarget.target_data.name,
       uuid: identifiedTarget.target_id,
+      imageUrl: objectImageUrl,
     };
   }
 }
