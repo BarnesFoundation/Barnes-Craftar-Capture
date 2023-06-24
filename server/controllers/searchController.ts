@@ -3,21 +3,11 @@ import axios from "axios";
 
 import { Config } from "../config";
 import { REF_TAG } from "../utils";
-import { VuforiaClient as vuforiaClient } from "../vuforiaClient";
+import {
+  VuforiaClient as vuforiaClient,
+  CloudRecoQueryResponse,
+} from "../vuforiaClient";
 import { ElasticSearchService } from "../services";
-
-interface VuforiaResponse {
-  query_id: string;
-  results: Array<{
-    target_id: string;
-    target_data: {
-      name: string;
-      application_metadata: string;
-      target_timestamp: number;
-    };
-  }>;
-  result_code: string;
-}
 
 class SearchController {
   public static async searchByInvno(
@@ -74,7 +64,7 @@ class SearchController {
     const imageBinary = queryImage.buffer.toString("binary");
 
     try {
-      const imageSearchResult = await new Promise<VuforiaResponse>(
+      const imageSearchResult = await new Promise<CloudRecoQueryResponse>(
         (resolve, reject) => {
           vuforiaClient.cloudRecoQuery(
             imageBinary,
@@ -90,14 +80,10 @@ class SearchController {
         }
       );
 
-      console.log(
-        "Successful Vuforia API image search result",
-        JSON.stringify(imageSearchResult)
-      );
-
       // Transform the result into a format similar to how CraftAR was providing us
       // so that we can continue to utilize the FE as-is without any changes for now
       const transformedResult = {
+        // Vueforia details
         search_time: Date.now(),
         results: imageSearchResult.results
           // Not sure why some items in this list come back with no `target_data` key
@@ -113,7 +99,33 @@ class SearchController {
           })),
       };
 
-      return response.status(200).json(transformedResult);
+      // No match found for the image so we can return as-is
+      if (transformedResult.results.length === 0) {
+        return response.json({
+          success: false,
+          message: "Could not find image match for the provided image",
+          ...transformedResult,
+        });
+      }
+
+      // Use the single top result to find the additional image details needed
+      const idFromIdentifiedImage = transformedResult.results[0].item.name;
+      const imageTargetResult = await SearchController.resolveTargetForImageId(
+        idFromIdentifiedImage
+      );
+
+      return response.status(200).json({
+        message:
+          "Successfully retrieved associated target for the provided Image ID",
+        success: true,
+
+        id: idFromIdentifiedImage,
+        name: imageTargetResult.name,
+        uuid: imageTargetResult.uuid,
+        imageUrl: imageTargetResult.imageUrl,
+
+        ...transformedResult,
+      });
     } catch (error) {
       console.log(`An error occurred sending request to Vueforia`, error);
       return response.status(500).json({
@@ -194,7 +206,7 @@ class SearchController {
     const imageBinary = Buffer.from(response.data).toString("binary");
 
     // Get the matching image target from Vuforia
-    const imageSearchResult = await new Promise<VuforiaResponse>(
+    const imageSearchResult = await new Promise<CloudRecoQueryResponse>(
       (resolve, reject) => {
         vuforiaClient.cloudRecoQuery(imageBinary, 5, function (error, result) {
           if (error) {
