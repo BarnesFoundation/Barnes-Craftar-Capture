@@ -1,7 +1,7 @@
 import * as React from "react";
 import { PhotoView } from "../../photoView/photoView";
 import { LoadingDialog } from "../../../shared/components/loadingDialog";
-import { CreateResponse } from "../../../services/imageService";
+import { ImageReferenceResponse } from "../../../services/imageService";
 import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
 
@@ -11,7 +11,7 @@ interface Props {
   addImageToItem: Function;
 
   success: boolean;
-  response: CreateResponse;
+  response: ImageReferenceResponse;
 
   error: boolean;
   errorMessage: any;
@@ -24,10 +24,6 @@ class AddImageView extends React.Component<Props, object> {
   constructor(props) {
     super(props);
   }
-
-  addImageToItem = (event) => {
-    this.props.addImageToItem();
-  };
 
   public render() {
     const {
@@ -45,7 +41,7 @@ class AddImageView extends React.Component<Props, object> {
     const photoView = <PhotoView photoUri={photoUri}></PhotoView>;
     const addImageButton = (
       <div className="button-container">
-        <Button variant="contained" onClick={this.addImageToItem}>
+        <Button variant="contained" onClick={() => this.props.addImageToItem()}>
           Add Image to Item
         </Button>
       </div>
