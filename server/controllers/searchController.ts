@@ -202,7 +202,9 @@ class SearchController {
     return {
       name: identifiedTarget.target_data.name,
       uuid: identifiedTarget.target_id,
-      imageUrl: objectImageUrl,
+
+      // Smaller image URL for mobile
+      imageUrl: `https://${Config.imageHost}/${imageId}_${imageSecret}_n.jpg`,
     };
   }
 }
