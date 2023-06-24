@@ -29,19 +29,39 @@ class SearchController {
       invno
     );
 
-    // If there's a valid response from ElasticSearch, then we have a usable ID
-    if (elasticSearchResponse.length > 0) {
-      const { id } = elasticSearchResponse[0]._source;
-      return response.status(200).json({
-        id,
-        success: true,
+    // If we've found no results from ElasticSearch, then there's no usable ID
+    if (elasticSearchResponse.length === 0) {
+      return response.status(404).json({
+        id: null,
+
+        success: false,
+        message:
+          "Could not find record in ElasticSearch for the provided Invno value",
       });
     }
 
-    // Otherwise, no identified record in ElasticSearch for this invno
-    return response.status(404).json({
-      id: null,
-      success: false,
+    // Otherwise, we do have a usable ID and we'll use the ID to look up the corresponding record in Vuforia
+    const { id } = elasticSearchResponse[0]._source;
+    const imageTargetResult = await SearchController.resolveTargetForImageId(
+      id
+    );
+
+    if (imageTargetResult === null) {
+      return response.status(400).json({
+        message:
+          "Could not find associated target for the provided Invno value",
+        success: false,
+      });
+    }
+
+    return response.status(200).json({
+      message:
+        "Successfully retrieved associated target for the provided Image ID",
+      success: true,
+
+      name: imageTargetResult.name,
+      uuid: imageTargetResult.uuid,
+      imageUrl: imageTargetResult.imageUrl,
     });
   }
 
