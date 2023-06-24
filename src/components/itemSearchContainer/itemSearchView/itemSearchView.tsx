@@ -15,6 +15,8 @@ interface Props {
   handleSubmit: Function;
 }
 
+const displayText = "Searching Catchoom for the ID";
+
 class ItemSearchView extends React.Component<Props> {
   constructor(props) {
     super(props);
@@ -23,10 +25,6 @@ class ItemSearchView extends React.Component<Props> {
   public render() {
     const { requestComplete, requestInProgress, success, itemImageUrl } =
       this.props;
-
-    console.log("The item image url", itemImageUrl);
-
-    const displayText = "Searching Catchoom for the ID";
 
     const itemSearchForm = (
       <ItemSearchForm handleSubmit={this.props.handleSubmit}></ItemSearchForm>
@@ -51,21 +49,6 @@ class ItemSearchView extends React.Component<Props> {
       <p>A reference image does not exist</p>
     );
 
-    const searchResultGrid = (
-      <table>
-        <tbody>
-          <tr>
-            <th>ID:</th>
-            <td>{this.props.response.name}</td>
-          </tr>
-          <tr>
-            <th>UUID:</th>
-            <td>{this.props.response.uuid}</td>
-          </tr>
-        </tbody>
-      </table>
-    );
-
     return (
       <div className="item-search-container">
         <div className="search-result">
@@ -73,7 +56,20 @@ class ItemSearchView extends React.Component<Props> {
           <div className={this.props.requestComplete ? "unhidden" : "hidden"}>
             <h3>{this.props.requestComplete ? matchResultText : null}</h3>
             {requestComplete && success ? itemImage : null}
-            {searchResultGrid}
+            {requestComplete && this.props.response.success ? (
+              <table>
+                <tbody>
+                  <tr>
+                    <th>ID:</th>
+                    <td>{this.props.searchedId}</td>
+                  </tr>
+                  <tr>
+                    <th>UUID:</th>
+                    <td>{this.props.response.uuid}</td>
+                  </tr>
+                </tbody>
+              </table>
+            ) : null}
           </div>
         </div>
         {itemSearchForm}
