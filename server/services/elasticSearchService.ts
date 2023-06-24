@@ -8,16 +8,25 @@ const esClient = new ElasticSearch.Client({
   ],
 });
 
-interface ElasticSearchSource {
+interface InvnoResult {
   success: boolean;
+
   id: string;
   invno: string;
+}
+
+interface ImageIdResult {
+  success: boolean;
+
+  id: string;
+  invno: string;
+  imageSecret: string;
 }
 
 class ElasticSearchService {
   public static async searchByInvno(invno: string) {
     const elasticSearchResponse = (
-      await esClient.search<ElasticSearchSource>({
+      await esClient.search<InvnoResult>({
         index: "collection",
         body: {
           size: 1,
@@ -31,6 +40,29 @@ class ElasticSearchService {
             },
           },
           _source: ["id", "invno"],
+        },
+      })
+    ).hits.hits;
+
+    return elasticSearchResponse;
+  }
+
+  public static async searchByImageId(imageId: string) {
+    const elasticSearchResponse = (
+      await esClient.search<ImageIdResult>({
+        index: "collection",
+        body: {
+          size: 1,
+          query: {
+            bool: {
+              must: {
+                match: {
+                  _id: imageId,
+                },
+              },
+            },
+          },
+          _source: ["id", "invno", "imageSecret"],
         },
       })
     ).hits.hits;
