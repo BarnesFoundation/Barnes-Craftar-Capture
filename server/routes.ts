@@ -11,7 +11,7 @@ export const ApiRouter = express.Router();
 
 // Search Endpoints
 ApiRouter.use("/search-by-invno", SearchController.searchByInvno);
-ApiRouter.get("/search-by-image-id", SearchController.searchByItemId);
+ApiRouter.get("/search-by-image-id", SearchController.searchByImageId);
 ApiRouter.post(
   "/search-by-image",
   uploadMiddleware.single(MULTER_FIELD_NAME),

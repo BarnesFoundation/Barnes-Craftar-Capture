@@ -1,5 +1,8 @@
 import express from "express";
+import axios from "axios";
 
+import { Config } from "../config";
+import { REF_TAG } from "../utils";
 import { VuforiaClient as vuforiaClient } from "../vuforiaClient";
 import { ElasticSearchService } from "../services";
 
@@ -98,34 +101,32 @@ class SearchController {
     }
   }
 
-  public static async searchByItemId(
+  public static async searchByImageId(
     request: express.Request,
     response: express.Response
   ) {
     const imageId = request.query.imageId as string;
 
     try {
-      const listTargetsResponse = await new Promise((resolve, reject) => {
-        vuforiaClient.listTargets(function (error, result) {
-          if (error) {
-            return reject(error);
-          }
-          return resolve(result);
-        });
-      });
-
-      console.debug(
-        "Successfully retrieved all targets from the Vuforia database",
-        JSON.stringify(listTargetsResponse)
+      // Get the Vuforia ID of this image identifier
+      const imageTargetId = await SearchController.resolveTargetForImageId(
+        imageId
       );
+
+      if (imageTargetId === null) {
+        return response.status(400).json({
+          message: "Could not find associated target for the provided Image ID",
+          success: true,
+        });
+      }
 
       return response.status(200).json({
         message:
           "Successfully retrieved associated target for the provided Image ID",
         success: true,
 
-        /* item: imageId,
-        uuid: addImageTargetResponse.target_id, */
+        item: imageTargetId,
+        uuid: imageTargetId,
       });
     } catch (error) {
       console.error(
@@ -151,6 +152,55 @@ class SearchController {
     // There's no ability to providie a specific field to their List Targets API to retrieve a specific
     // image target associated with the Image ID 6726. So we have to look up the origina reference image
     // and provide that to Vuforia to then have it provide us with the right image target
+    const elasticSearchResponse = await ElasticSearchService.searchByImageId(
+      imageId
+    );
+
+    // This means no match found for the provided ID
+    if (elasticSearchResponse.length === 0) {
+      return null;
+    }
+
+    // We have a match for this image id. We can build the S3 URL
+    const { imageSecret } = elasticSearchResponse[0]._source;
+    const objectImageUrl = `https://${Config.imageHost}/${imageId}_${imageSecret}_b.jpg`;
+
+    // Download the image
+    const response = await axios({
+      method: "get",
+      url: objectImageUrl,
+      responseType: "arraybuffer",
+    });
+    const imageBinary = Buffer.from(response.data).toString("binary");
+
+    // Get the matching image target from Vuforia
+    const imageSearchResult = await new Promise<VuforiaResponse>(
+      (resolve, reject) => {
+        vuforiaClient.cloudRecoQuery(imageBinary, 5, function (error, result) {
+          if (error) {
+            return reject(error);
+          } else {
+            return resolve(result);
+          }
+        });
+      }
+    );
+
+    // This means no match found in Vuforia
+    if (imageSearchResult.results.length === 0) {
+      return null;
+    }
+
+    // if we have more than 1 possible result in Vuforia after filtering - we shouldn't rely on this
+    // Filter out the additional reference image results
+    const filteredImageResults = imageSearchResult.results.filter((item) => {
+      return item.target_data.name.includes(REF_TAG) === false;
+    });
+    if (filteredImageResults.length > 1) {
+      return null;
+    }
+
+    return filteredImageResults[0].target_id;
   }
 }
 
