@@ -1,4 +1,4 @@
-const REF_TAG = "__REF_";
+export const REF_TAG = "__REF_";
 
 // It doesn't seem like we need to keep track of which number reference tag for an Image Id this would be
 // i.e. if the original Image Id is 6726, we'd return something like `6726__REF_12356789` where that last
