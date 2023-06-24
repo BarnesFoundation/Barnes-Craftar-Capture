@@ -109,11 +109,11 @@ class SearchController {
 
     try {
       // Get the Vuforia ID of this image identifier
-      const imageTargetId = await SearchController.resolveTargetForImageId(
+      const imageTargetResult = await SearchController.resolveTargetForImageId(
         imageId
       );
 
-      if (imageTargetId === null) {
+      if (imageTargetResult === null) {
         return response.status(400).json({
           message: "Could not find associated target for the provided Image ID",
           success: true,
@@ -125,8 +125,8 @@ class SearchController {
           "Successfully retrieved associated target for the provided Image ID",
         success: true,
 
-        item: imageTargetId,
-        uuid: imageTargetId,
+        item: imageTargetResult.name,
+        uuid: imageTargetResult.uuid,
       });
     } catch (error) {
       console.error(
@@ -200,7 +200,11 @@ class SearchController {
       return null;
     }
 
-    return filteredImageResults[0].target_id;
+    const identifiedTarget = filteredImageResults[0];
+    return {
+      name: identifiedTarget.target_data.name,
+      uuid: identifiedTarget.target_id,
+    };
   }
 }
 
