@@ -2,18 +2,13 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 
-import {
-  ItemSearchService,
-  SearchResponse,
-} from "../../services/itemSearchService";
-import { ItemImageRetrievalService } from "../../services/itemImageRetrievalService";
+import { SearchService } from "../../services/searchService";
 import { ItemSearchView } from "./itemSearchView/itemSearchView";
 
 import {
   UpdateSetItemClicked,
   UpdateItemIdSearchData,
   UpdateItemIdSearchStatus,
-  SubmitItemIdSearchForm,
   ResetItemIdSearch,
   UpdateItemImageUrl,
 } from "../../store/actions/itemIdSearchActions";
@@ -26,15 +21,13 @@ import { CollectionItemState } from "../../store/reducers/collectionItemReducer"
 class ItemSearchContainer extends React.Component<
   ConnectedProps & ItemIdSearchState & CollectionItemState
 > {
-  itemSearchService: ItemSearchService;
-  itemImageRetrievalService: ItemImageRetrievalService;
+  itemSearchService: SearchService;
 
   itemImageUrl: string;
 
   constructor(props) {
     super(props);
-    this.itemSearchService = new ItemSearchService();
-    this.itemImageRetrievalService = new ItemImageRetrievalService();
+    this.itemSearchService = new SearchService();
   }
 
   componentWillUnmount() {
@@ -47,10 +40,11 @@ class ItemSearchContainer extends React.Component<
     this.props.dispatch(new ResetItemIdSearch());
 
     // Update that request is in progress
-    let requestInProgress = true;
-    let requestComplete = false;
     this.props.dispatch(
-      new UpdateItemIdSearchStatus({ requestInProgress, requestComplete })
+      new UpdateItemIdSearchStatus({
+        requestInProgress: true,
+        requestComplete: false,
+      })
     );
 
     // Get the id to search
@@ -61,11 +55,9 @@ class ItemSearchContainer extends React.Component<
     const success = response.success;
 
     if (success) {
-      this.itemImageUrl = await this.itemImageRetrievalService.retrieveImage(
-        response.uuid
-      );
+      this.itemImageUrl = response.imageUrl;
       this.props.dispatch(
-        new UpdateItemImageUrl({ itemImageUrl: this.itemImageUrl })
+        new UpdateItemImageUrl({ itemImageUrl: response.imageUrl })
       );
     }
 
@@ -74,10 +66,11 @@ class ItemSearchContainer extends React.Component<
     );
 
     // Update that request is complete
-    requestInProgress = false;
-    requestComplete = true;
     this.props.dispatch(
-      new UpdateItemIdSearchStatus({ requestInProgress, requestComplete })
+      new UpdateItemIdSearchStatus({
+        requestInProgress: false,
+        requestComplete: true,
+      })
     );
   };
 
@@ -88,7 +81,6 @@ class ItemSearchContainer extends React.Component<
     const setItemClicked = true;
 
     this.props.dispatch(new SetCollectionItem({ id, uuid, itemImageUrl }));
-
     this.props.dispatch(new UpdateSetItemClicked({ setItemClicked }));
   };
 
@@ -100,7 +92,6 @@ class ItemSearchContainer extends React.Component<
       requestInProgress,
       requestComplete,
       id,
-      itemImageUrl,
       setItemClicked,
     } = this.props;
     if (id && setItemClicked) {

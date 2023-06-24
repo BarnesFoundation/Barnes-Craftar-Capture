@@ -1,5 +1,5 @@
 import * as React from "react";
-import { SearchResponse } from "../../../services/itemSearchService";
+import { SearchResponse } from "../../../services/searchService";
 import { ItemSearchForm } from "../itemSearchView/itemSearchForm";
 import { LoadingDialog } from "../../../shared/components/loadingDialog";
 import Button from "@material-ui/core/Button";
