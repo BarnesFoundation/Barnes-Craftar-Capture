@@ -59,6 +59,7 @@ class SearchController {
         "Successfully retrieved associated target for the provided Image ID",
       success: true,
 
+      id: id,
       name: imageTargetResult.name,
       uuid: imageTargetResult.uuid,
       imageUrl: imageTargetResult.imageUrl,
@@ -145,6 +146,7 @@ class SearchController {
           "Successfully retrieved associated target for the provided Image ID",
         success: true,
 
+        id: imageId,
         name: imageTargetResult.name,
         uuid: imageTargetResult.uuid,
         imageUrl: imageTargetResult.imageUrl,
