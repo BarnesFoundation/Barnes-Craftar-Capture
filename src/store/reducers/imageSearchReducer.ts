@@ -2,10 +2,10 @@ import * as at from "../actionTypes/imageSearchActionTypes";
 import * as a from "../actions/imageSearchActions";
 import { Action } from "../../interfaces/action";
 
-import { MatchResponse } from "../../services/searchService";
+import { SearchResponse } from "../../services/searchService";
 
 export interface ImageSearchState {
-  response: {} | MatchResponse;
+  response: {} | SearchResponse;
   success: boolean;
   requestInProgress: boolean;
   requestComplete: boolean;

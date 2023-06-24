@@ -1,12 +1,12 @@
 import * as at from "../actionTypes/imageSearchActionTypes";
 import { Action } from "../../interfaces/action";
 
-import { MatchResponse } from "../../services/searchService";
+import { SearchResponse } from "../../services/searchService";
 
 export class UpdateImageSearchRequestData implements Action {
   public type: string = at.UPDATE_IMAGE_SEARCH_REQUEST_DATA;
 
-  constructor(public payload: { response: MatchResponse; success: boolean }) {}
+  constructor(public payload: { response: SearchResponse; success: boolean }) {}
 }
 
 export class UpdateImageSearchRequestStatus implements Action {
