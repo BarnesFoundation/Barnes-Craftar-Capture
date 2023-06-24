@@ -17,4 +17,7 @@ export const Config = {
 
   vuforiaClientAccessKey: process.env.VUFORIA_CLIENT_ACCESS_KEY,
   vuforiaClientSecretKey: process.env.VUFORIA_CLIENT_SECRET_KEY,
+
+  /** Cloudfront URL for Object Images */
+  imageHost: process.env.IMAGE_HOST,
 };
