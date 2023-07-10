@@ -3,7 +3,7 @@ import * as dotenv from "dotenv";
 dotenv.config();
 
 export const Config = {
-  nodeEnv: process.env.NODE_ENV as "PRODUCTION" | "DEVELOPMENT" | "LOCAL",
+  nodeEnv: (process.env.NODE_ENV || 'LOCAL').toUpperCase() as "PRODUCTION" | "DEVELOPMENT" | "LOCAL",
   port: process.env.PORT,
 
   /** ElasticSearch environment variables */
