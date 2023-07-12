@@ -8,5 +8,5 @@ export const REF_TAG = "__REF_";
 // additional reference image this is because there's little value in such information. If we truly need something like that
 // we can just get the date that a specific additional reference image was created in Vuforia
 export function getNextReferenceTag(originalImageId: string) {
-  return originalImageId + REF_TAG + Date.now();
+  return (originalImageId + REF_TAG + Date.now()).toString();
 }
