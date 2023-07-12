@@ -47,12 +47,12 @@ class AddImageContainer extends React.Component<Props> {
   };
 
   addImageToItem = async () => {
-    const { croppedPhotoUri, uuid } = this.props;
-
-    let requestInProgress = true;
-    let requestComplete = false;
+    const { croppedPhotoUri, id } = this.props;
     this.props.dispatch(
-      new UpdateAddImageRequestStatus({ requestInProgress, requestComplete })
+      new UpdateAddImageRequestStatus({
+        requestInProgress: true,
+        requestComplete: false,
+      })
     );
 
     try {
@@ -64,7 +64,7 @@ class AddImageContainer extends React.Component<Props> {
       )) as Blob;
 
       // Update the image request success
-      const response = await this.imageService.addImage(imageBlob, uuid);
+      const response = await this.imageService.addImage(imageBlob, id);
       const success = response.success;
       this.props.dispatch(new AddImageRequestSuccess({ response, success }));
     } catch (e) {
@@ -74,10 +74,11 @@ class AddImageContainer extends React.Component<Props> {
       this.props.dispatch(new AddImageRequestError({ error, errorMessage }));
     }
 
-    requestInProgress = false;
-    requestComplete = true;
     this.props.dispatch(
-      new UpdateAddImageRequestStatus({ requestInProgress, requestComplete })
+      new UpdateAddImageRequestStatus({
+        requestInProgress: false,
+        requestComplete: true,
+      })
     );
   };
 
