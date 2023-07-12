@@ -25,8 +25,8 @@
       "deploy:dev": "serverless deploy -v --stage dev",
       "deploy:prod": "serverless deploy -v --stage prod",
       "watch-server": "tsc -w -p server/",
-      "run-dev-server": "nodemon --delay 500ms dist/server/index.js",
-      "dev": "concurrently \"npm run watch-server\" \"npm run run-dev-server\""
+      "local-server": "nodemon --delay 500ms dist/server/index.js",
+      "dev": "concurrently \"npm run watch-server\" \"npm run local-server\""
    },
    "devDependencies": {
       "@material-ui/core": "^3.7.1",
