@@ -37,7 +37,7 @@ class ManagementController {
             {
               // Options to send out for the `addTarget` call
               name: tokenizedImageId,
-              width: 2.0,
+              width: 1.0,
               image: queryImage.buffer.toString("base64"),
               active_flag: true,
             },
