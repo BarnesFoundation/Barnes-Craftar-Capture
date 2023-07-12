@@ -146,7 +146,7 @@ class SearchController {
         imageId
       );
 
-      if (imageTargetResult === null) {
+      if (imageTargetResult == null) {
         return response.status(400).json({
           message: "Could not find associated target for the provided Image ID",
           success: false,
@@ -165,7 +165,7 @@ class SearchController {
       });
     } catch (error) {
       console.error(
-        `An error occurred retrieved targets from the Vuforia database`,
+        `An error occurred retrieving targets from the Vuforia database for Image ID ${imageId}`,
         error
       );
 
@@ -223,18 +223,25 @@ class SearchController {
       return null;
     }
 
-    // if we have more than 1 possible result in Vuforia after filtering - we shouldn't rely on this
-    // Filter out the additional reference image results
+    // Filter out the additional reference image results - we only want the original items
     const filteredImageResults = imageSearchResult.results.filter((item) => {
-      return item.target_data.name.includes(REF_TAG) === false;
+      return item.target_data?.name.includes(REF_TAG) === false;
     });
+
+    // If we have more than 1 possible result in Vuforia after filtering - we can't rely on this result
     if (filteredImageResults.length > 1) {
       return null;
     }
 
     const identifiedTarget = filteredImageResults[0];
+
+    // If the identified image does not have the same Image ID as we received in the request, we can't rely on this result
+    if (identifiedTarget.target_data?.name.toString() !== imageId.toString()) {
+      return null;
+    }
+
     return {
-      name: identifiedTarget.target_data.name,
+      name: identifiedTarget.target_data?.name,
       uuid: identifiedTarget.target_id,
 
       // Smaller image URL for mobile
