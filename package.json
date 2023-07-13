@@ -18,6 +18,7 @@
       "start": "PORT=3004 react-scripts start",
       "build": "rm -rf dist; react-scripts build; npm run build-server",
       "build-server": "tsc -p server/",
+      "postinstall": "npx patch-package", 
       "postbuild": "cp -r build dist && rm -rf build",
       "test": "react-scripts test --env=jsdom",
       "eject": "react-scripts eject",
