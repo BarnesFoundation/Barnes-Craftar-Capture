@@ -89,6 +89,10 @@ class SearchController {
           // Not sure why some items in this list come back with no `target_data` key
           // If there is no `target_data` key then we don't get a `name` value
           .filter((result) => result.target_id && result.target_data)
+          // We don't want any images that are one of the additional reference images
+          .filter(
+            (result) => result.target_data.name.includes(REF_TAG) === false
+          )
           .map((result) => ({
             item: {
               name: result.target_data?.name,
