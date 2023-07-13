@@ -1,5 +1,5 @@
 # Barnes Craftar Capture
-This project is a mobile application designed for capturing multiple vantage points for additional reference images to upload into the Barnes Foundation image repository in Catchoom. 
+This project is a mobile application designed for capturing multiple vantage points for additional reference images to upload into the Barnes Foundation image repository in Vuforia. 
 
 ## Development
 
@@ -31,4 +31,4 @@ There isn't automated deployment configured yet for the application. You can fol
 You must set the following three variables in the `.env` if they ever change from their currently set values
 
 
-Since the deprecation of CraftAR by Catchoom, this application no longer uses `REACT_APP_` namespaced environment variables, nor environment variables that require rebuilding and redeploying the frontend.
+Since the deprecation of CraftAR by Vuforia, this application no longer uses `REACT_APP_` namespaced environment variables, nor environment variables that require rebuilding and redeploying the frontend.

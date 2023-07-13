@@ -15,7 +15,7 @@ interface Props {
   handleSubmit: Function;
 }
 
-const displayText = "Searching Catchoom for the ID";
+const displayText = "Searching Vuforia for the ID";
 
 class ItemSearchView extends React.Component<Props> {
   constructor(props) {

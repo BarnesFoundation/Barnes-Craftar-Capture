@@ -36,7 +36,7 @@ class AddImageView extends React.Component<Props, object> {
       id,
     } = this.props;
 
-    const displayText = "Adding image to Catchoom";
+    const displayText = "Adding image to Vuforia";
 
     const photoView = <PhotoView photoUri={photoUri}></PhotoView>;
     const addImageButton = (
@@ -71,7 +71,7 @@ class AddImageView extends React.Component<Props, object> {
     return (
       <div className="add-image-container">
         <h2>Add Image</h2>
-        <p>Use the button below to add the image to Catchoom</p>
+        <p>Use the button below to add the image to Vuforia</p>
         {photoView}
         {requestComplete ? null : addImageButton}
         {requestComplete && success ? successSection : null}

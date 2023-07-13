@@ -45,7 +45,7 @@ class ImageSearchView extends React.Component<Props, object> {
       errorMessage,
     } = this.props;
 
-    const displayText = "Searching Catchoom for the image";
+    const displayText = "Searching Vuforia for the image";
 
     let successSection = null;
     let setItem = null;
