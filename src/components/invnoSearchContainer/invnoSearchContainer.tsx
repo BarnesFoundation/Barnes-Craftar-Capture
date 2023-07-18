@@ -2,11 +2,7 @@ import * as React from "react";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 
-import {
-  InvnoSearchService,
-  InvnoResponse,
-} from "../../services/invnoSearchService";
-import { ItemImageRetrievalService } from "../../services/itemImageRetrievalService";
+import { SearchService } from "../../services/searchService";
 import { InvnoSearchView } from "./invnoSearchView/invnoSearchView";
 
 import {
@@ -22,37 +18,15 @@ import { InvnoSearchState } from "../../store/reducers/invnoSearchReducer";
 import { ConnectedProps } from "../../interfaces/connectedProps";
 import { CollectionItemState } from "../../store/reducers/collectionItemReducer";
 
-// interface Props {
-//
-//     dispatch: Function,
-//
-//     // Invno Search State
-//     response: InvnoResponse , //SearchResponse,
-//     success: boolean,
-//     requestInProgress: boolean,
-//     requestComplete: boolean,
-//     searchedInvno: string,
-//     searchedId: string,
-//
-//     // Collection Item State
-//     id: string,
-//     uuid: string,
-//     itemImageUrl: string,
-//     setInvnoClicked: boolean,
-// }
-
 class InvnoSearchContainer extends React.Component<
   ConnectedProps & InvnoSearchState & CollectionItemState
 > {
-  invnoSearchService: InvnoSearchService;
-  itemImageRetrievalService: ItemImageRetrievalService;
-
+  invnoSearchService: SearchService;
   itemImageUrl: string;
 
   constructor(props) {
     super(props);
-    this.invnoSearchService = new InvnoSearchService();
-    this.itemImageRetrievalService = new ItemImageRetrievalService();
+    this.invnoSearchService = new SearchService();
   }
 
   componentWillUnmount() {
@@ -60,27 +34,23 @@ class InvnoSearchContainer extends React.Component<
   }
 
   handleSubmit = async (event) => {
-    // Prevent default behavior and reset the search before starting a new one
     event.preventDefault();
 
     // Update that request is in progress
-    let requestInProgress = true;
-    let requestComplete = false;
     this.props.dispatch(
-      new UpdateInvnoSearchStatus({ requestInProgress, requestComplete })
+      new UpdateInvnoSearchStatus({
+        requestInProgress: true,
+        requestComplete: false,
+      })
     );
 
-    // Get the invno to search
-    const searchedInvno = event.target.invno.value;
-
     // Update with response data
+    const searchedInvno = event.target.invno.value;
     const response = await this.invnoSearchService.searchByInvno(searchedInvno);
     const success = response.success;
 
     if (success) {
-      this.itemImageUrl = await this.itemImageRetrievalService.retrieveImage(
-        response.idResponse.uuid
-      );
+      this.itemImageUrl = response.imageUrl;
       this.props.dispatch(
         new UpdateItemImageUrl({ itemImageUrl: this.itemImageUrl })
       );
@@ -91,15 +61,16 @@ class InvnoSearchContainer extends React.Component<
     );
 
     // Update that request is complete
-    requestInProgress = false;
-    requestComplete = true;
     this.props.dispatch(
-      new UpdateInvnoSearchStatus({ requestInProgress, requestComplete })
+      new UpdateInvnoSearchStatus({
+        requestInProgress: false,
+        requestComplete: true,
+      })
     );
   };
 
-  setSearchedItem = async (event: any) => {
-    const uuid = this.props.response.idResponse.uuid;
+  setSearchedItem = async () => {
+    const uuid = this.props.response.uuid;
     const id = this.props.response.id;
     const itemImageUrl = this.itemImageUrl;
     const setInvnoClicked = true;
@@ -126,7 +97,7 @@ class InvnoSearchContainer extends React.Component<
     return (
       <InvnoSearchView
         searchedInvno={searchedInvno}
-        response={response.idResponse}
+        response={response}
         success={success}
         itemImageUrl={this.itemImageUrl}
         requestInProgress={requestInProgress}

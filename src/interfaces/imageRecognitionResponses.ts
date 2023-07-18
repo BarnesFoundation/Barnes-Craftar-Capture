@@ -1,4 +1,4 @@
-/** Catchoom Image Recognition API Responses */
+/** Vuforia Image Recognition API Responses */
 
 export interface SearchResponse {
   results: Result[];

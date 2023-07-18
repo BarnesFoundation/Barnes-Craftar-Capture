@@ -1,7 +1,7 @@
 import * as React from "react";
 import { PhotoView } from "../../photoView/photoView";
 import { LoadingDialog } from "../../../shared/components/loadingDialog";
-import { MatchResponse } from "../../../services/searchService";
+import { SearchResponse } from "../../../services/searchService";
 import { Link } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 
@@ -14,7 +14,7 @@ export interface Props {
   requestComplete: boolean;
 
   success: boolean;
-  response: MatchResponse;
+  response: SearchResponse;
 
   error: boolean;
   errorMessage: any;
@@ -45,14 +45,14 @@ class ImageSearchView extends React.Component<Props, object> {
       errorMessage,
     } = this.props;
 
-    const displayText = "Searching Catchoom for the image";
+    const displayText = "Searching Vuforia for the image";
 
     let successSection = null;
     let setItem = null;
     let failSection = null;
     let errorSection = null;
 
-    if (requestComplete && !error) {
+    if (requestComplete && !error && response.success) {
       let id = response.id;
 
       setItem = (

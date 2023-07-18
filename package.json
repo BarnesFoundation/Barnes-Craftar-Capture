@@ -7,24 +7,27 @@
       "dotenv": "^6.2.0",
       "elasticsearch": "^15.3.1",
       "express": "^4.16.4",
-      "serverless-http": "^2.7.0"
+      "multer": "^1.4.5-lts.1",
+      "serverless-http": "^2.7.0",
+      "vuforia-api": "^0.3.2"
    },
    "engines": {
       "node": ">=0.10"
    },
    "scripts": {
-      "start": "PORT=3000 react-scripts start",
+      "start": "PORT=3004 react-scripts start",
       "build": "rm -rf dist; react-scripts build; npm run build-server",
       "build-server": "tsc -p server/",
+      "do-postinstall": "npx patch-package",
       "postbuild": "cp -r build dist && rm -rf build",
       "test": "react-scripts test --env=jsdom",
       "eject": "react-scripts eject",
       "serve": "npm run build-server && node dist/index.js",
-      "deploy:dev": "serverless deploy -v --stage dev",
-      "deploy:prod": "serverless deploy -v --stage prod",
+      "deploy:dev": "npx serverless@3.22.0 deploy --verbose --stage dev",
+      "deploy:prod": "npx serverless@3.22.0 deploy --verbose --stage prod",
       "watch-server": "tsc -w -p server/",
-      "run-dev-server": "nodemon --delay 500ms dist/server/index.js",
-      "dev": "concurrently \"npm run watch-server\" \"npm run run-dev-server\""
+      "local-server": "nodemon --delay 500ms dist/server/index.js",
+      "dev": "concurrently \"npm run watch-server\" \"npm run local-server\""
    },
    "devDependencies": {
       "@material-ui/core": "^3.7.1",
@@ -34,6 +37,7 @@
       "@types/express": "^4.16.0",
       "@types/jest": "^23.3.12",
       "@types/material-ui": "^0.21.5",
+      "@types/multer": "^1.4.7",
       "@types/node": "^10.17.60",
       "@types/react": "^16.7.18",
       "@types/react-dom": "^16.0.11",
@@ -49,6 +53,7 @@
       "eslint-plugin-import": "^2.27.5",
       "eslint-plugin-prettier": "^4.2.1",
       "node-sass": "^4.10.0",
+      "nodemon": "^2.0.22",
       "prettier": "^2.8.8",
       "react": "^16.14.0",
       "react-cropper": "^2.1.8",
@@ -58,6 +63,7 @@
       "react-router-dom": "^4.3.1",
       "react-scripts": "^2.1.3",
       "redux": "^4.0.1",
+      "serverless": "^3.22.0",
       "typeface-roboto": "0.0.54",
       "typescript": "^4.5.5",
       "webpack-dev-server": "^3.1.14"
@@ -68,5 +74,5 @@
       "not ie <= 11",
       "not op_mini all"
    ],
-   "proxy": "http://localhost:4000"
+   "proxy": "http://localhost:4004"
 }

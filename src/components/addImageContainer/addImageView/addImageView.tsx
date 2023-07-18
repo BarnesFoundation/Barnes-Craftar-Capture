@@ -1,7 +1,7 @@
 import * as React from "react";
 import { PhotoView } from "../../photoView/photoView";
 import { LoadingDialog } from "../../../shared/components/loadingDialog";
-import { CreateResponse } from "../../../services/imageService";
+import { ImageReferenceResponse } from "../../../services/imageService";
 import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
 
@@ -11,7 +11,7 @@ interface Props {
   addImageToItem: Function;
 
   success: boolean;
-  response: CreateResponse;
+  response: ImageReferenceResponse;
 
   error: boolean;
   errorMessage: any;
@@ -25,10 +25,6 @@ class AddImageView extends React.Component<Props, object> {
     super(props);
   }
 
-  addImageToItem = (event) => {
-    this.props.addImageToItem();
-  };
-
   public render() {
     const {
       photoUri,
@@ -40,12 +36,12 @@ class AddImageView extends React.Component<Props, object> {
       id,
     } = this.props;
 
-    const displayText = "Adding image to Catchoom";
+    const displayText = "Adding image to Vuforia";
 
     const photoView = <PhotoView photoUri={photoUri}></PhotoView>;
     const addImageButton = (
       <div className="button-container">
-        <Button variant="contained" onClick={this.addImageToItem}>
+        <Button variant="contained" onClick={() => this.props.addImageToItem()}>
           Add Image to Item
         </Button>
       </div>
@@ -75,7 +71,7 @@ class AddImageView extends React.Component<Props, object> {
     return (
       <div className="add-image-container">
         <h2>Add Image</h2>
-        <p>Use the button below to add the image to Catchoom</p>
+        <p>Use the button below to add the image to Vuforia</p>
         {photoView}
         {requestComplete ? null : addImageButton}
         {requestComplete && success ? successSection : null}

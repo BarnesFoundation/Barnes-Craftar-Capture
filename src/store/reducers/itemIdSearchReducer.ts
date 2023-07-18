@@ -1,8 +1,5 @@
 import * as at from "../actionTypes/itemIdSearchActionTypes";
-import * as a from "../actions/itemIdSearchActions";
 import { Action } from "../../interfaces/action";
-
-import { SearchResponse } from "../../services/itemSearchService";
 
 export interface ItemIdSearchState {
   response: any;

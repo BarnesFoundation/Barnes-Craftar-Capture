@@ -32,15 +32,11 @@ class ResizeService {
 
     return await new Promise<Blob | string>((resolve) => {
       image.onload = async () => {
-        console.log(
-          "Prior to resize dimensions - height: " +
-            image.height +
-            " width: " +
-            image.width
+        const orientation = this.determineOrientation(
+          image.height,
+          image.width
         );
-
-        let orientation = this.determineOrientation(image.height, image.width);
-        let dimensions = this.getResizedDimensions(
+        const dimensions = this.getResizedDimensions(
           orientation,
           image.height,
           image.width,
@@ -54,13 +50,8 @@ class ResizeService {
         const ctx = canvas.getContext("2d");
         ctx.drawImage(image, 0, 0, dimensions.width, dimensions.height);
 
-        console.log(
-          "Resized dimenions - height: " +
-            dimensions.height +
-            " width: " +
-            dimensions.width
-        );
-        resolve(await this.getResizedResult(ctx, resultType));
+        const resizedImage = await this.getResizedResult(ctx, resultType);
+        resolve(resizedImage);
       };
     });
   }

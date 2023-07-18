@@ -1,4 +1,4 @@
-/** Catchoom Management API Responses */
+/** Vuforia Management API Responses */
 
 export interface ImageCreateResponse {
   file: string;

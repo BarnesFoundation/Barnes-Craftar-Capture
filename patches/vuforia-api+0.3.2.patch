@@ -1,0 +1,16 @@
+diff --git a/node_modules/vuforia-api/lib/util.js b/node_modules/vuforia-api/lib/util.js
+index fad242c..c2ccb6d 100755
+--- a/node_modules/vuforia-api/lib/util.js
++++ b/node_modules/vuforia-api/lib/util.js
+@@ -104,8 +104,9 @@ var util = function () {
+             } else {
+                 var body = body + 
+                 "--"+boundary + "\r\n" +
+-                'Content-Disposition: form-data; name="max_num_results"' + "\r\n\r\n" +
+-                max_num_results + "\r\n";
++                `Content-Disposition: form-data; name="max_num_results"\r\n\r\n${max_num_results}\r\n\r\n` + "\r\n" +
++                "--"+boundary + "\r\n" +
++                `Content-Disposition: form-data; name="include_target_data"\r\n\r\nall` + "\r\n";
+             }
+         }
+ 
