@@ -20,9 +20,9 @@ functions:
             - cors: true
 
 package:
-    include:
-        - dist/**
-        - package.json
-        - node_modules/**
-    exclude:
-        - ./**
+    patterns:
+        - "!./**"
+        - "!./dev_node_modules"
+        - "dist/**"
+        - "package.json"
+        - "node_modules/**"
