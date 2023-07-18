@@ -23,8 +23,9 @@ class ManagementController {
     request: express.Request,
     response: express.Response
   ) {
-    const imageId = request.body.imageId as string;
     const queryImage = request.file;
+    const imageId = request.body.imageId as string;
+    const imageBase64 = queryImage.buffer.toString("base64")
 
     // We need to generate a new token string that contains the original
     // Image Id, but that has an additional segment to indicate it's an
@@ -37,8 +38,8 @@ class ManagementController {
             {
               // Options to send out for the `addTarget` call
               name: tokenizedImageId,
-              width: 1.0,
-              image: queryImage.buffer.toString("base64"),
+              width: 2.0,
+              image: imageBase64,
               active_flag: true,
             },
             function (
