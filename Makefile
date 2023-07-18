@@ -9,6 +9,18 @@ builds:
 	# 3. Install the production node_modules
 	npm ci --production
 
+	# 4. We need to apply the Vuforia client patch 
+	# which unfortunately doesn't work with our npm version
+	. $(HOME)/.nvm/nvm.sh; \
+	nvm use 14.15; \
+	npm run do-postinstall; \
+
+	# 5. Manually deploy instead of running the npm script
+	. $(HOME)/.nvm/nvm.sh; \
+	nvm use 14.15; \
+	node -v; \
+	npx serverless deploy --verbose --stage prod
+
 # Removes the production node_modules and undoes the rename of development node_modules
 reset_node:
 	rm -rf node_modules
@@ -24,7 +36,7 @@ dev:
 deploy_dev: builds dev reset_node
 
 # Deploy to production
-deploy_prod: builds prod reset_node
+deploy_prod: builds reset_node
 
 
 ######################################
