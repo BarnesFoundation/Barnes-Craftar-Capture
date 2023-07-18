@@ -1,6 +1,6 @@
 import * as React from "react";
 import { ImageSearchView } from "./imageSearchView/imageSearchView";
-import { SearchService, MatchResponse } from "../../services/searchService";
+import { SearchService, SearchResponse } from "../../services/searchService";
 import { connect } from "react-redux";
 import {
   UpdateImageSearchRequestStatus,
@@ -11,7 +11,6 @@ import {
 import { SetCollectionItem } from "../../store/actions/collectionItemActions";
 import { Redirect } from "react-router-dom";
 import { ResizeService } from "../../services/resizeService";
-import { ItemImageRetrievalService } from "../../services/itemImageRetrievalService";
 
 export interface Props {
   dispatch: Function;
@@ -24,7 +23,7 @@ export interface Props {
   uuid: string;
 
   // Image Search State
-  response: MatchResponse;
+  response: SearchResponse;
   success: boolean;
   requestInProgress: boolean;
   requestComplete: boolean;
@@ -35,13 +34,11 @@ export interface Props {
 class ImageSearchContainer extends React.Component<Props> {
   searchService: SearchService;
   resizeService: ResizeService;
-  itemImageRetrievalService: ItemImageRetrievalService;
 
   constructor(props) {
     super(props);
     this.searchService = new SearchService();
     this.resizeService = new ResizeService();
-    this.itemImageRetrievalService = new ItemImageRetrievalService();
   }
 
   componentWillUnmount() {
@@ -51,10 +48,12 @@ class ImageSearchContainer extends React.Component<Props> {
   imageSearch = async () => {
     const { croppedPhotoUri } = this.props;
 
-    let requestInProgress = true;
-    let requestComplete = false;
+    // Update the state that the request is in progress
     this.props.dispatch(
-      new UpdateImageSearchRequestStatus({ requestInProgress, requestComplete })
+      new UpdateImageSearchRequestStatus({
+        requestInProgress: true,
+        requestComplete: false,
+      })
     );
 
     try {
@@ -71,28 +70,37 @@ class ImageSearchContainer extends React.Component<Props> {
       this.props.dispatch(
         new UpdateImageSearchRequestData({ response, success })
       );
-    } catch (errorOutput) {
-      // Update the search request error
-      const error = true;
-      const errorMessage = errorOutput;
+    } catch (error) {
       this.props.dispatch(
-        new UpdateImageSearchRequestError({ error, errorMessage })
+        new UpdateImageSearchRequestError({
+          error: true,
+          // @ts-ignore
+          errorMessage: error.message || "",
+        })
       );
     }
 
-    requestInProgress = false;
-    requestComplete = true;
+    // Update the state that the request is complete
     this.props.dispatch(
-      new UpdateImageSearchRequestStatus({ requestInProgress, requestComplete })
+      new UpdateImageSearchRequestStatus({
+        requestInProgress: false,
+        requestComplete: true,
+      })
     );
   };
 
   setCollectionItem = async () => {
-    const { id, uuid } = this.props.response;
-    const itemImageUrl = await this.itemImageRetrievalService.retrieveImage(
-      uuid
+    if (this.props.response.success === false) {
+      return;
+    }
+
+    this.props.dispatch(
+      new SetCollectionItem({
+        id: this.props.response.name,
+        uuid: this.props.uuid,
+        itemImageUrl: this.props.response.imageUrl,
+      })
     );
-    this.props.dispatch(new SetCollectionItem({ id, uuid, itemImageUrl }));
   };
 
   public render() {

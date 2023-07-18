@@ -1,77 +1,67 @@
-import { Config } from "../utils/config";
-import { SearchResponse } from "../interfaces/imageRecognitionResponses";
 import axios from "axios";
 
-class MatchResponse {
-  success: boolean;
-  message: string;
-  id?: string;
-  uuid?: string;
+import { Config } from "../utils/config";
 
-  errorOccurred?: boolean;
-  errorMessage?: string;
-}
+type SearchResponseFailure = { success: false; message: string };
+type SearchResponseSuccess = {
+  success: true;
+  message: string;
+
+  // When we have a match, we have additional fields
+  id: string;
+  name: string;
+  uuid: string;
+  imageUrl: string;
+};
 
 class SearchService {
-  httpConfig;
-
-  constructor() {
-    this.httpConfig = {
-      headers: { "Content-Type": "multipart/form-data" },
-      method: "post",
-      url: Config.searchApiUrl,
-      data: null,
-    };
-  }
-
-  private prepareRequest(image: Blob) {
-    let fd = new FormData();
-
-    fd.append("token", Config.collectionToken);
-    fd.append("image", image);
-
-    this.httpConfig.data = fd;
-
-    return this.httpConfig;
-  }
-
-  private parseImageMatchResponse(response: SearchResponse): MatchResponse {
-    let matchResponse = new MatchResponse();
-
-    if (response.results.length > 0) {
-      let result = response.results[0];
-
-      matchResponse.success = true;
-      matchResponse.message = "A matching reference image was found";
-      matchResponse.id = result.item.name;
-      matchResponse.uuid = result.item.uuid;
-    } else {
-      matchResponse.success = false;
-      matchResponse.message = "No matching reference image was found";
-    }
-    return matchResponse;
-  }
-
-  private parseErrorResponse(error): string {
-    let status = error.response.status;
-    let errorCode = error.response.data.error.code;
-    let errorMessage = error.response.data.error.message;
-
-    return "ErrorCode: " + errorCode + " ErrorMessage: " + errorMessage;
-  }
-
-  async findImageMatch(image: Blob): Promise<MatchResponse> {
-    let request = this.prepareRequest(image);
+  public async findImageMatch(image: Blob): Promise<SearchResponse> {
+    const form = new FormData();
+    form.append("token", Config.collectionToken);
+    form.append("image", image);
 
     try {
-      let response = await axios(request);
-      let matchResponse = this.parseImageMatchResponse(response.data);
-      return matchResponse;
+      const response = await axios({
+        headers: { "Content-Type": "multipart/form-data" },
+        method: "post",
+        url: "/api/search-by-image",
+        data: form,
+      });
+
+      return response.data;
     } catch (error) {
-      let message = this.parseErrorResponse(error);
-      throw message;
+      console.log(
+        "An error occurred while identifying a match for the image",
+        error
+      );
+      throw new Error("An error occurred finding a match for the image");
     }
+  }
+
+  public async searchByItem(itemId: string): Promise<SearchResponse> {
+    const response = await axios({
+      url: "/api/search-by-image-id",
+      method: "get",
+      params: {
+        imageId: itemId,
+      },
+    });
+
+    return response.data;
+  }
+
+  public async searchByInvno(invno: string): Promise<SearchResponse> {
+    const response = await axios({
+      method: "GET",
+      url: "/api/search-by-invno",
+      params: {
+        invno: invno,
+      },
+    });
+
+    return response.data;
   }
 }
 
-export { SearchService, MatchResponse };
+export type SearchResponse = SearchResponseFailure | SearchResponseSuccess;
+export { SearchService };
